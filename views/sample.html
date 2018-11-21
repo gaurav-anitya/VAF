@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Node POC</title>
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.com/docs/4.0/examples/album/album.css" rel="stylesheet">
+    <style>
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 1.375rem .75rem;
+    font-size: 1rem;
+    line-height: 0.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    margin-bottom: 10px;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}        
+    </style>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-8 col-md-7 py-4">
+              <h4 class="text-white">About</h4>
+              <p class="text-muted">Add some information </p>
+            </div>
+            <div class="col-sm-4 offset-md-1 py-4">
+              <h4 class="text-white">Contact</h4>
+              <ul class="list-unstyled">
+                <li><a href="#" class="text-white">Follow on Twitter</a></li>
+                <li><a href="#" class="text-white">Like on Facebook</a></li>
+                <li><a href="#" class="text-white">Email me</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+          <a href="#" class="navbar-brand d-flex align-items-center">
+            <strong>Node JS POC</strong>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+
+      <section class="jumbotron text-center">
+        <div class="container">
+     
+      <img class="mb-4" src="/public/images/nodejs-icon.svg" alt="" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <form method="POST" action="/submit">
+      <label  class="sr-only">escort_id</label>
+      <input type="text"  id="escort_id" class="form-control" placeholder="escort_id" required autofocus>
+      <label class="sr-only">visiter_id</label>
+      <input type="text"  id="visitor_id" class="form-control" placeholder="visitor_id" required>
+      <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+      </div>
+      
+      <button id="approvalToken" class="btn btn-lg btn-primary btn-block" type="button">Generate Token</button>
+    </form>
+    
+        </div>
+        <table id="visitorGrid"><tr></tr></tr></table>
+        <div id="pager"></div>
+      </section>
+
+
+        
+    </main>
+
+    <footer class="text-muted">
+      <div class="container">
+        <p class="float-right">
+          <a href="#">Back to top</a>
+        </p>
+        <p>TCS &copy; </p>
+        
+      </div>
+    </footer>
+
+    <script src="/public/scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
+    <script src="/public/javascripts/VisiterEntryScript.js"></script>
+    <script>
+$("#load-more").click(function(){
+ 
+    $.ajax(
+      {
+        url: "/loadMore",
+        type:"GET",
+       success: function(result){
+      if(result == true)
+      {
+       if(($('body').find('.d-none').hasClass('d-none')==true)){
+            $('body').find('.d-none').removeClass('d-none').addClass('d-show');
+            $('#load-more').text('Show Less');
+           }
+           else{
+              $('body').find('.d-show').removeClass('d-show').addClass('d-none'); 
+              $('#load-more').text('Load More');
+           } 
+      }
+    }
+    }
+    );  
+});       
+    </script>
+  </body>
+</html>

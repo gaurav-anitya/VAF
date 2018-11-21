@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/public/stylesheets/style.css">
+	<link rel="stylesheet" href="/public/stylesheets/style-2.css">
+	<script src="/public/scripts/jquery-3.3.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+	<div class="header">
+		<div class="">
+			<div class="col-sm-3">
+				<img id="cross" src="/public/images/cross.png" />
+			</div>
+			<div class="col-sm-6">
+				<img id="slider" src="/public/images/Slider white.png" />
+			</div>
+			<div class="col-sm-3">
+				<img id="homeicon" src="/public/images/home_icon.png" />
+			</div>
+		</div>
+
+
+	</div>
+
+
+	<div class=" container form_content">
+		<div class="row">
+			<H1 style="text-decoration: italics;">Escorting Person Details</H1>
+		</div>
+		<form class="row form-horizontal">
+			<div class="row form-inline  row_padding_top_bottom">
+				<div class="form-group col-md-6">
+					<label class=" col-md-6 control-label text-right" for="escort_name">Person Escorting</label>
+					<div class="col-md-6 input-group">
+						<input id="escort_name" name="escort_name" type="text" placeholder="" class="form-control">
+						<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+					</div>
+				</div>
+				<div class="form-group col-md-6">
+					<label class=" col-md-4 control-label" for="input_Date">Date</label>
+					<div class="col-md-6 input-group">
+						<input id="input_Date" name="input_Date" type="text" placeholder="" class="form-control">
+						<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+					</div>
+				</div>
+			</div>
+			<div class="row form-inline  row_padding_top_bottom">
+				<div class="form-group col-md-6">
+					<label class=" col-md-6 control-label" for="escort_empid">Employee ID</label>
+					<div class="col-md-6 input-group">
+						<input id="escort_empid" name="escort_empid" type="text" placeholder="" class="form-control">
+						<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+					</div>
+				</div>
+				<div class="form-group col-md-6">
+					<label class=" col-md-4 control-label" for="input_in_time">In Time</label>
+					<div class="col-md-6 input-group">
+						<input id="input_in_time" name="input_in_time" type="text" placeholder="" class="form-control">
+						<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+					</div>
+				</div>
+			</div>
+			<div class="row form-inline row_padding_top_bottom">
+				<div class="form-group col-md-6">
+					<label class=" col-md-6 control-label" for="escort_project">Project</label>
+					<div class="col-md-6 input-group">
+						<input id="escort_project" name="escort_project" type="text" placeholder="" class="form-control">
+					</div>
+				</div>
+				<div class="form-group col-md-6">
+					<label class=" col-md-4 control-label" for="input_out_time">Out Time</label>
+					<div class="col-md-6 input-group">
+						<input id="input_out_time" name="input_out_time" type="text" placeholder="" class="form-control">
+						<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+					</div>
+				</div>
+			</div>
+			<div class="row form-inline">
+				<div class="form-group col-md-6">
+					<label class=" col-md-6 control-label" for="escort_card_no">Smart Card #</label>
+					<div class="col-md-6 input-group">
+						<input id="escort_card_no" name="escort_card_no" type="text" placeholder="" class="form-control">
+					</div>
+				</div>
+			</div>
+			<div class="row form-inline row_padding_top_bottom">
+				<div class="form-group col-md-12">
+					<table class="table">
+						<tr>
+							<td class="col-md-3 table-borderless">
+								<div class = "vcenter">
+									<label class=" col-md-12 control-label " for="escort_project">Identification</label>
+								</div>
+							</td>
+							<td class="col-md-9 table-borderless">
+								<div id="checkboxlist">
+									<table class="table table-condensed">
+										<tr>
+											<td class="table-borderless">
+												<label class="checkbox-inline">
+													<input type="checkbox" name="Identification" id="idCheckbox1" value="smartCard"> Smart Card
+												</label>
+											</td>
+											<td class="table-borderless">
+												<label class="checkbox-inline">
+													<input type="checkbox" id="idCheckbox2" name="Identification" value="visitorCard"> Visitor Card
+												</label>
+											</td>
+											<td class="table-borderless">
+												<label class="checkbox-inline">
+													<input type="checkbox" id="idCheckbox3" name="Identification" value="passport"> Passport
+												</label>
+											</td>
+										</tr>
+										<tr>
+											<td class="table-borderless">
+												<label class="checkbox-inline">
+													<input type="checkbox" id="idCheckbox1" name="Identification" value="voterCard"> Voter ID Card
+												</label>
+											</td>
+											<td class="table-borderless">
+												<label class="checkbox-inline">
+													<input type="checkbox" id="idCheckbox2" name="Identification" value="panCard"> PAN Card
+												</label>
+											</td>
+											<td class="table-borderless">
+												<label class="checkbox-inline">
+													<input type="checkbox" id="idCheckbox3" name="Identification" value="driverLicense"> Driver's License
+												</label>
+											</td>
+										</tr>
+									</table>
+								</div>
+							<td>
+						</tr>
+					</table>
+					<!--div class="row">						
+						
+						
+					</div>
+					<div class="row">
+						
+						
+						
+					</div>
+					<div class="container">
+							<label class="checkbox-inline">
+								<input type="checkbox" id="idCheckbox1" value="smart_card"> 1
+							</label>
+							<label class="checkbox-inline">
+								<input type="checkbox" id="idCheckbox2" value="visitor_card"> 1
+							</label>
+							<label class="checkbox-inline">
+								<input type="checkbox" id="idCheckbox3" value="passport"> 1
+							</label>
+						</div>
+						<div class="row">
+							<label class="checkbox-inline">
+								<input type="checkbox" id="idCheckbox1" value="voter_card"> 1
+							</label>
+							<label class="checkbox-inline">
+								<input type="checkbox" id="idCheckbox2" value="pan_card"> 1
+							</label>
+							<label class="checkbox-inline">
+								<input type="checkbox" id="idCheckbox3" value="driver_license"> 1
+							</label>
+						</div-->
+				</div>
+			</div>
+	</div>
+	</form>
+	</div>
+	<div class="visitor_dec Escort_dec">
+		<input type="checkbox" name="escort_signature" class="form-control" placeholder="Enter your EmpID here" value="Y" style="border:2px; height: 20px; width: 20px" required=""/>
+		<span>Visitor Declaration</span>
+		<p>
+			I hereby declare that I am not carrying any asset such as Mobile Phone with
+			Camera, CD/DVD, HDD, Voice Recorder, USB Drive/ Pen Drive, CD Player, Data Storage Device or any such device in the
+			ODC
+		</p>
+		<p>
+			I confirm that the information provided above is best and truthful in nature and deviations from the same can result
+			in serious jurisdiction measure
+		</p>
+	</div>
+	<div class="btn_sub">
+		<input id="btnSubmitForm" class="btn btn-primary" type="submit" value="Submit">
+	</div>
+
+<script src="/public/javascripts/VisiterEntryScript.js"></script>
+<script src="/public/scripts/jquery.jqGrid.min.js" type="text/javascript"></script>
+</body>
+
+</html>

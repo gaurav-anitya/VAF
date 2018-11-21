@@ -1,0 +1,91 @@
+<!doctype HTML>
+<html>
+    <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <script src="/public/scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
+            <script src="/public/scripts/jquery.jqGrid.min.js" type="text/javascript"></script>
+            <link href="Styles/bootstrap-4.1.0.min.css" rel="stylesheet" type="text/css"/>
+            <link href="Styles/MainStyle.css" rel="stylesheet" type="text/css"/>
+            <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <link rel="stylesheet" href="/public/stylesheets/VAFcss.css">
+            <link rel="stylesheet" href="/public/scripts/jquery.dataTables.min.css">
+            <link rel="stylesheet" href="https://d19m59y37dris4.cloudfront.net/universal/2-0-1/vendor/font-awesome/css/font-awesome.min.css">
+        <title>Visitor Authorization Form</title>
+        
+    </head>
+    <body onload="bindGrid()">
+            <div class="top-bar">
+                    <div class="container">
+                      <div class="row d-flex align-items-center">
+                        <div class="home">
+                                <a style="float:left; margin:5px; text-decoration: none;color:white;" class="nav-link active" id="home" data-toggle="tab" href="#" role="tab" aria-controls="home" aria-selected="true"><h4>HOME</h4></a>
+                                <a style="float:left; margin:5px; text-decoration:none;color: white;" class="nav-link" id="status" data-toggle="tab" href="#" role="tab" aria-controls="status" aria-selected="false"><h4>STATUS</h4></a>
+                                <a style="float:left; margin:5px; text-decoration: none;color:white;" class="nav-link" id="visitorGrid" data-toggle="tab" href="#" role="tab" aria-controls="list" aria-selected="false"><h4>VISITOR RECORD</h4></a>
+                                <!-- <h4><p class="heading" style="align-content: flex-end;">Lilly Visitor Authorization Form</p></h4> -->
+                        </div>
+                        <!-- <div class="col-md-6">
+                          <div class="d-flex justify-content-md-end justify-content-between">
+                          </div>
+                        </div> -->
+                      </div>
+                    </div>
+            </div>
+            <div class="container register">
+                    <div class="row">
+                        <div class="col-md-12">
+        
+                        <h2 class ="title-content" >Lilly visitor List</h2>
+                        
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active text-align form-new" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <!-- <div class="visitor-info"> -->
+                                            
+                                            <table width="100%" class="display"  id="myGrid" cellspacing="0" >
+                                                    <thead>
+                                                            <tr>
+                                                                <th>VISITOR ID</th>
+                                                                <th>VISITOR  NAME</th>
+                                                                <th>VISITOR COMPANY</th>
+                                                                <th>VISITOR UNIT</th>
+                                                                <th>VISITOR SMARTCARD</th>
+                                                                <th>VISITOR ACCESS</th>
+                                                                <th>VISITOR ASSETID</th>
+                                                                <th>VISITOR PURPOSE</th>
+                                                                <th>ESCORT ID</th>                                                                
+                                                                <th>ESCORT NAME</th>
+                                                                <th>ESCORT UNIT</th>
+                                                                <th>ESCORT SMARTCARD</th>
+                                                                <th>ESCORT DATE</th>
+                                                                <th>ESCORT TIME(FROM)</th>
+                                                                <th>ESCORT TIME(TO)</th>
+                                                                <th>APPROVAL STATUS</th>
+                                                                <th>DAYCOUNT</th>
+                                                               
+                                                            </tr>
+                                                        </thead>
+                                                </table>
+        
+                                        <br/>
+                                        <br/>
+        
+                                            
+                                           
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <script src="/public/javascripts/VisiterEntryScript.js"></script>  
+                    <script src="/public/scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
+                    <script src="/public/scripts/jquery.jqGrid.min.js" type="text/javascript"></script>
+                    <script src="/public/scripts/jquery.dataTables.min.js" type="text/javascript"></script>     
+    </body>
+</html>
