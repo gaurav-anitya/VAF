@@ -4,15 +4,25 @@ var visiter=require('./VisiterEntry');
 
 router.get('/', function(req, res){
   console.log("Hello");
-  res.render('Visitor_form', {layout: true});
+  res.render('firstPage', {layout: true});
   
 });
 
 router.use('/',visiter);
 
+router.get("/home",function(req, res) {
+    
+  res.render('secondPage', {layout: true});;
+});
+
+router.get("/addVisitor",function(req, res) {
+    
+  res.render('Visitor_form', {layout: true});;
+});
+
 router.get("/visitorGrid",function(req, res) {
   
-  res.render('List', {layout: true});;
+  res.render('Visitor_Status', {layout: true});;
   });
 
   router.get("/status",function(req, res) {

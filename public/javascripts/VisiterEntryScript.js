@@ -1,94 +1,11 @@
-$("#btnSubmit").click(function() {
-    
-    localStorage.clear();
-    var visitorName = $("#visitor_name").val(); 
-    localStorage.setItem("visitorName", visitorName);
-    var visitorId = $("#visitor_empId").val(); 
-    localStorage.setItem("visitorId", visitorId);
-    var visitorCompanyRadio = $("input[name='company']:checked").val();
-    localStorage.setItem("visitorCompanyRadio", visitorCompanyRadio);
-    var visitorCompany = $("#other").val();
-    localStorage.setItem("visitorCompany", visitorCompany);
-    var project = $("#project").val();
-    localStorage.setItem("project", project);
-    var area = $("#area").val();
-    localStorage.setItem("area", area);
-    var smart_card = $("#smart_card").val();
-    localStorage.setItem("smart_card", smart_card);
-    var visitor_access = $("input[name='visitor_access']:checked").val();
-    localStorage.setItem("visitor_access", visitor_access);
-    var Purpose = $("input[name='Purpose']:checked").val();
-    localStorage.setItem("Purpose", Purpose);
-    var asetId = $("#asetId").val();
-    localStorage.setItem("asetId", asetId);
 
-    document.location.href="/escortDetails";
-
-  });
-
-  $("#btnSubmitForm").click(function(){
-      
-    var formData =new Object();
-    formData['visitor_name']= localStorage.getItem('visitor_name' ) ;
-    if(JSON.parse( localStorage.getItem('visitorCompanyRadio' )== "Other"))
-    {
-        formData['visitor_company']= JSON.parse( localStorage.getItem('visitorCompany' ) );
-    }
-    else{
-    formData['visitor_company']= JSON.parse( localStorage.getItem('visitorCompanyRadio' ) );
-    }
-    formData['visitor_empid']= JSON.parse( localStorage.getItem('visitorId' ));
-    formData['visitor_unit']= JSON.parse( localStorage.getItem('project' ));
-    formData['visitor_smartcard']= JSON.parse( localStorage.getItem('smart_card' ));
-    formData['visitor_access']= JSON.parse( localStorage.getItem('visitor_access' ));
-    formData['visitor_purpose']= JSON.parse( localStorage.getItem('Purpose' ));
-    formData['visitor_assetId']= JSON.parse( localStorage.getItem('asetId' ));
-    //Escort Details
-    formData['escort_name']= $("#escort_name").val(); 
-    formData['escort_date']= $("#input_Date").val(); 
-    formData['escort_empid']= $("#escort_empid").val(); 
-    formData['escort_time_from']= $("#input_in_time").val(); 
-    formData['escort_unit']= $("#escort_project").val(); 
-    formData['escort_time_to']= $("#input_out_time").val(); 
-    formData['escort_smartcard']= $("#escort_card_no").val(); 
-    var chkArray =[];
-    $("#checkboxlist input:checked").each(function() {
-		chkArray.push($(this).val());
-    });
-    var selected;
-	selected = chkArray.join(',') ;
-    formData["visitor_identification"] = selected;
-
-    // $.ajax(
-    //   {
-    //     url: "/submit",
-    //     type:"Post",
-    //     data: {
-    //      formData: JSON2.stringify(formData)           
-    //       },
-    //    success: function(result){
-        
-    //      if(result)
-    //      {
-    //         alert("Form Submited !!");
-        
-    //      }
-    //      else{
-
-    //          alert("Error while submiting form!!");
-             
-    //          document.location.href="/";
-    //      }        
-    // }
-    // }
-    // );  
-});
+ 
 
 //get approval token //
 
 $("#approvalToken").click(function(){
- var escort_id=$("#escort_empid").val();
- var visitor_id=$("#visitor_empid").val();
+ var escort_id=(document.getElementById("escortId").innerText).split(":");
+ var visitor_id=document.getElementById("Id").innerText;
  if(escort_id != "" &&  visitor_id != "")
  {
     $.ajax(
@@ -96,7 +13,7 @@ $("#approvalToken").click(function(){
         url: "/getApprovalToken",
         type:"Post",
         data: {
-            escort_id: $("#escort_empid").val()           
+            escort_id: escort_id[1]           
           },
        success: function(result){
            var getToken=prompt("Please verify approval token :" +result);
@@ -107,10 +24,10 @@ $("#approvalToken").click(function(){
                   url: "/visitorApproved",
                   type:"POST",
                   data: {
-                    visitor_id: $("#visitor_empid").val() ,getToken: getToken, escort_id: $("#escort_empid").val()        
+                    visitor_id: visitor_id ,getToken: getToken, escort_id: escort_id[1].trim()        
                   },
                  success: function(result){
-                alert(result);
+                // alert(result);
                   if(result)
                   {
                   alert("Visitor approved !!");
@@ -126,7 +43,7 @@ $("#approvalToken").click(function(){
               ); 
               
         } else {
-            document.location.href="/";
+           // document.location.href="/";
         }
       
     }
@@ -145,6 +62,50 @@ function defaultDate()
     $( "#visitor_date" ).datepicker( "setDate", new Date());
 }
 
+$("#i_agree").click(function(){
+    
+    $("#submit").attr('disabled',false);
+});
+
+
+//update out Time //
+$("#outTime").click(function(){
+    
+    var visitor_id=document.getElementById("Id").innerText;
+    var outTime=$("#out_time").val();
+    if(outTime != "")
+    {
+    $.ajax(
+      {
+        url: "/updateOutTime",
+        type:"Post",
+        data: {
+         visitor_id: visitor_id, outTime: outTime            
+          },
+         
+       success: function(result){
+        
+         if(result)
+         {
+            alert("Record Updated !!");
+            document.location.href="/visitorGrid"
+         }
+         else{
+
+            alert("Error while updating record!!");
+             
+            // document.location.href="/";
+         }        
+    }
+    }
+    ); 
+}
+else{
+    document.getElementById("out_time").style.display="block";
+    document.getElementById("outTime").innerText="Update";
+} 
+});
+
 
 //Validate user from database//
 
@@ -157,19 +118,37 @@ $("#validateEscort").click(function(){
            data: {
             escort_id: $("#escort_id").val()           
              },
+            
           success: function(result){
            
             if(result)
             {
-           alert("Form validated.Press ok to submit form !!");
-           $(this).attr('disabled',true);
-           $("#submit").attr('disabled',false);
+        //    alert("Form validated.Press ok to submit form !!");
+        //    $(this).attr('disabled',true);
+        //    $("#submit").attr('disabled',false);
+               var items=JSON.parse(result);
+               
+               for(var i=0; i<items.length;i++)
+               {
+                  var name =items[i].escort_Name;
+                  var project= items[i].project;
+                  var smartCard=items[i].smartCard;
+                   
+                   
+               }
+               //alert(data);
+               document.getElementById("escort_name").value =name; 
+                document.getElementById("escort_name").name.value=name;
+               document.getElementById("escort_unit").value =project; 
+               document.getElementById("escort_smartcard").value =smartCard; 
+               $("#escortDeclaration").attr('disabled',false);
+
             }
             else{
 
                 alert("Escort is not Authorized.Please try agin!!");
-                $("#submit").attr('disabled',true);
-                $(this).attr('disabled',false);
+                $("#escortDeclaration").attr('disabled',true);
+                
                // document.location.href="/";
             }        
        }
@@ -177,13 +156,23 @@ $("#validateEscort").click(function(){
        );  
    });
 
+   $("#escortDeclaration").click(function(){
+    
+    document.getElementById("modale_escort_name").value =$("#escort_id").val(); 
+   
+  });
 
-   $("#visitor_id").keyup(function(){
-    if($("#visitor_id").val() != "")
-     $("#validateVisitor").attr('disabled',false);
-     else
-     $("#validateVisitor").attr('disabled',true);
+   $("#company-1").click(function(){
+    
+     $("#other").attr('disabled',false);
+    
    });
+
+   $("#company-0").click(function(){
+    
+    $("#other").attr('disabled',true);
+   
+  });
 
    //get the current status of visitor//
 
@@ -241,12 +230,19 @@ $("#validateEscort").click(function(){
  // redirect to home page //
  $("#home").click(function(){  
         
-    document.location.href="/"
+    document.location.href="/home"
    
   });
 
+  $("#addVisitor").click(function(){  
+        
+    document.location.href="/addVisitor"
+   
+  }); 
+   
+
 //redirect to list page//
-   $("#visitorGrid").click(function(){  
+   $("#visitorDetail").click(function(){  
         
      document.location.href="/visitorGrid"
     
@@ -259,7 +255,7 @@ $("#validateEscort").click(function(){
    
   });
 
-
+  
   // bind visitor record //
    function bindGrid(){
 
@@ -274,38 +270,45 @@ $("#validateEscort").click(function(){
            
          success: function(result){
              var items=JSON.parse(result);
+             
              for(var i=0; i<items.length;i++)
              {
+               
                  var date=((items[i].escort_date).substring(0,10)).split('-').reverse().join('-');
                  
                  items[i].escort_date=date;
+                
+           
              }
-         
+             
            if(result)
            {
-            $('#myGrid').DataTable({
-                "aaData": items,
-                "scrollX": true,
-                "scrollY": "500px",
-                "scrollCollapse": true,
-                "columns": [{ "data": "visitor_empid" }, 
-                { "data": "visitor_name" },
-                { "data": "visitor_company" }, 
-                { "data": "visitor_unit" },
-                { "data": "visitor_smartcard" }, 
-                { "data": "visitor_access" },
-                { "data": "visitor_assetId" },
-                 { "data": "visitor_purpose" },
-                 { "data": "escort_empid" }, 
-                 { "data": "escort_name" },
-                 { "data": "escort_unit" },
-                 { "data": "escort_smartcard" }, 
-                 { "data": "escort_date",type: 'dd-mm-yyyy', targets: 0 },
-                 { "data": "escort_time_from" }, 
-                 { "data": "escort_time_to" },
-                 { "data": "approvalStatus" },
-                 { "data": "dayCount" },
+            $('#table_id').DataTable({
+            //     "aaData": items,
+            //     "processing": true,
                 
+            //     "scrollX": true,
+            //     "scrollY": "500px",
+            //     "width":"101%",
+            //     "scrollCollapse": true,
+            //     "columns": [ 
+            //         { "data": "visitor_empid" },
+            //     { "data": "visitor_name" },
+                 
+            //      { "data": "escort_date"},
+                 
+            //      { "data": "approvalStatus" },
+                 
+                
+            // ],
+            "dom": 'lBrtip',
+            buttons: [
+                {
+                    text: 'My button',
+                    action: function ( e, dt, node, config ) {
+                        alert( 'Button activated' );
+                    }
+                }
             ]
             });
             
@@ -315,6 +318,27 @@ $("#validateEscort").click(function(){
         });
     }
 
+   
+    // $('#table_id').on('click', 'tr', function () {
+    //     alert("clicked");
+    //     var table = $('#table_id').DataTable();
+    //     var data = table.row( this ).data();
+    //     var data1=JSON.parse(data);
+    //     alert( 'You clicked on '+data1);
+    // } );
+
+//     $("#table_id tbody").find('tr').click(function(){
+     
+//         var table = $('#table_id').DataTable();
+//        var data =  table.row( this ).data();
+//        alert( "hello" );
+//        alert('You clicked row '+ ($(this).index()+1) );
+//    });
+  // var table = $('#table_id').DataTable();
+ 
+//    $('#table_id tbody').on( 'click', 'tr', function () {
+//        console.log( table.row( this ).data() );
+//    } );
    //dataGrid Binding //
 
    function gridBind(items){
