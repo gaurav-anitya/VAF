@@ -6,10 +6,11 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/public/stylesheets/style.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>	
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="/public/javascripts/addvisitor.js"></script>
 </head>
 <script>
 	$(function () {
@@ -101,6 +102,9 @@ input.btn.btn-primary {
     margin-bottom: 30px;
     font-size: 40px;
 }
+#field {
+    margin-bottom:20px;
+}
  </style>
 
 <body>
@@ -131,22 +135,52 @@ input.btn.btn-primary {
 					<div class="row">
 						<H1 style="text-decoration: italics;">Visitor Details</H1>
 					</div>
-					<form class="form-inline" method="POST" action="/submit">
+					<!--form class="form-inline" method="POST" action="/submit"-->
 						<div class="row form-inline  row_padding_top_bottom">
 
-							<!-- Text input-->
-							<div class="form-group col-md-6">
-								<label class=" col-md-6 control-label" for="visitor_name">Visitor Name</label>
-								<div class="col-md-6 input-group">
-									<input id="visitor_name" name="visitor_name" type="text" placeholder="" class="form-control">
+							<!-- Text input>
+							<input type="hidden" name="count" value="1" />
+							<div class="control-group" id="fields">
+								<div class="controls">
+									<div class="input-append">
+										<div class="form-group col-md-4 field" id = "field" role="form">
+											<div class="col-md-12 entry input-group">
+												<input id=" field1" autocomplete="off" name=" fields[]" type="text" placeholder="Visitor Name" class="input form-control">
+											</div>											
+										</div>
+									</div>
 								</div>
 							</div>
-							<div class="form-group col-md-6">
-								<label class=" col-md-4 control-label" for="visitor_empid">Employee ID</label>
-								<div class="col-md-6 input-group">
-									<input id="visitor_id" name="visitor_empid" type="text" placeholder="" class="form-control">
-									<!-- <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> -->
+							<div class="form-group col-md-3">
+								<div class="col-md-12 input-group">
+									<input id="visitor_id" name="visitor_empid" type="text" placeholder="Employee ID" class="form-control">
 								</div>
+							</div>
+							<div class="form-group col-md-3">
+								<div class="input-group">
+									<input id="smart_card" name="visitor_smartcard" type="text" placeholder="Smart Card Number" class="form-control">
+								</div>
+							</div>
+							<div class="form-group col-md-2">
+								<div class="input-group">
+									<button id="b1" class="btn add-more btn-add" type="button">+</button>
+								</div>
+							</div-->
+						</div>
+						<div class="row control-group" id="fields">
+							<div class="controls"> 
+								<form role="form" autocomplete="off">
+									<div class="entry input-group row">
+										<input class="form-group col-md-3" name="fields[]" type="text" placeholder="Employee Name" id="visitor_id" name="visitor_empid"/>
+										<input id="visitor_id" name="visitor_empid" type="text" placeholder="Employee ID" class="form-group col-md-3">
+										<input id="smart_card" name="visitor_smartcard" type="text" placeholder="Smart Card Number" class="form-group col-md-3">
+										<span class="input-group-btn">
+											<button class="btn btn-success btn-add" type="button">
+												<span class="glyphicon glyphicon-plus"></span>
+											</button>
+										</span>
+									</div>
+								</form>
 							</div>
 						</div>
 						<!-- Multiple Radios -->
@@ -216,57 +250,65 @@ input.btn.btn-primary {
 						<!-- Text input-->
 						<div class="row form-inline row_padding_top_bottom">
 							<!-- Text input-->
-							<div class="form-group col-md-6">
-								<label class=" col-md-6 control-label" for="visitor_asset">Asset ID</label>
-								<div class="col-md-6 input-group">
-									<input id="visitor_asset" name="visitor_asset" type="text" placeholder="" class="form-control">
-								</div>
-							</div>
-							<div class="form-group col-md-6">
-								<div class="row form-inline row_padding_top_bottom">
-									<div class="form-group col-md-12">
-										<table class="table-borderless">
-											<tr>
-												<td class="col-md-3">
-													<div class="vcenter">
-														<label class="col-md-12 control-label" for="Purpose">Purpose</label>
-													</div>
-												</td>
-												<td class="col-md-9">
-													<div id="checkboxlist">
-														<table class="table-borderless table-condensed">
-															<tr>
-																<td class="tabl1e-borderless">
-																	<label class="checkbox-inline">
-																		<input type="checkbox" id="Purpose-0" name="Identification1" value="New Joinee"> New joinee
-																	</label>
-																</td>
-																<td class="ta1ble-borderless">
-																	<label class="checkbox-inline">
-																		<input type="checkbox" id="Purpose-1" name="Identification2" value="Meeting"> Meeting
-																	</label>
-																</td>
-															</tr>
-															<tr>
-																<td class="table-borderless">
-																	<label class="checkbox-inline">
-																		<input type="checkbox" id="Purpose-2" name="Identification3" value="Audit"> Audit
-																	</label>
-																</td>
-																<td class="table-borderless">
-																	<label class="checkbox-inline">
-																		<input type="checkbox" id="Purpose-3" name="Identification4" value="Other">Other
-																	</label>
-																</td>
-															</tr>
-														</table>
-													</div>
-												<td>
-											</tr>
-										</table>
-									</div>
-								</div>
-							</div>
+							<table class="table-borderless">
+								<tr>
+									<td class="col-md-6">
+										<div class="form-group col-md-12">
+											<label class=" col-md-5 control-label" for="visitor_asset">Asset ID</label>
+											<div class="col-md-6 col-md-offset-1 input-group">
+												<input id="visitor_asset" name="visitor_asset" type="text" placeholder="" class="form-control col-md-12">
+											</div>
+										</div>
+									</td>
+									<td class="col-md-6">
+										<div class="form-group">
+											<div class="row form-inline row_padding_top_bottom">
+												<div class="form-group col-md-12">
+													<table class="table-borderless">
+														<tr>
+															<td class="col-md-3">
+																<div class="vcenter">
+																	<label class="col-md-12 control-label" for="Purpose">Purpose</label>
+																</div>
+															</td>
+															<td class="col-md-9">
+																<div id="checkboxlist">
+																	<table class="table-borderless table-condensed">
+																		<tr>
+																			<td class="tabl1e-borderless">
+																				<label class="checkbox-inline">
+																					<input type="checkbox" id="Purpose-0" name="Identification1" value="New Joinee"> New joinee
+																				</label>
+																			</td>
+																			<td class="ta1ble-borderless">
+																				<label class="checkbox-inline">
+																					<input type="checkbox" id="Purpose-1" name="Identification2" value="Meeting"> Meeting
+																				</label>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td class="table-borderless">
+																				<label class="checkbox-inline">
+																					<input type="checkbox" id="Purpose-2" name="Identification3" value="Audit"> Audit
+																				</label>
+																			</td>
+																			<td class="table-borderless">
+																				<label class="checkbox-inline">
+																					<input type="checkbox" id="Purpose-3" name="Identification4" value="Other">Other
+																				</label>
+																			</td>
+																		</tr>
+																	</table>
+																</div>
+															<td>
+														</tr>
+													</table>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</table>
 						</div>
 						<a class="row carousel-control" href="#myCarousel" data-slide="next" data-toggle="modal" data-target="#myModalVisitor">
 							<div class="btn_sub">
