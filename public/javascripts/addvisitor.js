@@ -33,7 +33,7 @@ $(function()
     {
         e.preventDefault();
 
-        var controlForm = $('.controls form:first'),
+        var controlForm = $('#repeatable_item'),
             currentEntry = $(this).parents('.entry:first'),
             newEntry = $(currentEntry.clone()).appendTo(controlForm);
 

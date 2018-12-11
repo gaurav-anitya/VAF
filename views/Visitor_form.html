@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="/public/stylesheets/style.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="/public/javascripts/addvisitor.js"></script>
@@ -61,7 +61,7 @@
     border-radius: 15px;
     background-color: #f01716;
     text-align: center;
-    margin-left: 35%;
+    margin-left: 37%;
 
 }
 
@@ -102,8 +102,16 @@ input.btn.btn-primary {
     margin-bottom: 30px;
     font-size: 40px;
 }
-#field {
+/*#field {
     margin-bottom:20px;
+}*/
+
+.carousel-control{
+	position:relative !important;
+}
+
+.left-spacing{
+	margin-left:3%;
 }
  </style>
 
@@ -111,7 +119,7 @@ input.btn.btn-primary {
 	<div class="header">
 		<div class="">
 			<div class="col-sm-3">
-				<img id="cross" src="/public/images/cross.png" />
+				<!--<img id="cross" src="/public/images/cross.png" />-->
 			</div>
 			<div class="col-sm-6">
 				<img id="slider" src="/public/images/Slider white.png" />
@@ -135,7 +143,7 @@ input.btn.btn-primary {
 					<div class="row">
 						<H1 style="text-decoration: italics;">Visitor Details</H1>
 					</div>
-					<!--form class="form-inline" method="POST" action="/submit"-->
+					<form class="form-inline" method="POST" action="/submit">
 						<div class="row form-inline  row_padding_top_bottom">
 
 							<!-- Text input>
@@ -168,19 +176,20 @@ input.btn.btn-primary {
 							</div-->
 						</div>
 						<div class="row control-group" id="fields">
-							<div class="controls"> 
-								<form role="form" autocomplete="off">
+							<div class="controls">
+								<div role="form" autocomplete="off" id="repeatable_item">
 									<div class="entry input-group row">
-										<input class="form-group col-md-3" name="fields[]" type="text" placeholder="Employee Name" id="visitor_id" name="visitor_empid"/>
-										<input id="visitor_id" name="visitor_empid" type="text" placeholder="Employee ID" class="form-group col-md-3">
-										<input id="smart_card" name="visitor_smartcard" type="text" placeholder="Smart Card Number" class="form-group col-md-3">
+										<input class="form-group col-md-4 left-spacing" name="fields[]" type="text" placeholder="Employee Name" id="visitor_id"
+										 name="visitor_empid" />
+										<input id="visitor_id" name="visitor_empid" type="text" placeholder="Employee ID" class="form-group col-md-3 left-spacing">
+										<input id="smart_card" name="visitor_smartcard" type="text" placeholder="Smart Card Number" class="form-group col-md-3 left-spacing">
 										<span class="input-group-btn">
 											<button class="btn btn-success btn-add" type="button">
 												<span class="glyphicon glyphicon-plus"></span>
 											</button>
 										</span>
 									</div>
-								</form>
+								</div>
 							</div>
 						</div>
 						<!-- Multiple Radios -->
@@ -313,7 +322,7 @@ input.btn.btn-primary {
 						<a class="row carousel-control" href="#myCarousel" data-slide="next" data-toggle="modal" data-target="#myModalVisitor">
 							<div class="btn_sub">
 								<input class="btn btn-primary" type="button" value="PROCEED">
-								<span class="glyphicon glyphicon-chevron-right"></span>
+								<!--<span class="glyphicon glyphicon-chevron-right"></span>-->
 							</div>
 						</a>
 				</div>
@@ -434,7 +443,7 @@ input.btn.btn-primary {
 						</div>
 					</div>
 				</div>
-				<!-- </form> -->
+				</form>
 				<div class="visitor_dec Escort_dec">
 
 					<span>Visitor Declaration</span>
