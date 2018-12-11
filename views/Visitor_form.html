@@ -235,19 +235,20 @@ input.btn.btn-primary {
 						<div class="row form-inline  row_padding_top_bottom">
 							<!-- Text input-->
 							<div class="form-group col-md-6">
-								<label class=" col-md-6 control-label" for="visitor_smartcard">Smart Card #</label>
+								<label class=" col-md-6 control-label" for="visitor_asset">Asset ID</label>
 								<div class="col-md-6 input-group">
-									<input id="smart_card" name="visitor_smartcard" type="text" placeholder="" class="form-control">
+									<input id="visitor_asset" name="visitor_asset" type="text" placeholder="" class="form-control">
 								</div>
 							</div>
-							<div class="form-group col-md-5 col-md-offset-1">
-								<div class="radio">
+							<div class="form-group col-md-6">
+								<label class=" col-md-4 control-label" for="visitor_access">Card Type</label>
+								<div class="radio" class=" col-md-4">
 									<label for="company-0">
 										<input type="radio" name="visitor_access" id="-0" value="Permanent" checked="checked">
 										Permanent
 									</label>
 								</div>
-								<div class="radio">
+								<div class="radio" class=" col-md-4">
 									<label class="" for="company-1">
 										<input type="radio" name="visitor_access" id="-1" value="Temporary">
 										Temporary
@@ -257,65 +258,45 @@ input.btn.btn-primary {
 						</div>
 
 						<!-- Text input-->
-						<div class="row form-inline row_padding_top_bottom">
+						<div class="row form-inline">
 							<!-- Text input-->
-							<table class="table-borderless">
+							<table>
 								<tr>
-									<td class="col-md-6">
-										<div class="form-group col-md-12">
-											<label class=" col-md-5 control-label" for="visitor_asset">Asset ID</label>
-											<div class="col-md-6 col-md-offset-1 input-group">
-												<input id="visitor_asset" name="visitor_asset" type="text" placeholder="" class="form-control col-md-12">
-											</div>
+									<td class="col-md-3">
+										<div class="vcenter">
+											<label class="col-md-12 control-label" for="Purpose">Purpose</label>
 										</div>
 									</td>
-									<td class="col-md-6">
-										<div class="form-group">
-											<div class="row form-inline row_padding_top_bottom">
-												<div class="form-group col-md-12">
-													<table class="table-borderless">
-														<tr>
-															<td class="col-md-3">
-																<div class="vcenter">
-																	<label class="col-md-12 control-label" for="Purpose">Purpose</label>
-																</div>
-															</td>
-															<td class="col-md-9">
-																<div id="checkboxlist">
-																	<table class="table-borderless table-condensed">
-																		<tr>
-																			<td class="tabl1e-borderless">
-																				<label class="checkbox-inline">
-																					<input type="checkbox" id="Purpose-0" name="Identification1" value="New Joinee"> New joinee
-																				</label>
-																			</td>
-																			<td class="ta1ble-borderless">
-																				<label class="checkbox-inline">
-																					<input type="checkbox" id="Purpose-1" name="Identification2" value="Meeting"> Meeting
-																				</label>
-																			</td>
-																		</tr>
-																		<tr>
-																			<td class="table-borderless">
-																				<label class="checkbox-inline">
-																					<input type="checkbox" id="Purpose-2" name="Identification3" value="Audit"> Audit
-																				</label>
-																			</td>
-																			<td class="table-borderless">
-																				<label class="checkbox-inline">
-																					<input type="checkbox" id="Purpose-3" name="Identification4" value="Other">Other
-																				</label>
-																			</td>
-																		</tr>
-																	</table>
-																</div>
-															<td>
-														</tr>
-													</table>
-												</div>
-											</div>
+									<td class="col-md-9">
+										<div id="checkboxlist">
+											<table class="table-borderless table-condensed">
+												<tr>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Purpose-0" name="Identification1" value="New Joinee"> New joinee
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Purpose-1" name="Identification2" value="Meeting"> Meeting
+														</label>
+													</td>
+												</tr>
+												<tr>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Purpose-2" name="Identification3" value="Audit"> Audit
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Purpose-3" name="Identification4" value="Other">Other
+														</label>
+													</td>
+												</tr>
+											</table>
 										</div>
-									</td>
+									<td>
 								</tr>
 							</table>
 						</div>
