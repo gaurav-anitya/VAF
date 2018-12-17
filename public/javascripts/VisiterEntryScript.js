@@ -287,31 +287,30 @@ $("#validateEscort").click(function(){
                
                  var date=((items[i].escort_date).substring(0,10)).split('-').reverse().join('-');
                  
-                 items[i].escort_date=date;
-                
+                 items[i].escort_date=date;                
            
              }
              
            if(result)
            {
             $('#table_id').DataTable({
-            //     "aaData": items,
-            //     "processing": true,
+                 "aaData": items,
+                 "processing": true,
                 
-            //     "scrollX": true,
-            //     "scrollY": "500px",
-            //     "width":"101%",
-            //     "scrollCollapse": true,
-            //     "columns": [ 
-            //         { "data": "visitor_empid" },
-            //     { "data": "visitor_name" },
+                 "scrollX": true,
+                 "scrollY": "500px",
+                 "width":"101%",
+                 "scrollCollapse": true,
+                 "columns": [ 
+                     { "data": "visitor_empid" },
+                 { "data": "visitor_name" },
                  
-            //      { "data": "escort_date"},
+                  { "data": "escort_date"},
                  
-            //      { "data": "approvalStatus" },
+                  { "data": "approvalStatus" },
                  
                 
-            // ],
+             ],
             "dom": 'lBrtip',
             buttons: [
                 {

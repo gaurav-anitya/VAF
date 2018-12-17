@@ -111,8 +111,13 @@ input.btn.btn-primary {
 }
 
 .left-spacing{
-	margin-left:3%;
+	margin-left:5%;
 }
+
+.left-spacing-half{
+	margin-left:2.0%;
+}
+
  </style>
 
 <body>
@@ -181,8 +186,8 @@ input.btn.btn-primary {
 									<div class="entry input-group row">
 										<input class="form-group col-md-4 left-spacing" name="fields[]" type="text" placeholder="Employee Name" id="visitor_id"
 										 name="visitor_empid" />
-										<input id="visitor_id" name="visitor_empid" type="text" placeholder="Employee ID" class="form-group col-md-3 left-spacing">
-										<input id="smart_card" name="visitor_smartcard" type="text" placeholder="Smart Card Number" class="form-group col-md-3 left-spacing">
+										<input id="visitor_id" name="visitor_empid" type="text" placeholder="Employee ID" class="form-group col-md-3 left-spacing-half">
+										<input id="smart_card" name="visitor_smartcard" type="text" placeholder="Smart Card Number" class="form-group col-md-3 left-spacing-half">
 										<span class="input-group-btn">
 											<button class="btn btn-success btn-add" type="button">
 												<span class="glyphicon glyphicon-plus"></span>
@@ -262,41 +267,30 @@ input.btn.btn-primary {
 							<!-- Text input-->
 							<table>
 								<tr>
-									<td class="col-md-3">
+									<td class="col-md-4">
 										<div class="vcenter">
 											<label class="col-md-12 control-label" for="Purpose">Purpose</label>
 										</div>
 									</td>
-									<td class="col-md-9">
-										<div id="checkboxlist">
-											<table class="table-borderless table-condensed">
-												<tr>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="Purpose-0" name="Identification1" value="New Joinee"> New joinee
-														</label>
-													</td>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="Purpose-1" name="Identification2" value="Meeting"> Meeting
-														</label>
-													</td>
-												</tr>
-												<tr>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="Purpose-2" name="Identification3" value="Audit"> Audit
-														</label>
-													</td>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="Purpose-3" name="Identification4" value="Other">Other
-														</label>
-													</td>
-												</tr>
-											</table>
+									<td class="col-md-7">
+										<div id="checkboxlist col-md-12">
+											<label class="checkbox-inline">
+												<input type="checkbox" id="Purpose-0" name="Identification1" value="New Joinee"> New joinee
+											</label>
+
+											<label class="checkbox-inline">
+												<input type="checkbox" id="Purpose-1" name="Identification2" value="Meeting"> Meeting
+											</label>
+
+											<label class="checkbox-inline">
+												<input type="checkbox" id="Purpose-2" name="Identification3" value="Audit"> Audit
+											</label>
+
+											<label class="checkbox-inline">
+												<input type="checkbox" id="Purpose-3" name="Identification4" value="Other">Other
+											</label>
 										</div>
-									<td>
+									</td>
 								</tr>
 							</table>
 						</div>

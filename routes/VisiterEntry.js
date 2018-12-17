@@ -301,7 +301,7 @@ console.log(verifyAgain);
           con.query(getId, function (err, result,fields) {
             if (err) 
               throw err;
-              console.log(result);
+              //console.log(result);
               res.send(JSON.stringify(result));
             
           });
