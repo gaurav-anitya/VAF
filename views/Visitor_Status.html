@@ -171,14 +171,12 @@
                 width: 99% !important;
             }
 
-            #cross {
-                float: left;
-                width: 3%;
-                height: 3%;
-                /* margin-right: -53px; */
-/*                margin: 4%;*/
-                /* top: 24px; */
-/*                margin-top: 35px;*/
+            .cross {
+                width: 25%;
+                position: absolute;
+                left:50%;
+                transform: translate(-40%,30%);
+
             }
             .out_btn{
                 float: left;
@@ -199,15 +197,15 @@
         </style>
     </head>
     <body >
-        <header class="header top">
-            <div class="align-top">
-                <img id="cross" src="/public/images/cross.png" />
+        <header class="header row top">
+            <div class="align-top col-md-2 ">
+                <img class="cross img-responsive center-block" src="/public/images/cross.png" />
             </div>
-            <div class="align-top center">
-                <img class="top1_rect image-responsive" src="/public/images/Slider white.png"/> 
+            <div class="align-top center col-md-8">
+                <img class="top_rect img-responsive center-block" src="/public/images/Slider white.png"/> 
             </div>	
-            <div class="align-top">
-                <img id="homeicon" src="/public/images/home_icon.png" />
+            <div class="align-top col-md-2">
+                <img class="homeicon img-responsive center-block" src="/public/images/home_icon.png" />
             </div>
         </header>
         <!--

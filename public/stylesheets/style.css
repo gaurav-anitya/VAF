@@ -4,18 +4,22 @@
     background-color: #f01716;
 }
 
-#homeicon{
-    float: right;
-    width: 15%;
-    height: 15%;
+.homeicon{
+    width: 30%;
+    position: absolute;
+    left:50%;
+    transform: translate(-40%,25%);
+
 }
 
+/*
 #cross{
-    float: left;
-    width: 40px;
-    height: 40px;
-    margin: 10%;
+float: left;
+width: 40px;
+height: 40px;
+margin: 10%;
 }
+*/
 
 #slider{
     position:absolute;
@@ -154,11 +158,8 @@ hr {
     height: 75px;
 }
 .top_rect{
-    margin-left: 8%;
-    height: 70px;
-    width: 85%;
-    margin-top: 10px;
-
+    bottom: -75px;
+    position: absolute;
 }
 .fig2 figcaption {
     margin-left: 7%;
