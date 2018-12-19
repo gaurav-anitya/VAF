@@ -8,30 +8,8 @@
         <link rel="stylesheet" href="/public/stylesheets/style.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
 
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-
-				if(resultdata.approvalStatus == "Approved")
-				{
-					document.getElementById("approvalToken").style.display="none";
-					$("#outTime").attr('disabled',false);
-					getVisitorFlooStatus();
-				}
-				else{
-					$("#outTime").attr('disabled',true);
-					document.getElementById("outTime").innerHTML="In";
-				}
-				
-				$('#myModalPending').modal("show");
-
-				
-				
-				//alert(data);
-				//var data1=JSON.parse(data);
-				//alert( 'You clicked on '+data1);
-			} );
-		} );
-
-	</script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>		
+	
 	<style>
 	div#table_id_wrapper {
     width: 90%;
@@ -201,15 +179,18 @@ img#approvalToken {
                     var text = document.createTextNode(resultdata.escort_time_to);
                     paragraph.appendChild(text);
 
-                    if(resultdata.approvalStatus == "Approved")
-                    {
-                        document.getElementById("approvalToken").style.display="none";
-                    }
-                    $('#myModalPending').modal("show");
-
-                    //alert(data);
-                    //var data1=JSON.parse(data);
-                    //alert( 'You clicked on '+data1);
+                   if(resultdata.approvalStatus == "Approved")
+				{
+					document.getElementById("approvalToken").style.display="none";
+					$("#outTime").attr('disabled',false);
+					getVisitorFlooStatus();
+				}
+				else{
+					$("#outTime").attr('disabled',true);
+					document.getElementById("outTime").innerHTML="In";
+				}
+				
+				$('#myModalPending').modal("show");
                 } );
             } );
 
