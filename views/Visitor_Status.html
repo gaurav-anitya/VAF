@@ -67,8 +67,17 @@
 				if(resultdata.approvalStatus == "Approved")
 				{
 					document.getElementById("approvalToken").style.display="none";
+					$("#outTime").attr('disabled',false);
+					getVisitorFlooStatus();
 				}
+				else{
+					$("#outTime").attr('disabled',true);
+					document.getElementById("outTime").innerHTML="In";
+				}
+				
 				$('#myModalPending').modal("show");
+
+				
 				
 				//alert(data);
 				//var data1=JSON.parse(data);
@@ -109,8 +118,8 @@
 		margin-bottom: 7%;
 	}
 	table tr td:nth-child(2){
-		background-color: #f01716 !important;
-		color: #ffffff;
+		
+		color: #6f6c6c;
 		font-family: "SF Pro Text";
 		font-size: 25px;
 		font-weight: 500;
@@ -123,7 +132,7 @@
 	}
 		
 		table#table_id {
-			color: white;
+			color: #6f6c6c;
 			width: 60%;
 		}
 		#table_id .odd {
@@ -131,7 +140,7 @@
 			margin-left: 5%;
 			height: 145px;
 			border-radius: 15px;
-			background-color: #f01716 !important;
+			background-color: #f1f1f1 !important;
 			margin-top: 30px;
 		}
 				#table_id .even {
@@ -139,14 +148,14 @@
 			margin-left: 5%;
 			height: 145px;
 			border-radius: 15px;
-			background-color: #f01716 !important;
+			background-color: #fafafa  !important;
 			margin-top: 30px;
 		}
 		td.sorting_1 {
-			background-color: #f01716 !important;
-			    color: #ffffff;
+			
+			    color: #6f6c6c;
 			font-family: "SF Pro Text";
-			font-size: 50px;
+			font-size: 30px;
 			font-weight: 500;
 			font-style: italic;
 		}
@@ -203,7 +212,7 @@ img#approvalToken {
     <div class="header">
         <div class="">
             <div class="col-sm-3">
-                <img id="cross" src="/public/images/cross.png" />
+                <!--img id="cross" src="/public/images/cross.png" /-->
             </div>
             <div class="col-sm-6">
                 <img id="slider" src="/public/images/Slider white.png" /> 
@@ -220,7 +229,8 @@ img#approvalToken {
     <thead>
         <tr>
 			<th>Visitor EmpId</th>
-            <th>Visitor Name</th>
+			<th>Hall</th>
+			<th>Visitor Name</th>
             <th>Date of Visit</th>
 			 <th>Status</th>
 			
@@ -274,7 +284,7 @@ img#approvalToken {
 		  <p id="escortId">Escort ID#: </p>
         </div>
         <div class="modal-footer">
-				<button id="outTime" type="button" class="btn btn-default out_btn" data-dismiss="">Out Time</button>
+				<button id="outTime" type="button" class="btn btn-default out_btn" data-dismiss="" disabled>Out Time</button>
 				<input id="out_time" name="out_time" type="time" placeholder="" class="input-md" style="display:none">
 				<button id="" type="button" class="btn btn-default" onclick="location.reload()" data-dismiss="modal">Close</button>
         </div>

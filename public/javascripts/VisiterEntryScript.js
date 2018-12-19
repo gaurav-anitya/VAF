@@ -13,18 +13,55 @@ $("#approvalToken").click(function(){
         url: "/getApprovalToken",
         type:"Post",
         data: {
-            escort_id: escort_id[1]           
+            escort_id: visitor_id           
           },
        success: function(result){
-           var getToken=prompt("Please verify approval token :" +result);
-        if (getToken) {
+         if(!result)
+         {
+           alert("Your previous token is expired.Please regenerate token!!");
+         }
+         else{
+           var getToken=prompt(result);
+            if (getToken) {
+
+            var date= new Date();
+            var day=date.getDay();
+            var hrs=date.getHours();
+            //var min=date.getMinutes();
             
+            if(day == 6 || day == 7 || (hrs > 21 &&  hrs <= 23) || (hrs >=0 &&  hrs < 9))
+            {
+                $.ajax(
+                    {
+                      url: "/OddHoursApproval",
+                      type:"POST",
+                      data: {
+                        visitor_id: visitor_id ,getToken: getToken, escort_id: visitor_id.trim()        
+                      },
+                     success: function(result){
+                    // alert(result);
+                      if(result)
+                      {
+                      alert("Visitor approved !!");
+                      document.location.href="/";
+                      }
+                      else{
+    
+                        alert("Error while updating record. Please try again !!");
+                        document.location.href="/";
+                      }
+                  }
+                  }
+                  ); 
+            }
+            
+            else{
             $.ajax(
                 {
                   url: "/visitorApproved",
                   type:"POST",
                   data: {
-                    visitor_id: visitor_id ,getToken: getToken, escort_id: escort_id[1].trim()        
+                    visitor_id: visitor_id ,getToken: getToken, escort_id: visitor_id.trim()        
                   },
                  success: function(result){
                 // alert(result);
@@ -41,12 +78,14 @@ $("#approvalToken").click(function(){
               }
               }
               ); 
+            }
               
         } else {
            // document.location.href="/";
         }
       
     }
+  }
     }
  
 
@@ -72,19 +111,22 @@ $("#i_agree").click(function(){
 $("#outTime").click(function(){
     
     var visitor_id=document.getElementById("Id").innerText;
-    var outTime=$("#out_time").val();
-    if(outTime != "")
+    var smartCard=(document.getElementById("Card").innerText).split(":");
+    var name=(document.getElementById("Name").innerText).split(":");
+    var floorCode = localStorage.getItem('floorCode');
+    
+    if( document.getElementById("outTime").innerHTML=="Out")
     {
     $.ajax(
       {
         url: "/updateOutTime",
-        type:"Post",
+        type:"POST",
         data: {
-         visitor_id: visitor_id, outTime: outTime            
+         visitor_id: visitor_id,visitor_smartcard: smartCard[1].trim(),visitor_name: name[1].trim(),floorCode: floorCode           
           },
          
        success: function(result){
-        
+       // alert(result);
          if(result)
          {
             alert("Record Updated !!");
@@ -99,12 +141,110 @@ $("#outTime").click(function(){
     }
     }
     ); 
-}
-else{
-    document.getElementById("out_time").style.display="block";
-    document.getElementById("outTime").innerText="Update";
-} 
+  }
+  else{
+
+    $.ajax(
+      {
+        url: "/updateInTime",
+        type:"POST",
+        data: {
+          visitor_smartcard: smartCard[1].trim(),visitor_name: name[1].trim(),floorCode: floorCode.trim()           
+          },
+         
+       success: function(result){
+        
+         if(result)
+         {
+            alert("Record Updated !!");
+            document.location.href="/visitorGrid"
+         }
+         else{
+  
+            alert("Error while updating record!!");
+             
+            // document.location.href="/";
+         }        
+    }
+    }
+    ); 
+  }
+
 });
+
+
+//update InTime
+// $("#InTime").click(function(){
+    
+  
+//   var smartCard=(document.getElementById("Card").innerText).split(":");
+//     var name=(document.getElementById("Name").innerText).split(":");
+//     var floorCode = localStorage.getItem('floorCode');
+  
+//   $.ajax(
+//     {
+//       url: "/updateInTime",
+//       type:"POST",
+//       data: {
+//         visitor_smartcard: smartCard[1].trim(),visitor_name: name[1].trim(),floorCode: floorCode.trim()           
+//         },
+       
+//      success: function(result){
+//       alert(result);
+//        if(result)
+//        {
+//           alert("Record Updated !!");
+//           document.location.href="/visitorGrid"
+//        }
+//        else{
+
+//           alert("Error while updating record!!");
+           
+//           // document.location.href="/";
+//        }        
+//   }
+//   }
+//   ); 
+
+
+// });
+
+
+function getVisitorFlooStatus()
+{
+  //var visitor_id=document.getElementById("Id").innerText;
+    var smartCard=(document.getElementById("Card").innerText).split(":");
+    var name=(document.getElementById("Name").innerText).split(":");
+    var floorCode = localStorage.getItem('floorCode');
+  $.ajax(
+    {
+      url: "/getVisitorFloorStatus",
+      type:"POST",
+      data: {
+        visitor_smartcard: smartCard[1].trim(),visitor_name: name[1].trim(),floorCode: floorCode.trim()                      
+        },
+       
+     success: function(result){
+      
+       if(result == "In")
+       {
+          
+          document.getElementById("outTime").innerHTML="Out";
+       }
+       else{
+
+        
+        document.getElementById("outTime").innerHTML="In";
+           
+          // document.location.href="/";
+       }  
+           
+  }
+  }
+  ); 
+
+
+}
 
 
 //Validate user from database//
@@ -234,6 +374,13 @@ $("#validateEscort").click(function(){
    
   });
 
+  $("#floor").click(function(){  
+    var floorCode=4;
+    localStorage.setItem("floorCode", floorCode);   
+    document.location.href="/home"
+   
+  });
+
   $("#addVisitor").click(function(){  
         
     document.location.href="/addVisitor"
@@ -284,32 +431,27 @@ $("#validateEscort").click(function(){
            if(result)
            {
             $('#table_id').DataTable({
-            //     "aaData": items,
-            //     "processing": true,
+                "aaData": items,
+                "processing": true,
                 
-            //     "scrollX": true,
-            //     "scrollY": "500px",
-            //     "width":"101%",
-            //     "scrollCollapse": true,
-            //     "columns": [ 
-            //         { "data": "visitor_empid" },
-            //     { "data": "visitor_name" },
+                "scrollX": true,
+                "scrollY": "500px",
+                "width":"101%",
+                "scrollCollapse": true,
+                "columns": [ 
+                    { "data": "visitor_empid" },
+                    { "data": "Hall_Access"},
+                    { "data": "visitor_name" },
                  
-            //      { "data": "escort_date"},
+                 { "data": "escort_date"},
                  
-            //      { "data": "approvalStatus" },
+                 
+                 
+                 { "data": "approvalStatus" },
                  
                 
-            // ],
-            "dom": 'lBrtip',
-            buttons: [
-                {
-                    text: 'My button',
-                    action: function ( e, dt, node, config ) {
-                        alert( 'Button activated' );
-                    }
-                }
-            ]
+            ],
+           
             });
             
            

@@ -15,4 +15,4 @@ app.set('views', __dirname + '/views');
 app.use('/public',express.static(__dirname + '/public'));
 app.use('/',route);
  
-app.listen(8082);
+app.listen(8082);  

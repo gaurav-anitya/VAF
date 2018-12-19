@@ -5,6 +5,7 @@
 }
 
 #homeicon{
+    padding-bottom: 6px;
     float: right;
     width: 212px;
     height: 116px;
@@ -208,4 +209,16 @@ figcaption{
 			bottom: 10%;
 			position: fixed;
 			margin-left: 45%;
-		}
+        }
+        
+        table.dataTable thead th, table.dataTable thead td{
+            color: white!important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+            color:white!important;
+            border:none !important;
+            background-color:#f01716 !important;
+            background:none;
+
+        }
