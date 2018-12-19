@@ -6,6 +6,8 @@
 $("#approvalToken").click(function(){
  var escort_id=(document.getElementById("escortId").innerText).split(":");
  var visitor_id=document.getElementById("Id").innerText;
+ var groupId=(document.getElementById("group").innerText).split(":");
+ alert(groupId[1]);
  if(escort_id != "" &&  visitor_id != "")
  {
     $.ajax(
@@ -36,7 +38,7 @@ $("#approvalToken").click(function(){
                       url: "/OddHoursApproval",
                       type:"POST",
                       data: {
-                        visitor_id: visitor_id ,getToken: getToken, escort_id: visitor_id.trim()        
+                        visitor_id: visitor_id ,getToken: getToken, escort_id: visitor_id.trim() ,groupId: groupId[1].trim()       
                       },
                      success: function(result){
                     // alert(result);
@@ -61,7 +63,7 @@ $("#approvalToken").click(function(){
                   url: "/visitorApproved",
                   type:"POST",
                   data: {
-                    visitor_id: visitor_id ,getToken: getToken, escort_id: visitor_id.trim()        
+                    visitor_id: visitor_id ,getToken: getToken, escort_id: visitor_id.trim(),groupId: groupId[1].trim()        
                   },
                  success: function(result){
                 // alert(result);
@@ -450,7 +452,7 @@ $("#validateEscort").click(function(){
                 "scrollCollapse": true,
                 "columns": [ 
                     { "data": "visitor_empid" },
-                    { "data": "Hall_Access"},
+                    { "data": "Hall"},
                     { "data": "visitor_name" },
                  
                  { "data": "escort_date"},

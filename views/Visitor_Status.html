@@ -178,7 +178,10 @@ img#approvalToken {
                     var paragraph = document.getElementById("out");
                     var text = document.createTextNode(resultdata.escort_time_to);
                     paragraph.appendChild(text);
-
+                    var paragraph = document.getElementById("group");
+                    var text = document.createTextNode(resultdata.groupId);
+                    paragraph.appendChild(text);
+                    
                    if(resultdata.approvalStatus == "Approved")
 				{
 					document.getElementById("approvalToken").style.display="none";
@@ -396,7 +399,8 @@ img#approvalToken {
 		  <p id="Card">Card#: </p>
 		  <p id="Company">Company: </p>
 		  <p id="Purpose">Purpose: </p>
-		  <p id="Project">Project: </p>
+          <p id="Project">Project: </p>
+          <p id="group">Group: </p>
 		  <p id="type">Type: </p>
 		  <p id="out">Out Time: </p>
 		  <p id="escortId">Escort ID#: </p>

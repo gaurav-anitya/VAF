@@ -384,8 +384,8 @@ if(timeDiff < 1*60)
       {                                                      
         if (err)
           throw err;
-          console.log(res);
-          if(req.body.groupId != "")
+          
+          if(req.body.groupId != "Individual")
           {
             groupApproval(req.body.groupId,"Approved",approverId[0]);
           }
@@ -817,7 +817,7 @@ if(timeDiff < 2*60)
 
           }
           else if(res.affectedRows > 0){
-            if(req.body.groupId != "")
+            if(req.body.groupId != "Individual")
              {
                groupApproval(req.body.groupId,approvalStatus,approverId[0]);
              }
