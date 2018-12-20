@@ -65,19 +65,11 @@
                     var text = document.createTextNode(resultdata.escort_time_to);
                     paragraph.appendChild(text);
 
-                   if(resultdata.approvalStatus == "Approved")
-				{
-					document.getElementById("approvalToken").style.display="none";
-					$("#outTime").attr('disabled',false);
-					getVisitorFlooStatus();
-				}
-				else{
-					$("#outTime").attr('disabled',true);
-					document.getElementById("outTime").innerHTML="In";
-				}
-				
-				$('#myModalPending').modal("show");
-               
+                    if(resultdata.approvalStatus == "Approved")
+                    {
+                        document.getElementById("approvalToken").style.display="none";
+                    }
+                    $('#myModalPending').modal("show");
 
                     //alert(data);
                     //var data1=JSON.parse(data);
