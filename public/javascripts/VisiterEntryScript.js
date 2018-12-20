@@ -388,15 +388,15 @@ $("#validateEscort").click(function(){
   });
 
   $("#floor").click(function(){  
-    var floorCode=4;
+    var floorCode=5;
     localStorage.setItem("floorCode", floorCode);   
-    document.location.href="/home"
+    document.location.href="/home";
    
   });
 
   $("#addVisitor").click(function(){  
         
-    document.location.href="/addVisitor"
+    document.location.href="/addVisitor";
    
   }); 
    
@@ -404,14 +404,14 @@ $("#validateEscort").click(function(){
 //redirect to list page//
    $("#visitorDetail").click(function(){  
         
-     document.location.href="/visitorGrid"
+     document.location.href="/visitorGrid";
     
    });
 
    //redirect to status page //
    $("#status").click(function(){  
         
-    document.location.href="/status"
+    document.location.href="/status";
    
   });
 
