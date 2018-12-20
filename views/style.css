@@ -11,7 +11,7 @@
     height: 116px;
 }
 
-#cross{
+#cros12s{
     float: left;
     width: 40px;
     height: 40px;
@@ -118,6 +118,8 @@ legend{
     letter-spacing: -0.01px;
     line-height: 22px;
 }
+
+
 .up_rect{
     width: 80%;
     height: 78px;
@@ -208,10 +210,15 @@ figcaption{
     position: fixed;
     margin-left: 45%;
 }
-.full_width{
-    width : 100%;
+
+table.dataTable thead th, table.dataTable thead td{
+    color: white!important;
 }
-.custom_heading{
-    font-size: 10em;
-    color: #fff;
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+    color:white!important;
+    border:none !important;
+    background-color:#f01716 !important;
+    background:none;
+
 }
