@@ -7,7 +7,7 @@ $("#approvalToken").click(function(){
  var escort_id=(document.getElementById("escortId").innerText).split(":");
  var visitor_id=document.getElementById("Id").innerText;
  var groupId=(document.getElementById("group").innerText).split(":");
- alert(groupId[1]);
+ 
  if(escort_id != "" &&  visitor_id != "")
  {
     $.ajax(
@@ -156,17 +156,31 @@ $("#outTime").click(function(){
          
        success: function(result){
         
-         if(result)
+         if(result == "updated")
          {
             alert("Record Updated !!");
             document.location.href="/visitorGrid"
          }
-         else{
+         else if(result == "NoOut"){
   
-            alert("Error while updating record!!");
+            alert("Please Exit from Previous Floor!!");
              
-            // document.location.href="/";
-         }        
+         }    
+         else if(result == "NoAccess"){
+  
+            alert("Visitor does not have access to this floor!!");
+             
+         }   
+         else if(result == "InCorrectFloorCode"){
+  
+            alert("Invalid Floor!!");
+             
+         } 
+         else {
+  
+            alert("Error while updating Record!!");
+             
+         }     
     }
     }
     ); 
@@ -388,7 +402,7 @@ $("#validateEscort").click(function(){
   });
 
   $("#floor").click(function(){  
-    var floorCode=4;
+    var floorCode=5;
     localStorage.setItem("floorCode", floorCode);   
     document.location.href="/home"
    

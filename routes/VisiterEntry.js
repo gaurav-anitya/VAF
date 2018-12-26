@@ -205,6 +205,8 @@ con.query(getId,function(err, result,fields)
 });
 
 app.post("/getApprovalToken",function(req, res) {
+try{
+
 console.log("escortID: "+req.body.escort_id);
 var timeStamp=Math.floor(Date.now() / 1000);
 var val=Math.floor(Math.random() * 10);
@@ -227,7 +229,7 @@ getTimeStamp(req.body.escort_id,function(result){
     var token=val+approvalToken(req.body.escort_id)+val1+val2;
     res.send("Please verify approval token :"+token);
     }
-    else if((timeStamp-result) < 2*60){
+    else if((timeStamp-result) < 10*60){
      console.log("time:-"+result);
      console.log(timeStamp-result);
       res.send("Please Enter Previous token!!");
@@ -255,18 +257,29 @@ getTimeStamp(req.body.escort_id,function(result){
     }
     });
   
-
+  }
+  catch(error){
+    console.error(error);
+  }
 });
 
 app.post("/verifyApprovalToken",function(req, res) {
+
+  try{
   
   //console.log(approverMasking(req.body.token_key));
   res.send(approverMasking(req.body.token_key));
+  }
+  catch(error)
+{
+  console.error(error);
+}
   });
 
 
 
 app.post("/visitorApproved",function(req, response,callback) {
+  try{
   console.log("visitorId"+req.body.visitor_id);
   console.log("escort_id"+req.body.escort_id);
   var approverId=req.body.getToken.split('');
@@ -362,7 +375,7 @@ console.log("currentTime: "+currentTimestamp);
 
 console.log("timeDiff: "+timeDiff);
 
-if(timeDiff < 1*60)
+if(timeDiff < 10*60)
 {
   //var getVerifiedToken=tokenVerify(req.body.getToken.split('').reverse().join(''));
   //var verifyAgain=tokenVerify(getVerifiedToken.split('').reverse().join(''));
@@ -409,9 +422,17 @@ else{
 
 }
 });
+}
+  catch(error)
+  {
+    console.error(error);
+  }
+
   });
 
   app.post("/validateVisitor",function(req, res) {
+
+    try{
     console.log(req.body.visitor_id);
     var getId="select * from VisiterRecord where visitor_empid="+req.body.visitor_id;
     con.query(getId, function (err, result) {
@@ -426,9 +447,15 @@ else{
           res.send("null");
         }
     });
+  }
+catch(error)
+{
+  console.error(error);
+}
     });
 
     app.post("/validateEscort",function(req, res) {
+      try{
       console.log(req.body.escort_id);
       var getId="select * from escort_table where escort_Id="+req.body.escort_id;
       con.query(getId, function (err, result) {
@@ -444,12 +471,18 @@ else{
             res.send(false);
           }
       });
+    }
+  catch(error)
+  {
+  console.error(error);
+  }
       });
 
 
 
     app.post("/visitorRecord",function(req, res) {
           
+      try{
           var getId="select * from VisiterRecord t1 LEFT JOIN approver_table t2 on t1.approverRole_Id = t2.Role_Id";
           con.query(getId, function (err, result,fields) {
             if (err) 
@@ -459,10 +492,15 @@ else{
             
           });
 
-
+        }
+      catch(error)
+      {
+        console.error(error);
+      }
           });
 
 app.post("/updateOutTime",function(req, response){
+try{  
 console.log("updateOut");
 console.log(req.body);
 var date=new Date();
@@ -507,10 +545,14 @@ if(req.body.floorCode != ""){
     else{
       response.send(false);
     }
-
+  }catch(error)
+  {
+    console.error(error);
+  }
 }); 
 
 app.post("/updateInTime",function(req, response){
+  try{
   console.log("updateOut");
   console.log(req.body.visitor_smartcard);
   console.log(req.body.visitor_name);
@@ -521,9 +563,9 @@ app.post("/updateInTime",function(req, response){
     {
         getFloor(req.body.floorCode,function(floorName){
           console.log("Name: "+ floorName);
-          if(floorName ==0)
+        if(floorName ==0)
         {
-          response.send(false)
+          response.send("InCorrectFloorCode")
         }
         else{
           checkIfVisiterExistOnFloor(req.body,floorName,function(isExist){
@@ -536,25 +578,32 @@ app.post("/updateInTime",function(req, response){
           console.log(res);                                                 
           if (err)
             throw err;
-            response.send(true);
+            response.send("updated");
          
         });  
       }
-    
+      else{
+        response.send("NoAccess");
+      }
       }); 
     }
     });
   }
   else{
-    response.send(false);
+    response.send("NoOut");
 
   }
   });
+}catch(error)
+{
+  console.error(error);
+}
   }); 
 
 
 
 function checkIfVisiterExistOnFloor(body,floorName,callback){
+try{  
 console.log("body.visitor: "+body.visitor_name);
 console.log("body.visitor: "+body.visitor_smartcard);
 console.log(floorName);
@@ -568,6 +617,17 @@ console.log(floorName);
     }
     else{
       console.log("else Enter");
+      visitorAccessOnFloor(body,function(hall){
+      if(!hall)
+      {
+        callback(false);
+      } 
+      else {
+      
+      var getFloor = floorName.split('_').join('');
+      console.log("getFloor: "+getFloor);   
+      if(hall.includes(getFloor))
+      {  
       con.query("Insert into ??  (visitor_cardNo,visitor_name) VALUES ('"+body.visitor_smartcard+"','"+body.visitor_name+"')",[floorName],function(err,res){
 
         if(err)
@@ -577,11 +637,49 @@ console.log(floorName);
         
       });
     }
+    else{
+      callback(false);
+    }
+    }
+    });
+    }
   });
+}
+  catch(error)
+      {
+        console.error(error);
+      }
 } 
+
+function visitorAccessOnFloor(body,callback){
+  try{
+  console.log("visitorAccessOnFloor");
+  console.log("body.visitor: "+body.visitor_name);
+  console.log("body.visitor: "+body.visitor_smartcard);
+
+  con.query("select Hall from visiterrecord where visitor_name=? and visitor_smartcard=?",[body.visitor_name,body.visitor_smartcard],function(err,res){
+
+    if(err)
+    throw err;
+    else if(res.length>0){
+      var hall=res[0].Hall.split(',');
+      callback(hall);
+    }
+    else{
+      callback(false);
+    }
+    
+  });
+}catch(error)
+{
+  console.error(error);
+}
+
+}
 
 function getFloor(floorCode,callback)
 {
+  try{
   console.log("floorCode "+floorCode);
   con.query('select Floor_Name from floor_authentication where Floor_Code ='+floorCode,function(err,res){
 
@@ -595,10 +693,14 @@ function getFloor(floorCode,callback)
       callback(res.length);
     }
   });
+}catch(error)
+{
+  console.error(error);
+}
 }
 
 function checkIfVisitorInFloor(body,callback){
-
+try{
 
   var sql="select * from floor_4 where visitor_name= '"+body.visitor_name+"' and visitor_cardNo= '"+body.visitor_smartcard+"' and status= 'In' UNION select * from floor_5 where visitor_name= '"+body.visitor_name+"' and status='In' and visitor_cardNo= '"+body.visitor_smartcard+"' UNION select * from floor_6 where visitor_name= '"+body.visitor_name+"' and status='In' and visitor_cardNo= '"+body.visitor_smartcard+"'";
 
@@ -614,11 +716,15 @@ console.log("output: "+ res.length);
       callback(false);
     }
   });
+}catch(error)
+{
+  console.error(error);
+}
 }
 
 
 app.post("/getVisitorFloorStatus",function(req, response){
-
+try{
   console.log(req.body.floorCode);
   console.log(req.body.visitor_name);
   console.log(req.body.visitor_smartcard);
@@ -637,10 +743,15 @@ console.log("output: "+res);
     }
   });
 });
-
+}
+catch(error)
+      {
+        console.error(error);
+      }
 });
 
 function approvalToken(id){
+  try{
   console.log("access token");
 var key0="8";
 var key1="2";
@@ -687,11 +798,14 @@ console.log(tempId);
 }
 console.log(token);
 return token;
-
+  }catch(error)
+  {
+    console.error(error);
+  }
 }
 
 function approverMasking(token){
-
+try{
   var approverMasking = tokenVerify(token);
   var val=Math.floor(Math.random() * 10);
   var val1=Math.floor(Math.random() * 10);
@@ -700,10 +814,16 @@ function approverMasking(token){
    var result= "1"+val1+approverMasking+val;
    console.log(result);
   return approvalToken(result);
+}
+  catch(error)
+      {
+        console.error(error);
+      }
 
 }
 
 function tokenVerify(token){
+  try{
   var key0="6";
   var key1="4";
   var key2="1";
@@ -752,9 +872,14 @@ console.log(result.split('').reverse().join(''));
 
 //return result.split('').reverse().join('');
 return result;
+  }catch(error)
+  {
+    console.error(error);
+  }
 }
 
 app.post("/OddHoursApproval",function(req, response) {
+  try{
   console.log("visitorId"+req.body.visitor_id);
   console.log("escort_id"+req.body.escort_id);
   var approverId=req.body.getToken.split('');
@@ -764,7 +889,7 @@ app.post("/OddHoursApproval",function(req, response) {
   var timeDiff="";
   
 
-  getTimeStamp(req.body.visitor_id,function(timeStamp){
+getTimeStamp(req.body.visitor_id,function(timeStamp){
 console.log("savedTime: "+timeStamp);
     var currentTimestamp= Math.floor(Date.now() / 1000);
 
@@ -792,7 +917,7 @@ console.log("currentTime: "+currentTimestamp);
   
 
 console.log("timeDiff: "+timeDiff);
-if(timeDiff < 2*60)
+if(timeDiff < 10*60)
 {
   
   if(id.includes(req.body.escort_id))
@@ -845,9 +970,14 @@ else{
   response.send(false);
 
 }
+  }catch(error)
+  {
+    console.error(error);
+  }
   });
 
  function getApproverDetail(approverId,callback){
+   try{
   con.query('select Role_Name from approver_table WHERE Role_Id= ?',[approverId],function(err, res)
   {                                                      
     if (err)
@@ -863,9 +993,14 @@ else{
     }
       
   });
+  }catch(error)
+  {
+    console.error(error);
+  }
  }
 
  function getTimeStamp(Id,callback){
+   try{
   con.query('select timeStamp from otp_table WHERE Id= ?',[Id],function(err, res)
   {                                                      
     if (err)
@@ -887,9 +1022,14 @@ else{
     }
       
   });
+}catch(error)
+{
+  console.error(error);
+}
  }
 
 function groupApproval(groupId,status,ApproverRoleId){
+  try{
 
   con.query('update VisiterRecord set approvalStatus=? and ApproverRole_Id=? where groupId=?'[status,ApproverRoleId,groupId],function(err,result){
      
@@ -903,7 +1043,10 @@ function groupApproval(groupId,status,ApproverRoleId){
 
 
   });
-
+  }catch(error)
+  {
+    console.error(error);
+  }
 
 }
 
