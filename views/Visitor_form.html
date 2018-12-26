@@ -12,7 +12,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="/public/javascripts/addvisitor.js"></script>
 </head>
-<script>
+<!-- <script>
 	$(function () {
 		$("#visiitor_date").datepicker();
 	});
@@ -26,7 +26,7 @@
 		})
 	});
 
-</script>
+</script> -->
 <style>
 	.btn_sub.goback {
     margin-left: 40%;
@@ -113,29 +113,22 @@ input.btn.btn-primary {
 .left-spacing{
 	margin-left:5%;
 }
-
-.left-spacing-half{
-	margin-left:2.0%;
-}
-
  </style>
 
 <body>
 	<div class="header">
-		<div class="">
-			<div class="col-sm-3">
-				<!--<img id="cross" src="/public/images/cross.png" />-->
-			</div>
-			<div class="col-sm-6">
-				<img id="slider" src="/public/images/Slider white.png" />
-			</div>
-			<div class="col-sm-3">
-				<img id="homeicon" src="/public/images/home_icon.png" />
-			</div>
-		</div>
-
-
-	</div>
+            <div class="">
+                <div class="col-sm-3 padding_15px">
+                    <a href = "/home"><img class="cross_new" id="cross_new" src="/public/images/cross.png" /></a>
+                </div>
+                <div class="col-sm-6 padding_15px">
+                    <img class="slider" id="slider" src="/public/images/Slider white.png" /> 
+                </div>
+                <div class="col-sm-3 padding_15px">
+                    <a href = "/"><img class="homeicon_new" id="homeicon_new" src="/public/images/home_icon.png" /></a>
+                </div>
+            </div>
+        </div>
 	<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
 		<!-- Indicators -->
 
@@ -148,59 +141,33 @@ input.btn.btn-primary {
 					<div class="row">
 						<H1 style="text-decoration: italics;">Visitor Details</H1>
 					</div>
-					<form class="form-inline" method="POST" action="/submit">
-						<div class="row form-inline  row_padding_top_bottom">
-
-							<!-- Text input>
-							<input type="hidden" name="count" value="1" />
-							<div class="control-group" id="fields">
-								<div class="controls">
-									<div class="input-append">
-										<div class="form-group col-md-4 field" id = "field" role="form">
-											<div class="col-md-12 entry input-group">
-												<input id=" field1" autocomplete="off" name=" fields[]" type="text" placeholder="Visitor Name" class="input form-control">
-											</div>											
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="form-group col-md-3">
-								<div class="col-md-12 input-group">
-									<input id="visitor_id" name="visitor_empid" type="text" placeholder="Employee ID" class="form-control">
-								</div>
-							</div>
-							<div class="form-group col-md-3">
-								<div class="input-group">
-									<input id="smart_card" name="visitor_smartcard" type="text" placeholder="Smart Card Number" class="form-control">
-								</div>
-							</div>
-							<div class="form-group col-md-2">
-								<div class="input-group">
-									<button id="b1" class="btn add-more btn-add" type="button">+</button>
-								</div>
-							</div-->
-						</div>
+					<form class="form-inline row_padding_top_bottom" method="POST" action="/submit">						
 						<div class="row control-group" id="fields">
 							<div class="controls">
 								<div role="form" autocomplete="off" id="repeatable_item">
-									<div class="entry input-group row">
-										<input class="form-group col-md-4 left-spacing" name="fields[]" type="text" placeholder="Employee Name" id="visitor_id"
-										 name="visitor_empid" />
-										<input id="visitor_id" name="visitor_empid" type="text" placeholder="Employee ID" class="form-group col-md-3 left-spacing-half">
-										<input id="smart_card" name="visitor_smartcard" type="text" placeholder="Smart Card Number" class="form-group col-md-3 left-spacing-half">
+									<div class="entry input-group row top-spacing">
+										<input class="form-group col-md-5 left-spacing" name="visitor_name" type="text" placeholder="Employee Name" id="visitor_name" required maxlength="20"  onblur="validation1()"/>
+										
+										<input id="visitor_id" name="visitor_empid" type="text" placeholder="Employee ID" class="form-group col-md-3 left-spacing-half" maxlength="7" onblur="validation8()" >
+										
+										<input id="smart_card" name="visitor_smartcard" type="text" placeholder="Smart Card Number" class="form-group col-md-3 left-spacing-half" required maxlength="7" onblur="validation4()" >
+										
 										<span class="input-group-btn">
 											<button class="btn btn-success btn-add" type="button">
 												<span class="glyphicon glyphicon-plus"></span>
 											</button>
 										</span>
+										
 									</div>
+									
 								</div>
+								<span id="demo1"></span><span id="demo"></span><span id="demo4"></span>
 							</div>
 						</div>
 						<!-- Multiple Radios -->
 						<div class="row form-inline row_padding_top_bottom">
 							<div class="form-group col-md-6">
-								<label class="col-md-6" for="company">Company</label>
+								<label class="col-md-6" for="company">Company<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
 								<div class="radio col-md-3">
 									<label for="company-0">
 										<input type="radio" name="visitor_company" id="company-0" value="TCS" checked="checked">
@@ -223,18 +190,23 @@ input.btn.btn-primary {
 						<div class="row form-inline  row_padding_top_bottom">
 							<!-- Text input-->
 							<div class="form-group col-md-6">
-								<label class=" col-md-6 control-label" for="project">Project</label>
+								<label class=" col-md-6 control-label" for="project">Project<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
 								<div class="col-md-6 input-group">
-									<input id="project" name="project" type="text" placeholder="" class="form-control">
+									<input id="project" name="project" type="text" placeholder="" class="form-control" maxlength="15" required onblur="validation3()">
+									
 								</div>
+								<span id ="demo3"></span>
 							</div>
 							<div class="form-group col-md-6">
-								<label class=" col-md-4 control-label" for="area">Area</label>
+								<label class=" col-md-4 control-label" for="area">Area<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
 								<div class="col-md-6 input-group">
-									<input id="area" name="area" type="text" placeholder="" class="form-control">
+									<input id="area" name="area" type="text" placeholder="" class="form-control" maxlength="20" required onblur="validation6()">
+									
 									<!-- <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> -->
 								</div>
+								
 							</div>
+							<span id="demo8"></span>
 						</div>
 						<!-- Text input-->
 						<div class="row form-inline  row_padding_top_bottom">
@@ -242,7 +214,7 @@ input.btn.btn-primary {
 							<div class="form-group col-md-6">
 								<label class=" col-md-6 control-label" for="visitor_asset">Asset ID</label>
 								<div class="col-md-6 input-group">
-									<input id="visitor_asset" name="visitor_asset" type="text" placeholder="" class="form-control">
+									<input id="visitor_asset" name="visitor_asset" type="text" placeholder="" maxlength="20" class="form-control">
 								</div>
 							</div>
 							<div class="form-group col-md-6">
@@ -267,36 +239,83 @@ input.btn.btn-primary {
 							<!-- Text input-->
 							<table>
 								<tr>
-									<td class="col-md-4">
+									<td class="col-md-3">
 										<div class="vcenter">
-											<label class="col-md-12 control-label" for="Purpose">Purpose</label>
+											<label class="col-md-12 control-label" for="Purpose">Purpose<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
 										</div>
 									</td>
-									<td class="col-md-7">
-										<div id="checkboxlist col-md-12">
-											<label class="checkbox-inline">
-												<input type="checkbox" id="Purpose-0" name="Identification1" value="New Joinee"> New joinee
-											</label>
-
-											<label class="checkbox-inline">
-												<input type="checkbox" id="Purpose-1" name="Identification2" value="Meeting"> Meeting
-											</label>
-
-											<label class="checkbox-inline">
-												<input type="checkbox" id="Purpose-2" name="Identification3" value="Audit"> Audit
-											</label>
-
-											<label class="checkbox-inline">
-												<input type="checkbox" id="Purpose-3" name="Identification4" value="Other">Other
-											</label>
+									<td class="col-md-9">
+										<div id="checkboxlist">
+											<table class="table-borderless table-condensed">
+												<tr>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Purpose0" name="visitor_purpose" value="New Joinee"> New joinee
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Purpose1" name="visitor_purpose" value="Meeting"> Meeting
+														</label>
+													</td>												
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Purpose2" name="visitor_purpose" value="Audit"> Audit
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Purpose3" name="visitor_purpose" value="Other">Other
+														</label>
+													</td>
+												</tr>
+											</table>
+											<span id="demo0"></span>
+										</div>
+									<td>
+								</tr>
+							</table>
+							
+						</div><br>
+						<div class="row form-inline">
+							<!-- Text input-->
+							<table>
+								<tr>
+									<td class="col-md-3">
+										<div class="vcenter">
+											<label class="col-md-12 control-label" for="Hall">Hall<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
 										</div>
 									</td>
+									<td class="col-md-9">
+										<div id="checkboxlist">
+											<table class="table-borderless table-condensed">
+												<tr>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Hall0" name="Hall" value="Fourth Floor"> Fourth Floor
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Hall1" name="Hall" value="Fifth Floor"> Fifth Floor
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Hall2" name="Hall" value="Tenth Floor"> Tenth Floor
+														</label>
+													</td>
+												</tr>
+											</table>
+											<span id ="demo9"></span>
+										</div>
+									<td>
 								</tr>
 							</table>
 						</div>
-						<a class="row carousel-control" href="#myCarousel" data-slide="next" data-toggle="modal" data-target="#myModalVisitor">
+						<a id="modal" class="row carousel-control" href="#myCarousel" data-slide="next"  data-target="#myModalVisitor">
 							<div class="btn_sub">
-								<input class="btn btn-primary" type="button" value="PROCEED">
+								<input id ="formValidation1" class="btn btn-primary" type="button" value="PROCEED">
 								<!--<span class="glyphicon glyphicon-chevron-right"></span>-->
 							</div>
 						</a>
@@ -318,32 +337,34 @@ input.btn.btn-primary {
 							</div>
 						</div>
 						<div class="form-group col-md-6">
-							<label class=" col-md-4 control-label" for="input_Date">Date</label>
+							<label class=" col-md-4 control-label" for="input_Date">Date<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
 							<div class="col-md-6 input-group">
 								<input id="visitor_date" name="escort_date" type="date" placeholder="" class="form-control">
 								<!-- <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> -->
 							</div>
-						</div>
+							<span id ="demo5"></span>
+						</div>						
 					</div>
 					<div class="row form-inline  row_padding_top_bottom">
 						<div class="form-group col-md-6">
-							<label class=" col-md-6 control-label" for="escort_empid">Employee ID</label>
+							<label class=" col-md-6 control-label" for="escort_empid">Employee ID<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
 							<div class="col-md-6 input-group">
-								<input id="escort_id" name="escort_empid" type="text" placeholder="" class="form-control">
+								<input id="escort_id" name="escort_empid" type="text" placeholder="" class="form-control" required>
 								<span id="validateEscort" class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
 							</div>
 						</div>
 						<div class="form-group col-md-6">
-							<label class=" col-md-4 control-label" for="input_in_time">In Time</label>
+							<label class=" col-md-4 control-label" for="input_in_time">In Time<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
 							<div class="col-md-6 input-group">
 								<input id="escort_time_from" name="escort_time_from" type="time" placeholder="" class="form-control">
 								<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
 							</div>
-						</div>
+							<span id ="demo2"></span>
+						</div>						
 					</div>
 					<div class="row form-inline row_padding_top_bottom">
 						<div class="form-group col-md-6">
-							<label class=" col-md-6 control-label" for="escort_project">Project</label>
+							<label class=" col-md-6 control-label" for="escort_unit">Project</label>
 							<div class="col-md-6 input-group">
 								<input id="escort_unit" name="escort_unit" type="text" placeholder="" class="form-control" disabled>
 							</div>
@@ -370,7 +391,7 @@ input.btn.btn-primary {
 								<tr>
 									<td class="col-md-3 table-borderless">
 										<div class="vcenter">
-											<label class=" col-md-12 control-label " for="escort_project">Identification</label>
+											<label class=" col-md-12 control-label " for="escort_project">Identification<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
 										</div>
 									</td>
 									<td class="col-md-9 table-borderless">
@@ -411,14 +432,16 @@ input.btn.btn-primary {
 													</td>
 												</tr>
 											</table>
+											<span id="demo6"></span>
 										</div>
 									<td>
 								</tr>
 							</table>
+							
 						</div>
 					</div>
 				</div>
-				</form>
+				<!-- </form> -->
 				<div class="visitor_dec Escort_dec">
 
 					<span>Visitor Declaration</span>
@@ -442,7 +465,7 @@ input.btn.btn-primary {
 					</div>
 
 					<div class="btn_sub sub2">
-						<input id="escortDeclaration" class="btn btn-primary" type="button" value="Declaration" data-toggle="modal"
+						<input id="escortDeclaration" class="btn btn-primary" type="button" value="Declaration" 
 						 data-target="#myModal" disabled>
 					</div>
 
@@ -475,7 +498,7 @@ input.btn.btn-primary {
 
 								<p>
 									<span>
-										<input id="visitor_dec" type="checkbox" name="escort_signature1" class="form-control" placeholder="Enter your EmpID here"
+										<input id="visitor_dec" type="checkbox" name="escort_signature" class="form-control" placeholder="Enter your EmpID here"
 										 value="Y" style="display: inline-block;border:2px; height: 20px; width: 20px" required="" /></span>
 									<span>I hereby declare that I am not carrying any asset such as Mobile Phone with
 										Camera, CD/DVD, HDD, Voice Recorder, USB Drive/ Pen Drive, CD Player, Data Storage Device or any such device

@@ -64,23 +64,12 @@
                     var paragraph = document.getElementById("out");
                     var text = document.createTextNode(resultdata.escort_time_to);
                     paragraph.appendChild(text);
-                    var paragraph = document.getElementById("group");
-                    var text = document.createTextNode(resultdata.groupId);
-                    paragraph.appendChild(text);
 
-                   if(resultdata.approvalStatus == "Approved")
-				{
-					document.getElementById("approvalToken").style.display="none";
-					$("#outTime").attr('disabled',false);
-					getVisitorFlooStatus();
-				}
-				else{
-					$("#outTime").attr('disabled',true);
-					document.getElementById("outTime").innerHTML="In";
-				}
-				
-				$('#myModalPending').modal("show");
-               
+                    if(resultdata.approvalStatus == "Approved")
+                    {
+                        document.getElementById("approvalToken").style.display="none";
+                    }
+                    $('#myModalPending').modal("show");
 
                     //alert(data);
                     //var data1=JSON.parse(data);
@@ -254,7 +243,6 @@
                         <p id="Company">Company: </p>
                         <p id="Purpose">Purpose: </p>
                         <p id="Project">Project: </p>
-                        <p id="group">Group/Individual: </p>
                         <p id="type">Type: </p>
                         <p id="out">Out Time: </p>
                         <p id="escortId">Escort ID#: </p>

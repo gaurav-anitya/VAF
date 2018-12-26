@@ -404,13 +404,13 @@ $("#validateEscort").click(function(){
   $("#floor").click(function(){  
     var floorCode=5;
     localStorage.setItem("floorCode", floorCode);   
-    document.location.href="/home"
+    document.location.href="/home";
    
   });
 
   $("#addVisitor").click(function(){  
         
-    document.location.href="/addVisitor"
+    document.location.href="/addVisitor";
    
   }); 
    
@@ -418,14 +418,14 @@ $("#validateEscort").click(function(){
 //redirect to list page//
    $("#visitorDetail").click(function(){  
         
-     document.location.href="/visitorGrid"
+     document.location.href="/visitorGrid";
     
    });
 
    //redirect to status page //
    $("#status").click(function(){  
         
-    document.location.href="/status"
+    document.location.href="/status";
    
   });
 
@@ -736,6 +736,288 @@ $("#escortDeclaration").click(function time(){
     
 });
 
+function validation1(){
+    var letters = /^[a-zA-Z]+$/;
+    var name = document.getElementById("visitor_name").value;
+    if(name != "" && name.match(letters)){
+        return true;
+    }else{
+        document.getElementById("demo1").innerHTML="<br><sup>Please enter a valid Name</sup>";
+    }
+   }
+
+//    function validation2(){
+//     var numbers = /^[0-9]+$/; 
+//     var empid = document.getElementById("visitor_id").value;
+    
+//     if ($('#company-0').is(':checked') && empid == "" && empid.match(numbers)){
+//         document.getElementById("demo2").innerHTML="<br><sup>Please enter a valid Emp Id</sup>";
+//     }
+   
+// }
+
+   function validation3(){
+    var letters = /^[a-zA-Z]+$/;    
+    var project = document.getElementById("project").value;
+    if(project != "" && project.match(letters)){
+        return true;
+    }else{
+        document.getElementById("demo3").innerHTML="<br><sup>Please enter a valid Project Name</sup>";
+    }
+   }
+   function validation6(){
+    var letters = /^[a-zA-Z]+$/;    
+    var area = document.getElementById("area").value;
+    if(area != "" && area.match(letters)){
+        return true;
+    }else{
+        document.getElementById("demo8").innerHTML="<br><sup>Please enter a valid Area Name</sup>";
+    }
+   }
+
+   function validation4(){
+    var numbers = /^[0-9]+$/;    
+    var smartcard = document.getElementById("smart_card").value;
+    if(smartcard != "" && smartcard.match(numbers)){
+        return true;
+    }else{
+        document.getElementById("demo4").innerHTML="<br><sup>Please enter a valid Smartcard Number</sup>";
+    }
+   }
+   function validation5(){
+       if($('#Hall0').is(':checked') || $('#Hall1').is(':checked') || $('#Hall2').is(':checked')){
+           return true;
+       }else{
+        document.getElementById("demo9").innerHTML="<br><sup>Please select atleast one or more Floor</sup>";
+    }
+   }
+   function validation7(){
+    if($('#Purpose0').is(':checked') || $('#Purpose1').is(':checked') || $('#Purpose2').is(':checked') || $('#Purpose3').is(':checked')){
+        return true;
+    }else{
+     document.getElementById("demo0").innerHTML="<br><sup>Please select appropriate purpose of visit</sup>";
+ }
+}
+function validation8(){
+    var empid = document.getElementById("visitor_id").value;
+    var numbers = /^[0-9]+$/;
+    if ($('#company-0').is(':checked')){
+    if ($('#company-0').is(':checked') && empid != "" && empid.match(numbers)){
+        return true;     
+    }else{
+        document.getElementById("demo").innerHTML="<br><sup>Please enter a valid Emp Id</sup>";
+    }}
+    else{
+    if ($('#company-1').is(':checked')){
+        if(empid != "" && empid.match(numbers)){
+            document.getElementById("demo").innerHTML="";
+            return true;
+        }
+        else{
+            document.getElementById("demo").innerHTML="<br><sup>Please enter a valid Emp Id</sup>";
+        }
+    }
+}
+}
+
+
+
+//   $("#formValidation1").click(function(){
+//     var letters = /^[a-zA-Z]+$/;
+//     var numbers = /^[0-9]+$/;    
+//     var name = document.getElementById("visitor_name").value;
+//     var empid = document.getElementById("visitor_id").value;
+//     var project = document.getElementById("project").value;
+//     var smartcard = document.getElementById("smart_card").value;
+    
+//     if(name != "" && name.match(letters)){
+//        if(company== true){ if (empid != "" && empid.match(numbers) ){
+//          if (project != "" && project.match(letters)){
+//                 if(smartcard != "" && smartcard.match(numbers)){
+//                     alert("true");                 
+    
+//              }else {
+//                  alert("Enter valid Smartcard Number");
+//              }
+//            }else{
+//                alert("Enter valid Project Name");
+//            }
+//         }else{
+//             alert("Enter valid Employee ID");
+//         }
+//     }else{
+//         if (project != "" && project.match(letters)){
+//             if(smartcard != "" && smartcard.match(numbers)){
+//                 alert("true");                 
+
+//          }else {
+//              alert("Enter valid Smartcard Number");
+//          }
+//        }else{
+//            alert("Enter valid Project Name");
+//        }
+    
+//     }
+//    }
+//     else{
+        
+//         document.getElementById("demo1").innerHTML="<br><sup>Please enter a valid Name</sup>";
+//         alert("Enter valid Name");
+//     }
+
+//    });
+$("#formValidation1").click(function val(){
+
+    var length = document.getElementsByName("visitor_name").length;
+    var letters = /^[a-zA-Z]+$/;
+    for(var i=0; i<length; i++){
+        var name = document.getElementsByName("visitor_name")[i].value;
+        if(name != "" && name.match(letters)){
+            var h=8;
+        }else{
+            var h=0;
+            document.getElementById("demo1").innerHTML="<br><sup>Please enter a valid Name</sup>";
+        }
+    }
+    
+
+        if ( validation1()){
+            
+            a=1;
+        }else{
+            document.getElementById("demo1").innerHTML="<br><sup>Please enter a valid Name</sup>";
+        }
+        if(validation8()){
+            b=2;
+        }else{
+            document.getElementById("demo").innerHTML="<br><sup>Please enter a valid Emp Id</sup>";
+        }
+        if(validation6()){
+            c=3;
+        }else{
+            document.getElementById("demo8").innerHTML="<br><sup>Please enter a valid Area Name</sup>";
+        }
+        if ( validation3()){
+            d=4;
+        }else{
+            document.getElementById("demo3").innerHTML="<br><sup>Please enter a valid Project Name</sup>";
+        }
+        if(validation5()){
+            e=5;
+        }else{
+            document.getElementById("demo9").innerHTML="<br><sup>Please select atleast one or more Floor</sup>";
+        }
+        if(validation7()){
+            f=6;
+        }else{
+            document.getElementById("demo0").innerHTML="<br><sup>Please select appropriate purpose of visit</sup>";
+        }
+        if ( validation4()){
+            g=7;
+        }else{
+            document.getElementById("demo4").innerHTML="<br><sup>Please enter a valid Smartcard Number</sup>";
+        }
+        if(a==1&&b==2&&c==3&&d==4&&e==5&&f==6&&g==7&& h==8){
+            $("#modal").attr("data-toggle", "modal");
+                //return true;
+                
+                $( document ).ready(function() {
+                    $('#myModalVisitor').on('hidden.bs.modal', function () {
+                              if($('#visitor_dec').prop("checked") == true) {
+                                 //alert("true");
+                                 $('#myCarousel').carousel('next');
+                             } 
+                 
+                   });
+                 });
+        }
+});   
+ $("#visitor_name").keyup(function(){
+    document.getElementById("demo1").innerHTML="";
+});
+$("#visitor_id").keyup(function(){
+    document.getElementById("demo").innerHTML="";
+});
+$("#project").keyup(function(){
+    document.getElementById("demo3").innerHTML="";
+});
+$("#smart_card").keyup(function(){
+    document.getElementById("demo4").innerHTML="";
+});
+$("#area").keyup(function(){
+    document.getElementById("demo8").innerHTML="";
+});
+$("#Purpose0").change(function(){
+    document.getElementById("demo0").innerHTML="";
+});
+$("#Purpose1").change(function(){
+    document.getElementById("demo0").innerHTML="";
+});
+$("#Purpose2").change(function(){
+    document.getElementById("demo0").innerHTML="";
+});
+$("#Purpose3").change(function(){
+    document.getElementById("demo0").innerHTML="";
+});
+$("#Hall0").change(function(){
+    document.getElementById("demo9").innerHTML="";
+});
+$("#Hall1").change(function(){
+    document.getElementById("demo9").innerHTML="";
+});
+$("#Hall2").change(function(){
+    document.getElementById("demo9").innerHTML="";
+});
+$("#visitor_date").change(function(){
+    document.getElementById("demo5").innerHTML="";
+});
+$("#escort_time_from").change(function(){
+    document.getElementById("demo5").innerHTML="";
+});
+
+
+
+$("#escortDeclaration").click(function time(){
+    var time = document.getElementById("escort_time_from").value;
+    
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+    if(dd<10) {
+    dd = '0'+dd
+    }
+    if(mm<10) {
+    mm = '0'+mm
+    }
+    Date1 = yyyy + '-' + mm + '-' + dd;
+    var Date2 = document.getElementById("visitor_date").value;
+    
+    if(time != ""){
+        var t=1;
+    }   else{
+        document.getElementById("demo2").innerHTML="Please enter a valid Time";
+    } 
+    if (Date2 < Date1 || Date2 == ""){
+        document.getElementById("demo5").innerHTML="Please enter a valid Date";
+        
+    }else{
+        var d=1;
+    }
+    if ($('#idCheckbox1').is(':checked') || $('#idCheckbox2').is(':checked') || $('#idCheckbox3').is(':checked') || $('#idCheckbox4').is(':checked') || $('#idCheckbox5').is(':checked') || $('#idCheckbox6').is(':checked')){
+        if(t==1&&d==1){
+        $("#escortDeclaration").attr("data-toggle", "modal");
+        return true;  }          
+    }else{
+        document.getElementById("demo6").innerHTML="<br><sup>Please select atleast one or more Identication</sup>";
+    }
+
+    
+    
+});
+$("#escort_time_from").change(function(){
+    document.getElementById("demo2").innerHTML="";
+});
 $("#idCheckbox1").change(function(){
     document.getElementById("demo6").innerHTML="";
 });
@@ -754,4 +1036,3 @@ $("#idCheckbox5").change(function(){
 $("#idCheckbox6").change(function(){
     document.getElementById("demo6").innerHTML="";
 });
-   

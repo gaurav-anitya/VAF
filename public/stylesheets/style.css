@@ -227,3 +227,22 @@ figcaption{
 .align-top{
     top:0;
 }
+.cross_new{
+    width: 25% !important;
+}
+
+.padding_15px{
+    padding : 15px;
+}
+
+.homeicon_new{
+    margin-left: 60%;    
+    width: 28%;
+}
+
+.left-spacing-half{
+    margin-left: 7.5px;    
+}
+.top-spacing{
+    margin-top: 1%;
+}
