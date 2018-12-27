@@ -262,6 +262,39 @@ function getVisitorFlooStatus()
 
 }
 
+function getFloorAuthentication()
+{
+  //var visitor_id=document.getElementById("Id").innerText;
+    
+    var floorCode = localStorage.getItem('floorCode');
+  $.ajax(
+    {
+      url: "/floorAuthentication",
+      type:"POST",
+      data: {
+       floorCode: floorCode.trim()                      
+        },
+       
+     success: function(result){
+      
+       if(result == "IncorrectFloorCode")
+       {
+       alert("IncorrectFloorCode!!");   
+        document.location.href="/";
+       }
+       else{
+        document.location.href="/home";
+       }
+        
+           
+  }
+  }
+  ); 
+
+
+}
+
+
 
 //Validate user from database//
 
@@ -404,7 +437,7 @@ $("#validateEscort").click(function(){
   $("#floor").click(function(){  
     var floorCode=5;
     localStorage.setItem("floorCode", floorCode);   
-    document.location.href="/home";
+    getFloorAuthentication();  
    
   });
 

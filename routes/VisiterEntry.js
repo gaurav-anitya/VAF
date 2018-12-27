@@ -94,24 +94,27 @@ app.post('/submit', function(req, res) {
         var length = (req.body.visitor_name).length;
         var data = [];
         console.log(data);
-        var getgroupId = "SELECT Max(groupId) FROM visitorrecord";
-
-
-        while(i<length){
-            con.query(getgroupId, function (err, result) {
+        
+            con.query("SELECT COUNT(DISTINCT(groupId)) AS alias from visiterrecord", function (err, result) {
                 if (err) 
                     throw err;
-                var groupId= (getgroupId+1);
-
-                check(req.body.visitor_empid[i],req.body.visitor_name[i],req.body.visitor_company,req.body.project,req.body.visitor_smartcard[i],req.body.visitor_access,req.body.visitor_asset,req.body.visitor_purpose,req.body.escort_empid,req.body.escort_name,req.body.escort_unit,req.body.escort_smartcard,req.body.escort_date,req.body.escort_time_from,req.body.escort_time_to,identification,req.body.escort_signature,req.body.visitor_signature, req.body.area, req.body.Hall, groupId);
-                console.log(req.body.project);
-                i++;
+                 var   groupId= "group"+result[0].alias;
+                console.log(groupId);
+                while(i<length){
+                    var name = req.body.visitor_name[i].trim();  
+                    check(req.body.visitor_empid[i],name,req.body.visitor_company,req.body.project,req.body.visitor_smartcard[i],req.body.visitor_access,req.body.visitor_asset,req.body.visitor_purpose,req.body.escort_empid,req.body.escort_name,req.body.escort_unit,req.body.escort_smartcard,req.body.escort_date,req.body.escort_time_from,req.body.escort_time_to,identification,req.body.escort_signature,req.body.visitor_signature, req.body.area, req.body.Hall, groupId);
+                    console.log(req.body.project);
+                    i++;
+                
+            }
             });
-        }
+        
         res.render('Visitor_Status', {layout: true});
 
     }else{
         var groupId = "Individual";
+        var Hall = req.body.Hall;
+        var name = req.body.visitor_name.trim();
         var getId="select * from VisiterRecord where visitor_empid="+req.body.visitor_empid ;
         con.query(getId,function(err, result,fields)   
                   {     
@@ -138,7 +141,7 @@ app.post('/submit', function(req, res) {
                         {
                             var approvalStatus="pending";
                             var dayCount=result[0].count+1;
-                            var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification) VALUES ('"+req.body.visitor_empid+"','"+req.body.visitor_name+"','"+req.body.visitor_company+"','"+req.body.visitor_unit+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"','"+req.body.escort_date+"','"+req.body.escort_time_from+"','"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"') ";
+                            var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area) VALUES ('"+req.body.visitor_empid+"','"+name+"','"+req.body.visitor_company+"','"+req.body.project+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"','"+req.body.escort_date+"','"+req.body.escort_time_from+"','"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+req.body.area+"') ";
                             con.query(sql,function(err, result)     
                                       {                                                      
                                 if (err)
@@ -193,7 +196,7 @@ app.post('/submit', function(req, res) {
                     var approvalStatus="pending";
                     var dayCount=1;
 
-                    var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification) VALUES ('"+req.body.visitor_empid+"','"+req.body.visitor_name+"','"+req.body.visitor_company+"','"+req.body.visitor_unit+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"','"+req.body.escort_date+"','"+req.body.escort_time_from+"','"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"') ";
+                    var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Halltype, groupId, area) VALUES ('"+req.body.visitor_empid+"','"+name+"','"+req.body.visitor_company+"','"+req.body.project+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"','"+req.body.escort_date+"','"+req.body.escort_time_from+"','"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+req.body.area+"') ";
                     con.query(sql,function(err, result)     
                               {                                                      
                         if (err)
@@ -418,17 +421,27 @@ if(timeDiff < 10*60)
   }
   else if(result.length>0)
   {
+    if(req.body.groupId != "Individual")
+    {
+        console.log("req.body.groupId"+req.body.groupId);
+          groupApproval(req.body.groupId,"Approved",approverId[0],function(res){
+          if(res){
+              response.send(true);
+          }
+          else{
+              response.send(false);
+          }
+      });
+    }
+    else{
       con.query('UPDATE VisiterRecord SET approvalStatus= "Approved",ApproverRole_Id=? WHERE Id= ?',[approverId[0],req.body.visitor_id],function(err, res)     
       {                                                      
         if (err)
           throw err;
-          
-          if(req.body.groupId != "Individual")
-          {
-            groupApproval(req.body.groupId,"Approved",approverId[0]);
-          }
           response.send(true);
+         
       });
+    }
    }
   else{
     response.send(false);
@@ -625,6 +638,24 @@ app.post("/updateInTime",function(req, response){
 }
   }); 
 
+
+  app.post("/floorAuthentication",function(req, response){
+    try{
+        getFloor(req.body.floorCode,function(floorName){
+            console.log("Name: "+ floorName);
+          if(floorName ==0)
+          {
+            response.send("IncorrectFloorCode");
+          }
+          else{
+            response.send("Correct");
+          }
+        });
+
+    }catch(error){
+        console.error(error);
+    }
+  });  
 
 
 function checkIfVisiterExistOnFloor(body,floorName,callback){
@@ -961,27 +992,34 @@ if(timeDiff < 10*60)
                 else{
                     approvalStatus="Approved";
                 }
-                con.query('UPDATE VisiterRecord SET approvalStatus= ?,ApproverRole_Id=? WHERE Id= ?',[approvalStatus,approverId[0],req.body.visitor_id],function(err, res)     
+
+                if(req.body.groupId != "Individual")
+                {
+                    console.log("req.body.groupId"+req.body.groupId);
+                    groupApproval(req.body.groupId,"Approved",approverId[0],function(res){
+                     if(res){
+                         response.send(true);
+                        }
+                     else{
+                        response.send(false);
+                     }
+                     });
+                 }
+                 else{
+                    con.query('UPDATE VisiterRecord SET approvalStatus= ?,ApproverRole_Id=? WHERE Id= ?',[approvalStatus,approverId[0],req.body.visitor_id],function(err, res)     
                           {                                                      
                     if (err)
                     {          
                         throw err;
 
                     }
-                    else if(res.affectedRows > 0){
-                        if(req.body.groupId != "Individual")
-                        {
-                            groupApproval(req.body.groupId,approvalStatus,approverId[0]);
-                        }
-
-                        console.log("callbackresult: "+res.affectedRows);
-                        response.send(true);
-                    }
+                   
                     else{
                         response.send(false);
                     }
 
                 });
+            }
             });
 
         }
@@ -1054,17 +1092,20 @@ if(timeDiff < 10*60)
 }
  }
 
-function groupApproval(groupId,status,ApproverRoleId){
+function groupApproval(groupId,status,ApproverRoleId,callback){
   try{
+console.log(groupId);
+console.log(status);
+console.log(ApproverRoleId);
 
-    con.query('update VisiterRecord set approvalStatus=? and ApproverRole_Id=? where groupId=?'[status,ApproverRoleId,groupId],function(err,result){
+    con.query('UPDATE VisiterRecord SET approvalStatus=?,ApproverRole_Id=? WHERE groupId= ?',[status,ApproverRoleId,groupId],function(err,result){
 
         if(err){
             throw err;
 
         }
         else{
-
+            callback(true);
         }
 
 
@@ -1079,7 +1120,7 @@ function groupApproval(groupId,status,ApproverRoleId){
 function callelse(result,id,name,visitor_company,project,card,visitor_access,visitor_asset,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,identification,escort_signature,visitor_signature,area, Hall, groupId){
     var approvalStatus="pending";
     var dayCount=result[0].count+1;
-    var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Halltype,groupId,area) VALUES ('"+id+"','"+name+"','"+visitor_company+"','"+project+"','"+card+"','"+visitor_access+"','"+visitor_asset+"','"+visitor_purpose+"','"+escort_empid+"','"+escort_name+"','"+escort_unit+"','"+escort_smartcard+"','"+escort_date+"','"+escort_time_from+"','"+escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+area+"') ";
+    var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area) VALUES ('"+id+"','"+name+"','"+visitor_company+"','"+project+"','"+card+"','"+visitor_access+"','"+visitor_asset+"','"+visitor_purpose+"','"+escort_empid+"','"+escort_name+"','"+escort_unit+"','"+escort_smartcard+"','"+escort_date+"','"+escort_time_from+"','"+escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+area+"') ";
     con.query(sql,function(err, result)     
               {                                                      
         if (err)
@@ -1108,7 +1149,7 @@ function call(id,name,visitor_company,visitor_unit,card,visitor_access,visitor_a
     var approvalStatus="pending";
     var dayCount=1;
 
-    var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Halltype,groupId,area) VALUES ('"+id+"','"+name+"','"+visitor_company+"','"+visitor_unit+"','"+card+"','"+visitor_access+"','"+visitor_asset+"','"+visitor_purpose+"','"+escort_empid+"','"+escort_name+"','"+escort_unit+"','"+escort_smartcard+"','"+escort_date+"','"+escort_time_from+"','"+escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+area+"') ";
+    var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area) VALUES ('"+id+"','"+name+"','"+visitor_company+"','"+visitor_unit+"','"+card+"','"+visitor_access+"','"+visitor_asset+"','"+visitor_purpose+"','"+escort_empid+"','"+escort_name+"','"+escort_unit+"','"+escort_smartcard+"','"+escort_date+"','"+escort_time_from+"','"+escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+area+"') ";
     con.query(sql,function(err, result)     
               {                                                      
         if (err)
@@ -1138,7 +1179,7 @@ function call(id,name,visitor_company,visitor_unit,card,visitor_access,visitor_a
     return true;
 }
 function check(id,name,visitor_company,project,card,visitor_access,visitor_asset,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,identification,escort_signature,visitor_signature, area, Hall, groupId){
-    console.log(id);
+    console.log("id"+id);
     var getId="select * from VisiterRecord where visitor_empid="+id ;
     con.query(getId,function(err, result,fields)   
               {     
