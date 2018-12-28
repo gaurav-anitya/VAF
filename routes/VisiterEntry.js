@@ -108,8 +108,8 @@ app.post('/submit', function(req, res) {
                 
             }
             });
-        
-        res.render('Visitor_Status', {layout: true});
+            res.redirect('/visitorGrid');
+        //res.render('Visitor_Status', {layout: true});
 
     }else{
         var groupId = "Individual";
@@ -163,7 +163,8 @@ app.post('/submit', function(req, res) {
                                     });
                                 }
                             });
-                            res.render('Visitor_Status', {layout: true});
+                            res.redirect('/visitorGrid');
+                           // res.redirect('Visitor_Status', {layout: true});
                         }
                         else{
 
@@ -221,8 +222,8 @@ app.post('/submit', function(req, res) {
 
                     });
 
-
-                    res.render('Visitor_Status', {layout: true});
+                    res.redirect('/visitorGrid');
+                    //res.redirect('Visitor_Status', {layout: true});
                 }
             }
 
