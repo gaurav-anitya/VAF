@@ -196,7 +196,7 @@ app.post('/submit', function(req, res) {
                     var approvalStatus="pending";
                     var dayCount=1;
 
-                    var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Halltype, groupId, area) VALUES ('"+req.body.visitor_empid+"','"+name+"','"+req.body.visitor_company+"','"+req.body.project+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"','"+req.body.escort_date+"','"+req.body.escort_time_from+"','"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+req.body.area+"') ";
+                    var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall, groupId, area) VALUES ('"+req.body.visitor_empid+"','"+name+"','"+req.body.visitor_company+"','"+req.body.project+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"','"+req.body.escort_date+"','"+req.body.escort_time_from+"','"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+req.body.area+"') ";
                     con.query(sql,function(err, result)     
                               {                                                      
                         if (err)
@@ -681,7 +681,7 @@ console.log(floorName);
       else {
       
       var getFloor = floorName.split('_').join('');
-      console.log("getFloor: "+getFloor);   
+      console.log("getFloor: "+hall);   
       if(hall.includes(getFloor))
       {  
       con.query("Insert into ??  (visitor_cardNo,visitor_name) VALUES ('"+body.visitor_smartcard+"','"+body.visitor_name+"')",[floorName],function(err,res){
@@ -719,6 +719,7 @@ function visitorAccessOnFloor(body,callback){
     throw err;
     else if(res.length>0){
       var hall=res[0].Hall.split(',');
+      console.log("hall"+hall);
       callback(hall);
     }
     else{

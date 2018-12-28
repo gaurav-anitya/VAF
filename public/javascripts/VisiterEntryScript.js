@@ -435,7 +435,7 @@ $("#validateEscort").click(function(){
   });
 
   $("#floor").click(function(){  
-    var floorCode=5;
+    var floorCode=6;
     localStorage.setItem("floorCode", floorCode);   
     getFloorAuthentication();  
    
