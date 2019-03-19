@@ -1,59 +1,377 @@
-<html lang="en">
-    <head>
-        <title>Vendor Page</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/public/stylesheets/custom.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="/public/stylesheets/style.css">
-        <script src="/public/scripts/jquery-3.3.1.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <style>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VAS</title>
+    <meta charset="utf-8" />
+    <!--<meta http-equiv="refresh" content="35">-->
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="public/stylesheets/style.css" />
+    
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/public/javascripts/checkFloor.js"></script>
+    <!--  <link rel="stylesheet" href="style.css"> -->
+    <style>
+        html,
+        body,
+        .container-fluid {
+            background-color: black;
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            overflow: hidden;
+        }
+
+        .startupPage {
+            background-color: black;
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            overflow-x: hidden;
+        }
+
+        p {
+            margin: 0px !important;
+            padding: 0px !important;
+        }
+
+        .welcome {
+            font-size: 14pt;
+            color: white;
+            display: none;
+        }
+
+        .hello {
+            position: relative;
+            top: 50%;
+            margin-top: -40px;
+            font-size: 60px;
+            color: white;
+            width: 100%;
+            height: 80px;
+        }
+
+            .hello p#greeting {
+                line-height: 80px;
+            }
+
+        .start_button {
+            display: block;
+            position: fixed;
+            bottom: 0px;
+            padding: 2%;
+            border-radius: 10px;
+            width: 150px;
+            /* height: 150px; */
+            font-weight: bold;
+            /* letter-spacing: .1em; */
+            text-transform: uppercase;
+            /* line-height: 55px; */
+            background-color: #007acc;
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        body {
+            font-family: 'tradegothiclt-bold', sans-serif;
+        }
+
+        h1 {
+            color: white;
+            text-transform: uppercase;
+        }
+
+        span {
+            border-right: .05em solid;
+            animation: caret 1s steps(1) infinite;
+        }
+
+        @keyframes caret {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        #text_content {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            background-color: rgba(0,0,0,0.8); 
+        }
+
+        object {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        #divAppTitle {
+            position: fixed;
+            bottom: 0px;
+            width: 100%;
+            height: 100px;
+            line-height: 100px;
+            color: white;
+            text-align: center;
+            font-size: 17pt;
+        }
+
+        /* CSS for bouncing arrow */
+        /*Added by Abhishek Bhargava | 22-Feb-2019*/
+        .arrow {
+            padding-top: 8px;
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+            display: inline-block;
+            background-image: url('https://png.pngtree.com/svg/20170803/arrow_white_385666.png');
+            background-size: contain;
+        }
+
+        @-webkit-keyframes bounceRight {
+
+            0%, 20%, 50%, 80%, 100% {
+                -webkit-transform: translateX(0);
+                transform: translateX(0);
+            }
+
+            40% {
+                -webkit-transform: translateX(30px);
+                transform: translateX(30px);
+            }
+
+            60% {
+                -webkit-transform: translateX(15px);
+                transform: translateX(15px);
+            }
+        }
+
+        @-moz-keyframes bounceRight {
+
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(0);
+            }
+
+            40% {
+                transform: translateX(30px);
+            }
+
+            60% {
+                transform: translateX(15px);
+            }
+        }
+
+        @keyframes bounceRight {
+
+            0%, 20%, 50%, 80%, 100% {
+                -ms-transform: translateX(0);
+                transform: translateX(0);
+            }
+
+            40% {
+                -ms-transform: translateX(30px);
+                transform: translateX(30px);
+            }
+
+            60% {
+                -ms-transform: translateX(15px);
+                transform: translateX(15px);
+            }
+        }
+
+        .arrow-right {
+            -webkit-animation: bounceRight 2s infinite;
+            animation: bounceRight 2s infinite;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<script>
+    $(document).ready(function () {
+        var loggedInUser = localStorage.getItem('userLoggedIn');
+        if (loggedInUser == undefined || loggedInUser == null) {
+            window.location.href = '/';
+        }
+        
+        var vid = document.getElementById("video1");
+        vid.load();
+        vid.play();
+    });
 
 
-        </style>
-    </head>
-    <body class="">		
-        <div class="header">
-            <div class="">
-                <div class="col-sm-3 padding_15px" style="visibility:hidden;">
-                    <a href = "/home"><img class="cross_new" id="cross_new" src="/public/images/cross.png" /></a>
-                </div>
-                <div class="col-sm-6 padding_15px">
-                    <img class="slider" id="slider" src="/public/images/Slider white.png" /> 
-                </div>
-                <div class="col-sm-3 padding_15px">
-                    <a href = "/"><img class="homeicon_new" id="homeicon_new" src="/public/images/home_icon.png" /></a>
-                </div>
+    var i = 0;
+
+    var dataText = ["नमस्ते", "Bonjour", "Hallo", "Ciao", "Hola", "你好", "Hello"];
+
+    $(document).ready(function () {
+        setTimeout(HelloText, 6000);
+        $("#second").find("div").css('cursor', 'pointer');
+        $("#third").find("div").css('cursor', 'pointer');
+        $("#first").find("div").css('cursor', 'pointer');
+
+        $("#second").find("div").click(function () {
+            $("#first").animate({ top: "100%", marginTop: "0px" }, 200);
+            $("#second").animate({ top: "100%", marginTop: "0px" }, 200);
+            $("#third").animate({ top: "100%", marginTop: "0px" }, 200, function () {
+                window.location.href = '/visitorGrid';
+            });
+            /*   $(":animated").promise().done(function () {
+                  window.location.href = '/visitorGrid';
+              }); */
+            //window.location.href='./visitor-list.html';
+        });
+
+        $("#first").find('div').click(function () {
+            $("#first").animate({ top: "100%", marginTop: "0px" }, 200);
+            $("#second").animate({ top: "100%", marginTop: "0px" }, 200);
+            $("#third").animate({ top: "100%", marginTop: "0px" }, 200, function () {
+                window.location.href = '/addVisitor';
+            });
+            /*  $(":animated").promise().done(function () {
+                 window.location.href = '/addVisitor';
+             });
+             ; */
+            //window.location.href='./visitor-list.html';
+        });
+
+
+    });
+    function redirectToLandingPage() {
+        $("#greeting").fadeOut('slow', function () {
+            $(".hello p#greeting").stop();
+            $(".hello p#greeting").addClass('d-none');
+        });
+        $("#divAppTitle").fadeOut('slow', function () {
+            $(".startupPage").animate({ width: '0px', }, 'slow', function () {
+
+                $(".startupPage").addClass('d-none')
+
+            });
+            $(".container-div").removeClass('d-none');
+            animateLandingPage();
+        });
+    }
+
+    function animateLandingPage() {
+        $(".main-page-right-div2").animate({ left: "0px" }, "slow")
+            .delay(1500)
+            .queue(function () {
+                $(".question-div").animate({ bottom: "100%" }, "slow")
+                    .delay(250)
+                    .queue(function () {
+                        $("#first").animate({ top: "50%", marginTop: "-182.5px" }, 200);
+                        $("#second").animate({ top: "50%", marginTop: "-182.5px" }, 400);
+                        $("#third").animate({ top: "50%", marginTop: "-182.5px" }, 600);
+                    })
+            });
+
+    }
+    function cycleGreeting() {
+        $(".hello p#greeting").fadeOut("slow", function () {
+            if (i == (dataText.length)-1) {
+                i = 0;
+                window.location.reload(false);
+            }
+            $(".hello p#greeting").text(dataText[i]);
+            i++;
+        }).fadeIn("slow");
+    }
+
+    function HelloText() {
+        $("#text_content").fadeIn("slow");
+        setInterval(cycleGreeting, 4000);
+    }
+
+</script>
+<body>
+
+    <div class="container-fluid ">
+        <div class='startupPage '>
+            <div style="width: 100%; height: 100%; background-color: black;">
+                <video id = "video1" width="100%" height="100%; overflow: hidden;" autoplay = "autoplay" muted = "muted">
+                    <source src="public/video/video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!--<object data="public/video/video.mp4" style = "width: 100%; height: 100%; background-color: black;"></object>--> 
+                <!--<embed width="100%" height="100%" src="/public/images/flashvideo.swf">-->
             </div>
-        </div>
-
-        <div class="container">
-            <div class="row parent_div">
-                <div class="col-md-6 vcenter">
-                    <a href="/addVisitor">
-                        <figure class="center-block">
-                            <img src="/public/images/visitor_tag.png"/>
-                            <figcaption id="addVisitor">Add New Visitor</figcaption>
-                        </figure>
-                    </a>			  
-                </div>		
-                <hr>
-                <div class="col-md-6 vcenter">
-                    <a href="/visitorGrid">
-                        <figure class="">
-                            <img src="/public/images/visitor_detail.png"/>
-                            <figcaption id="visitorDetail">Visitor Details</figcaption>
-                        </figure>
+            <div id="text_content" style="display: none;">
+                <div class="hello">
+                    <p id="greeting">Hello</p>
+                </div>
+                <div id="divAppTitle" style='cursor: pointer' onclick='redirectToLandingPage();'>
+                    Get started with Visitor Authorization
+                    <a>
+                        <div style='cursor: pointer' class="arrow arrow-right"></div>
                     </a>
-                </div>	
-
+                </div>
             </div>
         </div>
-
-        <script src="/public/javascripts/VisiterEntryScript.js"></script>
-        <script src="/public/scripts/jquery.jqGrid.min.js" type="text/javascript"></script>
-    </body>
+        <div class="container-div d-none">
+            <div class="main-page-right-div2">
+                <div class="question-div">
+                    <div class="question-text">What do you want to do today?</div>
+                </div>
+                <div class="row inner-div" style="height: 100%;">
+                    <div class="col-sm-4 circle-initial-position" id="first">
+                        <div class="underlay"></div>
+                        <div class="circleBase type1" id="first-circle">
+                            <div class="row image-text">
+                                <div class="col-sm-12 text-center">
+                                    <img src="/public/images/user_icon.png" class="icon-images">
+                                </div>
+                                <div class="col-sm-12 text-center">
+                                    <div class='divAction' id='divNewVisitor'>Escort a new Visitor</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 circle-initial-position" id="second">
+                        <div class="circleBase type1" id="second-circle">
+                            <div class="underlay"></div>
+                            <div class="row image-text details-div">
+                                <div class="col-sm-12 text-center">
+                                    <img src="/public/images/list_icon_new.png" class="icon-images">
+                                </div>
+                                <div class="col-sm-12 text-center">
+                                    <div class='divAction'>See initiated Escort Requests</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 circle-initial-position" id="third">
+                        <div class="circleBase type1" id="third-circle">
+                            <div class="underlay"></div>
+                            <div class="row image-text asset-div">
+                                <div class="col-sm-12 text-center">
+                                    <img src="/public/images/asset_new.png" class="icon-images">
+                                </div>
+                                <div class="col-sm-12 text-center">
+                                    <div>Authorize an Asset</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 </html>

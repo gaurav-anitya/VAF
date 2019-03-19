@@ -1,0 +1,226 @@
+.btnContactValidate
+{
+    width: 30%;
+    border-radius: 3rem;
+    padding: 1%;
+    color: #fff;
+    background-color: #0062cc;
+    border: none;
+    cursor: pointer;
+    margin: 8%;
+    background-color: white;
+    color: blue;
+    margin-top: 8%;
+    margin-left: 15%
+    
+}
+
+table.display tbody tr:hover td{
+    background-color: rgb(129, 125, 129) !important;
+}
+
+
+.btnContactSubmit
+{
+    width: 30%;
+    border-radius: 3rem;
+    padding: 1%;
+    color: #fff;
+    background-color: #0062cc;
+    border: none;
+    cursor: pointer;
+    margin: 8%;
+    background-color: white;
+    color: blue;
+    margin-top: 8%;
+      
+}
+.register .nav-tabs .nav-link:hover{
+    border: none;
+}
+.text-align{
+    margin-top: -3%;
+    margin-bottom: -9%;
+
+    padding: 3%;
+    margin-left: 3%;
+}
+form{
+    display: -webkit-box;
+    margin: 0%;
+    float: inherit;
+}
+.home{
+ border:2px;
+ padding: 2px;
+ margin: 1px;
+ 
+}
+.title-content{
+
+    align-content: center;
+}
+.heading{
+    margin-right: 2px;
+    text-align:end;
+}
+/* form{
+    display: -webkit-box;
+    margin-top: 50px;
+} */
+.form-new{
+    margin-right: 10%;
+    margin-left: 10%;
+}
+.register-heading{
+    margin-left: 2%;
+    margin-bottom: 10%;
+    color: #e9ecef;
+}
+.register-heading h2{
+    margin-left: 2%;
+    margin-bottom: 10%;
+    color: #e9ecef;
+}
+h2{
+    text-align: center;
+    color: #e9ecef;
+}
+input[type=text][type=checkbox]{
+    text-align: center;
+    padding: 2px 2px 2px 2px;
+    width: 240px;
+}
+
+table, th, td {
+   
+    padding: 5px;
+}
+
+.visitor-info{
+
+    height: 1200px;
+}
+table.visitor-table{
+    border: none;
+    padding: 2% 2% 2% 2%;
+}
+table.escort-table{
+    border: none;
+    padding: 2% 2% 2% 2%;
+}
+/* td.escort-table{
+    padding:2%;
+} */
+.btnLoginSubmit{
+    border: none;
+    padding: 2%;
+    width: 25%;
+    cursor: pointer;
+    background: #29abe2;
+    color: #fff;
+}
+.btnForgetPwd{
+    cursor: pointer;
+    margin-right: 5%;
+    color: #f8f9fa;
+}
+.register{
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+    margin-top: 1%;
+    padding: 2%;
+    border-radius: 2rem;
+}
+.nav-tabs .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    color: white;
+}
+/* .form-group-left{
+    position: absolute;
+  left: 50%;
+  width: 50%;
+  padding: 5px;
+
+} */
+.form-control{
+text-align: center;
+width: -webkit-fill-available;
+
+}
+
+.checkBox{
+    margin-left: 360px;
+margin-top: 90px;
+}
+
+.top-bar {
+    background: rgb(2, 45, 53);
+    color: #fff;
+    font-size: 0.9rem;
+    padding: 10px 0;
+    border-radius: 2rem;
+    height: 80px;
+}
+
+.top-bar .contact-info {
+    margin-right: 20px;
+}
+
+.top-bar ul {
+    margin-bottom: 0;
+}
+
+.top-bar .contact-info a {
+    font-size: 0.8rem;
+}
+
+.top-bar ul.social-custom {
+    margin-left: 20px;
+}
+.top-bar ul {
+    margin-bottom: 0;
+}
+
+.top-bar a.login-btn i, .top-bar a.signup-btn i {
+    margin-right: 10px;
+}
+
+.top-bar ul.social-custom a:hover {
+    background: #4fbfa8;
+    color: #fff;
+}
+.top-bar ul.social-custom a {
+    text-decoration: none !important;
+    font-size: 0.7rem;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    color: #999;
+    text-align: center;
+    border-radius: 50%;
+    margin: 0;
+}
+a:focus, a:hover {
+    color: #348e7b;
+    text-decoration: underline;
+}
+.top-bar a.login-btn, .top-bar a.signup-btn {
+    color: #eee;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none !important;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-right: 10px;
+}
+
+body{
+
+    background-image: url("/public/images/background.jpeg");
+    background-repeat: no-repeat;
+    background-size: 100% 1500px;
+    background-color: #cccccc;
+}
+

@@ -2,571 +2,1706 @@
 <html>
 
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/public/stylesheets/style.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="/public/javascripts/addvisitor.js"></script>
+    <title>Escort a new Visitor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+        .carousel-control-prev,
+        .carousel-control-next {
+            bottom: 50% !important;
+        }
+    </style>
+
+    <link rel="stylesheet" href="/public/stylesheets/escort.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="/public/stylesheets/jquery.signature.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="/public/javascripts/jquery.ui.touch-punch.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/public/javascripts/addvisitor_new.js"></script>
+    <script src="/public/javascripts/guardLogin.js"></script>
+    <script src="/public/javascripts/checkFloor.js"></script>
+    <script src="/public/javascripts/jquery.signature.js"></script>
 </head>
-<!-- <script>
-	$(function () {
-		$("#visiitor_date").datepicker();
-	});
-	$(document).ready(function () {
-		$('#myModalVisitor').on('hidden.bs.modal', function () {
-			if ($('#visitor_dec').prop("checked") == true) {
-				//alert("true");
-				$('#myCarousel').carousel('next');
-			}
+<script>
+    function alertMessage(msg, className) {
+        $('#FlashMessage').find(".modal-body").html(msg);
+        $('#FlashMessage').modal('show');
+        if (typeof (className) !== "undefined") {
 
-		})
-	});
+            $('#FlashMessage').addClass(className);
+        }
 
-</script> -->
-<style>
-	.btn_sub.goback {
-    margin-left: 40%;
-    margin-top: 1%;
+    }
+
+    function checkifAlertMessageClassExists(className) {
+        if ($('#FlashMessage').hasClass(className))
+            return true;
+        else
+            return false;
+    }
+    function alertOkBtnClicked() {
+        if (checkifAlertMessageClassExists('errorclass')) {
+            $('.error').addClass('bounce');
+            return;
+
+        }
+
+    }
+
+
+    function showEscortSignatureModal(targetObj) {
+        //$('[name="escortSignature"]').Signature().signature('destroy');
+
+        var sig = $('[name="escortSignature"]').signature({ guideline:true,guidelineOffset: 25, guidelineIndent: 20,syncField: '#escort_signature_JSON' });
+
+        $('#escort_clear_signature').click(function () {
+            $('[name="escortSignature"]').signature('clear');
+            $('#escort_signature_JSON').val('');
+            $(targetObj).closest('span[name="signatureDiv"]').removeClass('signatureAdded');
+            // $("#"+syncFieldId).val($("#"+syncFieldId).val());
+        });
+
+        $('#escort_save_signature').click(function () {
+            //$("#"+syncFieldId).val($("#"+syncFieldId).val());
+            //   if( $("#escort_signature_JSON").val().length!==0)
+            //  {
+            $('#redraw_escort_signature').signature().signature('enable').
+                signature('draw', $('#escort_signature_JSON').val()).
+                signature('disable');
+            $(targetObj).closest('span[name="signatureDiv"]').addClass('signatureAdded');
+            // }
+        });
+        $("#escortSignatureModal").modal('show');
+
+    }
+
+    function initializeEscortSignature() {
+if($('[name="escortSignature"]').signature().signature('isEmpty'))
+{
+        var sig = $('[name="escortSignature"]').signature({ syncFormat:'JPEG',guideline:true,guidelineOffset: 25, guidelineIndent: 20,syncField: '#escort_signature_JSON' });
 }
-.carousel-control.left {
-    background-image: none;
-    top: 87%;
-    color: white;
-    left: 35%;
-    opacity: 1.1;
-}
-.visitor_dec.Escort_dec{
-	display:none;
-}
- .carousel-control.left{
-  background-image:none;
- }
- .carousel-control.right {
-    background-image: none;
-    /* bottom: 32%; */
-    position: fixed;
-    color: white;
-    top: 86%;
-    left: 46%;
-    opacity: 1;
-}
- .btn_sub {
+        $('#escort_clear_signature').click(function () {
+            $('[name="escortSignature"]').signature('clear');
+            $('#escort_signature_JSON').val('');
+            // $(targetObj).closest('span[name="signatureDiv"]').removeClass('signatureAdded');
+            // $("#"+syncFieldId).val($("#"+syncFieldId).val());
+        });
+
+    }
+
+
+    var visitorSignDivHeight;
+
+    var visitorSignDivWidth;
+
+    function renderSignForGaurdVerification() {
+        $('#redraw_visitor_signature').attr('src', $('#visitor_signature_JSON').val())
+
+      /*   $('#redraw_visitor_signature').signature().signature('enable').
+            signature('draw', $('#visitor_signature_JSON').val()).
+            signature('disable'); */
+            $('#redraw_escort_signature').attr('src', $('#escort_signature_JSON').val())
+
+     /*    $('#redraw_escort_signature').signature().signature('enable').
+            signature('draw', $('#escort_signature_JSON').val()).
+            signature('disable'); */
+
+    }
+    function setSignatureCanvasDimension() {
+        $('canvas:visible').css('border', 'solid 1px red');
+
+        var canvasObj = $('canvas:visible');
+        for (var i = 0; i < canvasObj.length; i++) {
+            $($('canvas:visible').parent('div')[i]).height($($('canvas:visible').parent('div')[0]).height() + 20);
+            $($('canvas:visible').parent('div')[i]).width($($('canvas:visible').parent('div')[0]).width() + 20);
+            $($('canvas:visible')[i]).css('margin-top', parseInt($($('canvas:visible')[0]).css('margin-top')) + 10)
+            $($('canvas:visible')[i]).css('margin-right', parseInt($($('canvas:visible')[0]).css('margin-right')) + 10)
+        }
+    }
+
+    function resetSignatureCanvasDimension() {
+        $('canvas:visible').css('border', 'solid 1px red');
+
+        var canvasObj = $('canvas:visible');
+        for (var i = 0; i < canvasObj.length; i++) {
+            $($('canvas:visible').parent('div')[i]).height($($('canvas:visible').parent('div')[0]).height() - 20);
+            $($('canvas:visible').parent('div')[i]).width($($('canvas:visible').parent('div')[0]).width() - 20);
+            $($('canvas:visible')[i]).css('margin-top', parseInt($($('canvas:visible')[0]).css('margin-top')) - 10)
+            $($('canvas:visible')[i]).css('margin-right', parseInt($($('canvas:visible')[0]).css('margin-right')) - 10)
+        }
+    }
+
+    function initializeVisitorSignature(targetObj) {
+        if (typeof (targetObj) === 'undefined') {
+            var syncFieldId = $('.company-form-div').find('input[name="visitor_signature_JSON"]')[0].id;
+            if($('[name="visitorSignature"]').signature().signature('isEmpty'))
+            {
+            var sig = $('[name="visitorSignature"]').signature().signature({syncFormat:'JPEG',guideline:true,guidelineOffset: 25, guidelineIndent: 20,syncField: '#' + syncFieldId });
+            }
+            /* $('[name="visitor_clear_signature"]').click(function (e) {
+                $('[name="visitorSignature"]').signature('clear');
+                $('#' + syncFieldId).val('');
+               // $(targetObj).closest('span[name="signatureDiv"]').removeClass('signatureAdded');
+                // $("#"+syncFieldId).val($("#"+syncFieldId).val());
+            }); */
+        }
+        else {
+            var syncFieldId = targetObj.find('input[name="visitor_signature_JSON"]')[0].id;
+          //  if(targetObj.find('[name="visitorSignature"]').signature().signature('isEmpty')){
+            targetObj.find('[name="visitorSignature"]').find('canvas').remove();
+            var sig = targetObj.find('[name="visitorSignature"]').signature(
+               {syncFormat:'JPEG', guideline:true,guidelineOffset: 25, guidelineIndent: 20,syncField: '#' + syncFieldId });
+            //}
+               /*   targetObj.find('[name="visitor_clear_signature"]').click(function () {
+                 targetObj.find('[name="visitorSignature"]').signature('clear');
+                     $('#' + syncFieldId).val('');
+                    // $(targetObj).closest('span[name="signatureDiv"]').removeClass('signatureAdded');
+                     // $("#"+syncFieldId).val($("#"+syncFieldId).val());
+                 }); */
+
+        }
+
+        $('[name="visitor_clear_signature"]').click(function (e) {
+            $(e.target).closest('.company-form-div').find('[name="visitorSignature"]').signature('clear');
+            $(e.target).closest('.company-form-div').find('[name="visitor_signature_JSON"]').val("");
+            // $(targetObj).closest('span[name="signatureDiv"]').removeClass('signatureAdded');
+            // $("#"+syncFieldId).val($("#"+syncFieldId).val());
+        });
+        /*      setTimeout(() => {
+             $('canvas').width($('[name="visitorSignature"]').width());
+         
+         $('canvas').height($('[name="visitorSignature"]').height());
+         }, 1000); */
+        visitorSignDivHeight = ($('[name="visitorSignature"]:last').height());
+        visitorSignDivWidth = ($('[name="visitorSignature"]:last').width());
+    }
+    function showVisitorSignatureModal(targetObj) {
+        $('#redraw_visitor_signature').signature().signature('enable').
+            signature('draw', $('#visitor_signature_JSON').val()).
+            signature('disable');
+        var syncFieldId = ($(targetObj).closest('.company-form-div').find('input[name="visitor_signature_JSON"]')[0].id);
+        //var syncFieldId=($(targetObj).closest('.company-form-div').find('input[name="visitor_signature_JSOnFinal"]')[0].id);
+        $('[name="visitorSignature"]').signature().signature('destroy');
+        var sig = $('[name="visitorSignature"]').signature({ guideline:true,guidelineOffset: 25, guidelineIndent: 20,syncField: '#' + syncFieldId });
+
+        if ($('#' + syncFieldId).val() !== "" && $('#' + syncFieldId).val() !== '{"lines":[]}') {
+            //$('[name="visitorSignature"]').signature('clear');
+            //$('#'+syncFieldId).val('');
+
+            $('[name="visitorSignature"]').signature().signature('draw', $('#' + syncFieldId).val());
+            // var sig = $('[name="visitorSignature"]').signature({ guideline:true,guidelineOffset: 25, guidelineIndent: 20,syncField: '#'+syncFieldId });
+
+        }
+
+        $('#visitor_clear_signature').off('click');
+        $('#visitor_save_signature').off('click');
+        $('#visitor_clear_signature').click(function () {
+            $('[name="visitorSignature"]').signature('clear');
+            $('#' + syncFieldId).val('');
+            $(targetObj).closest('span[name="signatureDiv"]').removeClass('signatureAdded');
+            // $("#"+syncFieldId).val($("#"+syncFieldId).val());
+        });
+
+        $('#visitor_save_signature').click(function () {
+            //$("#"+syncFieldId).val($("#"+syncFieldId).val());
+            if ($("#" + syncFieldId).val().length !== 0) {
+                $('#redraw_visitor_signature').signature().signature('enable').
+                    signature('draw', $('#' + syncFieldId).val()).
+                    signature('disable');
+                $(targetObj).closest('span[name="signatureDiv"]').addClass('signatureAdded');
+            }
+
+        });
+        $("#visitorSignatureModal").modal('show');
+
+
+    }
+    function autoCapitalizeFirstWord(obj) {
+        let wordsArray = obj.value.split(/[ ]+/);
+        for (let i = 0; i < wordsArray.length; i++) {
+            wordsArray[i] = wordsArray[i].substr(0, 1).toUpperCase() + wordsArray[i].substr(1);
+        }
+    return wordsArray.join(" ");
+    }
+
+
+
+    function checkPurposeValidation() {
+        if ($('.purpose-btns').hasClass('btn_on_click')) {
+
+            if ($('button.btn_on_click').text() === 'Other') {
+                if ($('#txt_visit_purpose').val() !== '') {
+                    $('#purpose_next_btn').removeClass("disabled");
+                }
+                else {
+                    $('#purpose_next_btn').addClass("disabled");
+                }
+            }
+            else {
+                $('#purpose_next_btn').removeClass("disabled");
+            }
+        }
+        else {
+            $('#purpose_next_btn').addClass("disabled");
+        }
+    }
+    function checkInfoRequiredFieldValidation() {
+
+
+        /*   if (!$('.company-btns').hasClass('btn_on_click')) {
+                  $('#info_next_btn').addClass("disabled");
+  
+           
+              return false;
+          } */
+        var isRequiredFieldFilled = true;
+        var requiredFieldsObj = $('.company-form-div').find("input.required:visible");
+
+        for (let i = 0; i < requiredFieldsObj.length; i++) {
+            if ($(requiredFieldsObj[i]).val().trim().length === 0) {
+                isRequiredFieldFilled = false;
+                break;
+        }
+    }
+    if (!isRequiredFieldFilled) {
+        $('#info_next_btn').closest('div.image_div').fadeOut(600);
+        //  alertMessage('Please fill fields');
+        return false;
+    }
+
+    $('#info_next_btn').closest('div.image_div').fadeIn(600);
+
+    return true;
+    }
+
+    function checkInfoValidation() {
+        checkInfoRequiredFieldValidation();
+        return;
+
+        
+    }
+    var repeatableDivCount = 0;
+    function removeCloneDiv(obj) {
+
+        var cloneProceedButton = $(".proceed-visitor-btn").closest('div.row');
+
+        $(obj).closest('.company-form-div').remove();
+        $('.company-form-div:last').append(cloneProceedButton);
+        checkInfoValidation();
+
+    }
+    var signatureFieldCount = 0;
+
+    function cloneDiv(obj) {
+       
+        var isRequiredFieldFilled = true;
+        var requiredFieldsObj = $('.company-form-div').find("input.required:visible");
+        $('.error').removeClass('bounce');
+        $(requiredFieldsObj).removeClass('error');
+        
+        for (let i = 0; i < requiredFieldsObj.length; i++) {
+            if ($(requiredFieldsObj[i]).val().trim().length === 0) {
+                isRequiredFieldFilled = false;
+            //  break;
+              $(requiredFieldsObj[i]).addClass('error');
+              
+        }
+    }
+    if (!isRequiredFieldFilled) {
+
+        alertMessage('Please provide your complete details','errorclass');
+        return;
+    }
+    
+    /*     if ($('.company-form-div:last').find("[name='visitor_signature_JSON']").val().length === 0 ||
+            $('.company-form-div:last').find("[name='visitor_signature_JSON']").val() === '{"lines":[]}') */
+                if($('.company-form-div:last').find("[name='visitorSignature']").signature('isEmpty'))
+                {
+            
+                alertMessage('Please provide your signature ');
+            return;
+
+    }
+
+
+    var newElement = $("#visitorInfoDiv").find('.company-form-div').clone();
+    $("#visitorInfoDiv").find(".nameRow").removeClass("d-none");
+    newElement.addClass('mt-4');
+    newElement.find('.assetRadio').attr('name','asset_radio'+signatureFieldCount)
+    newElement.appendTo('#multipleVisitors');
+    var repeatableRow = $("#visitorInfoDiv").find('.repeatable_item').clone();
+    repeatableRow.find('.assetRadio').each(function(){
+          
+        $(this).attr('name','asset_radio'+signatureFieldCount);
+        /*      $(this).find('.assetRadio').removeAttr('checked');
+  if($(this).hasClass('assetRadio-no'))
+ {
+     $(this).attr('checked',true);
  
-    width: 214px;
-    height: 48px;
-    border-radius: 15px;
-    background-color: #f01716;
-    text-align: center;
-    margin-left: 37%;
+ } */
+    });
+      
+    var lastDiv = $('#multipleVisitors').find('.company-form-div:last');
+    lastDiv.empty();
+    lastDiv.append(repeatableRow);
+    lastDiv.append($(".proceed-visitor-btn").closest('div.row'));
+    lastDiv.find("input").val("");
+    lastDiv.find(".addsomeoneMsg").text("Add/Remove person(s)");
+    lastDiv.find('span[name="signatureDiv"]').removeClass('signatureAdded');
+    $(".fa-minus-square:not(:first)").show();
+    signatureFieldCount++;
+    lastDiv.find("[name='visitor_signature_JSON']").attr('id', 'visitor_signature_JSON' + signatureFieldCount);
+    // lastDiv.find("[name='visitor_signature_JSOnFinal']").attr('id','visitor_signature_JSOnFinal'+signatureFieldCount);
+    initializeVisitorSignature(lastDiv);
 
-}
 
-.row_padding_top_bottom{
-	margin-top: 10pt;
-	margin-bottom: 10pt;
-}
+    checkInfoValidation();
+    /*  $('.proceed-visitor-btn)
+     $('.proceed-visitor-btn:last').show(); */
 
-.sub1{
-margin-left: 25% !important;
-}
-.sub2{
-margin-left: 10% !important;
-}
-input.btn.btn-primary {
-    background-color: transparent;
-    border-color: transparent;
-    /* text-align: center; */
-    width: 150px;
-    height: 35px;
-    color: #ffffff;
-    font-family: "SF Pro Text";
-    font-size: 25px;
-    font-weight: 800;
-    letter-spacing: 0.21px;
-    line-height: 30px;
-    text-transform: uppercase;
-}
-.btns{
- display:flex;
-}
-.radio {
-    display: inline-block;
-}
-.form-horizontal legend {
-	margin-top: 15px;
-    margin-left: 10px;
-    margin-bottom: 30px;
-    font-size: 40px;
-}
-/*#field {
-    margin-bottom:20px;
-}*/
+    }
+    function updateOtherPurpose() {
+        $("#visitor_purpose").val($("#txt_visit_purpose").val());
+    }
+    function generatecarouselContent(obj) {
+        var visitoremployeeID = '';
 
-.carousel-control{
-	position:relative !important;
-}
+        if (obj.visitorEmpId !== '') {
+            visitoremployeeID = '(' + obj.visitorEmpId + ')';
+        }
+        var dataHTmL = `
+      <div class="row mt-4 ">
+                        <div class=" col-12 text-center">
+      <h3>Visitor Name/आगंतुक का नाम:<span id="GuardVisitorName"></span></h3>
+                            <h4 class="visitor_name1">`+ obj.visitorName + visitoremployeeID + `</h4>
+                            </div>
+                            </div>
+                            <div class="mt-4  row">
+                        <div class="col-12 text-center">
+                            <img class='visitorSignImg'
+                                >
+                            <input type='hidden' class='visitorSign' value='`+ obj.visitorSignature + `'></input> 
+                            </div>
+                            </div>
+                            <div class="row mt-4 mb-4 ">
+                        <div class="col-12 text-center">
+                            <img style='border:1px solid black' class="redraw_visitorEscort_signature" class="sign"></img>
+                            </div>
+                            </div>
+                    `;
+        return dataHTmL;
+    }
+    function generateCarousel() {
+        var itemArray = createUserDetailsArray();
+        var HTML = '';
+        HTML += ` <div id="EscortVisitorcarousel" class="carousel slide"  data-keyboard="true" data-interval="false">
+  <div class="carousel-inner">`;
+        var activeClass = 'active';
 
-.left-spacing{
-	margin-left:5%;
-}
- </style>
+        for (var i = 1; i < itemArray.length; i++) {
+            HTML += `<div class="carousel-item ` + activeClass + `">`;
+            HTML += generatecarouselContent(itemArray[i]);
+            HTML += `</div>`;
+            activeClass = '';
+        }
 
-<body>
-	<div class="header">
-            <div class="">
-                <div class="col-sm-3 padding_15px">
-                    <a href = "/home"><img class="cross_new" id="cross_new" src="/public/images/cross.png" /></a>
+        HTML += `</div>
+  <a class="carousel-control-prev" href="#EscortVisitorcarousel" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#EscortVisitorcarousel" role="button"  data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>`;
+        var visitorEscortModal = $("#visitorEscortModal").find('.modal-body');
+
+        visitorEscortModal.html(HTML);
+        //  $("#visitorEscortModal").find('.modal-content');.height(visitorSignDivHeight+10);
+        $("#visitorEscortModal").find('.modal-content').width(visitorSignDivWidth + 50);
+        $("#visitorEscortModal").modal('show');
+
+        //$("#visitorEscortModal").on('shown.bs.modal', function () {
+        visitorEscortModal.find('.redraw_visitorEscort_signature').height(visitorSignDivHeight);
+        for (k = 0; k < visitorEscortModal.find('.redraw_visitorEscort_signature').length; k++) {
+            $(visitorEscortModal.find('.redraw_visitorEscort_signature')[k]).height(visitorSignDivHeight);
+            $(visitorEscortModal.find('.redraw_visitorEscort_signature')[k]).width(visitorSignDivWidth);
+            /*  $(visitorEscortModal.find('.redraw_visitorEscort_signature')[k]).signature().signature('enable').
+                 signature('draw', $(visitorEscortModal.find('.visitorSign')[k]).val()).
+                 signature('disable'); */
+            $(visitorEscortModal.find('.redraw_visitorEscort_signature')[k]).attr('src', $(visitorEscortModal.find('.visitorSign')[k]).val());
+            $(visitorEscortModal.find('.visitorSignImg')[k]).attr('src', 'public/images/gray_person.png');
+        
+        }
+        //});
+
+        return HTML;
+    }
+    function createUserDetailsArray() {
+        var totalVisitorsObj = $(".company-form-div");
+        var userArray = [];
+        for (var i = 0; i < totalVisitorsObj.length; i++) {
+
+            var obj = {};
+            obj.visitorEmpId = $(totalVisitorsObj[i]).find("[name='visitor_empid']").val();
+            obj.visitorName = $(totalVisitorsObj[i]).find("[name='visitor_name_new']").val();
+            obj.visitorSignature = $(totalVisitorsObj[i]).find("[name='visitor_signature_JSON']").val();
+
+
+            userArray.push(obj);
+
+        }
+        return userArray;
+    }
+    function  selectPurposeOnChange()
+    {
+        $("input[type='text']:not('#modalGuardName')").val("");
+        $('#purpose_next_btn').removeClass('disabled');
+        $('#visitor_company_other').attr('readOnly',false);
+        $('#multipleVisitors').empty();
+    }
+    function showRequiredFields() {
+
+      
+        var purpose = $('#sel_visit_purpose option:selected').val();
+        $("#visitor_purpose").val(purpose);
+        if (purpose === 'newjoinee') {
+            $('#visitor_company_other').val('Tata Consultancy Services (TCS)');
+            $('#visitor_company_other').attr('readOnly',true);
+            $('#employee_div').show();
+            $('#company_div').show();
+            $('.smart_card_div').show();
+            $('.area_div').hide();
+            $('.asset_div').hide();
+        } else if (purpose === 'internalaudit') {
+            $('#visitor_company_other').val('Tata Consultancy Services (TCS)');
+            $('#visitor_company_other').attr('readOnly',true);
+            $('#employee_div').show();
+            $('#company_div').show();
+            $('.smart_card_div').show();
+            $('.area_div').show();
+            $('.asset_div').hide();
+        } else if (purpose === 'externallaudit') {
+            $('#visitor_company_other').val('');
+            $('#employee_div').hide();
+            $('#company_div').show();
+            $('.smart_card_div').show();
+            $('.area_div').hide();
+            $('.asset_div').hide();
+        } else if (purpose === 'floorwalk') {
+            $('#visitor_company_other').val('');
+            $('#employee_div').hide();
+            $('#company_div').show();
+            $('.smart_card_div').show();
+            $('.area_div').hide();
+            $('.asset_div').hide();
+        } else if (purpose === 'lostcard') {
+            $('#visitor_company_other').val('Tata Consultancy Services (TCS)');
+            $('#visitor_company_other').attr('readOnly',true);
+            $('#employee_div').show();
+            $('#company_div').show();
+            $('.smart_card_div').show();
+            $('.area_div').hide();
+            $('.asset_div').hide();
+        } else if (purpose === 'deallocation') {
+            $('#visitor_company_other').val('Tata Consultancy Services (TCS)');
+            $('#visitor_company_other').attr('readOnly',true);
+            $('#employee_div').show();
+            $('#company_div').show();
+            $('.smart_card_div').show();
+            $('.area_div').hide();
+            $('.asset_div').hide();
+        } else if (purpose === 'internalaudit)') {
+            $('#visitor_company_other').val('Tata Consultancy Services (TCS)');
+            $('#visitor_company_other').attr('readOnly',true);
+            $('#employee_div').show();
+            $('#company_div').show();
+            $('.smart_card_div').show();
+            $('.area_div').show();
+            $('.asset_div').hide();
+        }
+        else if(purpose === 'other')
+        {
+            $('#visitor_company_other').val('');
+            $('#employee_div').show();
+            $('#company_div').show();
+            $('.smart_card_div').show();
+            $('.area_div').show();
+            $('.asset_div').show();
+        } else if(purpose === 'maintenance')
+        {
+            $('#visitor_company_other').val('');
+            $('#employee_div').show();
+            $('#company_div').show();
+            $('.smart_card_div').show();
+            $('.area_div').show();
+            $('.asset_div').show();
+        }
+    }
+
+    function getEscortPhotos() {
+        var escortId = $("#escort_id").val();
+        var url='public/images/escorts/' + escortId + '.png';
+        $("#escortPhoto").attr('src', url);
+        $("#escortPhotoGaurdVerification").attr('src', url);
+     
+
+    }
+
+    function resetEscortPhotos() {
+       
+        var url='public/images/gray_person.png';
+        $("#escortPhoto").attr('src', url);
+
+    }
+
+    function showProceedButton(obj)
+    {
+        obj.fadeIn('slow');
+    }
+    function hideProceedButton(obj)
+    {
+        obj.fadeOut('slow');
+    }
+    $(document).ready(function () {
+        window.history.forward(-1);
+        $(document).on('blur',"[name='visitor_empid']",function (e) {
+            var currentval=$(e.target).val();
+            let idcount=0;
+            $("[name='visitor_empid']:visible").each(function(){
+
+                if($(this).val().trim() === currentval.trim())
+                {
+                    idcount++; 
+                }
+                if(idcount>1)
+                {
+                    alertMessage('Visitor with same employee Id already present.Please verify');
+                    $(e.target).val("");
+                }
+            });
+        });
+
+
+
+
+        $(document).on('blur',"[name='visitor_smartcard']",function (e) {
+            var currentval=$(e.target).val();
+            let idcount=0;
+            $("[name='visitor_smartcard']:visible").each(function(){
+
+                if($(this).val().trim() === currentval.trim())
+                {
+                    idcount++; 
+                }
+                if(idcount>1)
+                {
+                    alertMessage('Visitor with same smart card already present.Please verify');
+                    $(e.target).val("");
+                }
+            });
+        });
+
+        $(document).on('click',".assetRadio",function (e) {
+            var companyFormDiv= $(e.target).closest('.company-form-div');
+            if (companyFormDiv.find("input.assetRadio:checked").siblings().text() === 'Yes') {
+                companyFormDiv.find('.asset_div').fadeIn('slow');
+                companyFormDiv.find('[name="visitor_asset"]').addClass('required')
+            } else {
+                companyFormDiv.find('.asset_div').fadeOut('slow');
+                companyFormDiv.find('[name="visitor_asset"]').removeClass('required')
+                companyFormDiv.find('[name="visitor_asset"]').val("");
+                $(".required").trigger('input');
+                companyFormDiv.find('[name="visitor_asset"]').removeClass('error');
+                companyFormDiv.find('[name="visitor_asset"]').removeClass('bounce');
+            }
+        });
+        $('.home_icon').click(function () {
+            window.location.href = '/home';
+        });
+
+        $("#showMoreVisitors").click(function () {
+            generateCarousel();
+        });
+        $("input[type='submit']").click(function () {
+            document.getElementById("myform").submit();
+        });
+        //var loggedInUser = localStorage.getItem('userLoggedIn');
+        //if (loggedInUser == undefined || loggedInUser == null) {
+        //    window.location.href = '/';
+        //}
+        $('.company-btns').click(function () {
+            $("#visitor_company").val($(this).text());
+
+        });
+        $('.purpose-btns').click(function () {
+            if ($("#btn_purpose_other").hasClass('btn_on_click')) {
+                $("#visitor_purpose").val($("#txt_visit_purpose").text());
+            } else
+                $("#visitor_purpose").val($(this).text());
+        });
+
+
+        var guardName = localStorage.getItem('userLoggedInName');
+       // $('#modalGuardName').attr('value', guardName);
+        $('#modalGuardName').val(guardName);
+        $('#guardConsent').on('click', function () {
+            if ($('#guardConsent').is(':checked') == true) {
+                $('#modalGuard #submit').removeAttr('disabled');
+            }
+            else if ($('#guardConsent').is(':checked') == false) {
+                $('#modalGuard #submit').attr('disabled', 'disabled');
+            }
+        });
+       
+        $(document).on('input','.required',function(){
+            if(this.value.trim().length>0)
+            {
+                if($(this).hasClass('error'))
+                {
+                    $(this).removeClass('error');
+                    $(this).removeClass('bounce');
+                }
+            }
+        });
+        $(document).on('input','.escortDetails',function(){
+            if(this.value.trim().length>0)
+            {
+                if($(this).hasClass('error'))
+                    $(this).removeClass('error');
+            }
+        });
+        
+        // CLick handler for the next button on the Escort screen.
+        $('#sbmt_escort_details').closest('div.image_div').click(function (e) {
+            var isInputNonEmpty = false;
+            $(".escortDetails").removeClass('error');
+            $(".escortDetails").each(function() {
+                if (this.value.trim().length === 0) {
+                    isInputNonEmpty = true;
+                    $(this).addClass('error');
+                }
+            });
+            
+           // isInputNonEmpty = false;
+            if (isInputNonEmpty) {
+                alertMessage('Please provide complete details','errorclass');
+                e.preventDefault();
+                event.stopPropagation();
+                return false;
+            }
+            
+            if($('[name="escortSignature"]').signature('isEmpty')) {
+                alertMessage('Please provide your signature');
+                return;
+            }
+      
+            $('#escort_next_btn').click();
+        });
+        //End
+
+        $('#txt_visitor_name').blur(function () {
+            this.value = autoCapitalizeFirstWord(this);
+        });
+        $(document).on('blur', '[name="visitor_name_new"]', function () {
+            this.value = autoCapitalizeFirstWord(this);
+        });
+
+        $('#next_btn').addClass("disabled");
+        $('#purpose_next_btn').addClass("disabled");
+        //$('#info_next_btn').addClass("disabled");
+        $('#submit').addClass("disabled");
+        $('#purpose_div').hide();
+        $('#info_div').hide();
+        $('#escort_div').hide();
+        $('#guard_div').hide();
+        $('.asset_div').hide();
+        $('#txt_visit_purpose').hide();
+        // $('#company_div').hide();
+
+        $("#datepicker").datepicker();
+        $(document).on('focus', 'input.focus', function () {
+            $(this).prev().css('fontSize', '1.5em');
+        });
+        $(document).on('blur', 'input.focus', function () {
+            $(this).prev().css('fontSize', '1.1em');
+        });
+
+        $('#next_btn').click(function() {
+            //alert();
+            $('#txt_visitor_name').val(autoCapitalizeFirstWord($("#txt_visitor_name")[0]));
+            var name = $('#txt_visitor_name').val();
+            var name_initial = $('#initial_select').val();
+            $('[name="visitor_name_new"]').val(name);
+            
+            $('#purpose_div').show();
+            $('.purpose-question-text').find('div').html("Okay, " + name_initial + " " + name + ".<br /><span>Please help with a few additional details.</span>");
+
+            $("#name_question .back").hide();
+            $("#name_question").animate({ bottom: "100%" }, 450);
+            $("#purpose_div").animate({ top: "0px" }, 450)
+            //$(".purpose-question-text").animate({line-height: "10px"}), 600)
+                .queue(function() {
+                    $("#name_question").hide();
+                });
+
+            $('.purpose-question-text div span').animate({top: "0px"}, 600)
+                .delay(3000)
+                .queue(function() {
+                    $(".purpose-question-text").animate({ bottom: "100%" }, 600);
+                    $('#info_div').show();
+                    $("#info_div").animate({ top: "0px" }, "slow", function() {
+                        initializeVisitorSignature();
+                    })
+                    .queue(function() {
+                        $("#purpose_div").hide();
+                        $("#visitorInfoDiv img").fadeIn(600);
+                        showRequiredFields();
+
+                        window.addEventListener("resize", function () {
+                            var div = $(".company-form-div")[0];
+                            var marTop = (div.clientHeight) / 2;
+                            div.style.marginTop = "-" + marTop + "px";
+                        }, false);
+
+                        var div = $(".company-form-div")[0];
+                        var marTop = (div.clientHeight) / 2;
+                        div.style.marginTop = "-" + marTop + "px";
+                    });
+                });
+        });
+        
+        $("#info_next_btn").click(function () {
+            //if ($(this).hasClass('disabled')) {
+            //        return;
+            //    }
+            
+            if (!checkInfoRequiredFieldValidation())
+                return false;
+
+            var signatureObj = $('.company-form-div').find("[name='visitor_signature_JSON']");
+            for (let i = 0; i < signatureObj.length; i++) {
+                if($($('.company-form-div').find("[name='visitorSignature']")[i]).signature('isEmpty')) {
+                    alertMessage('Please provide your signature ');
+                    return;
+                }
+            }
+
+            var itemArray = $('.company-form-div');
+            if (itemArray.length < 2) {
+                $("#showMoreVisitors").hide();
+            }
+            else {
+                $("#showMoreVisitors").show();
+                $("#showMoreVisitors").find("span.personsCount").text(itemArray.length - 1);
+            }
+
+          
+            $("#escort_div").show();
+            $("#visitorInfoDiv .back, #visitorInfoDiv .home").fadeOut(600);
+            $("#visitorInfoDiv").animate({bottom: "100%"}, 600);
+            $(".signup").animate({top: "0px"}, 600)
+                .queue(function() {
+                    $('#info_div').hide();
+                    initializeEscortSignature();
+                    $(".signup .back, .signup .home").fadeIn(600);
+                });
+        });
+
+        $('#visitor_next_btn').click(function () {
+            $("#info_div").animate({ marginTop: "-47%" }, "slow");
+            $("#info_div").hide();
+            $('#escort_div').show();
+            $("#escort_div").animate({ marginTop: "-5%" }, "slow");
+        })
+        
+        $('#escort_next_btn').click(function() {
+            var currentval=$('.escortDetails').val();
+            let idcount=0;
+            $("[name='visitor_empid']").each(function() {
+                if($(this).val().trim() === currentval.trim())
+                    idcount++; 
+                
+                if(idcount>0) {
+                    alertMessage('Escort person cannot be a visitor.Please verify ');
+                    $('.escortDetails').val("");
+                    resetEscortPhotos();
+                    e.stopPropagation();
+                    e.preventDefault();
+                    return;
+                }
+            });
+            if($('[name="area"]:visible').length===0)
+                $('[name="area"]').val($('[name="escort_unit"]').val());
+
+            renderSignForGaurdVerification();
+            var visitorName = $('#txt_visitor_name').val();
+            var escortName = $('#escort_name').val();
+            var escortId = $('#escort_id').val();
+            var name_initial = $('#initial_select').val();
+            var visitorEmpId = $('[name="visitor_empid"]').val();
+            if (visitorEmpId.trim().length > 0)
+                visitorEmpId = '(' + visitorEmpId + ')';
+            
+            $('#visitor_name1').text(name_initial + ". " + visitorName + visitorEmpId);
+            $('#GuardEscortName').text(escortName + '(' + escortId + ')');
+
+            var empIdObj=  $('[name="visitor_empid"]');
+            for (var i=0; i<empIdObj.length;i++) {
+                if($(empIdObj[i]).val().length==0) {
+                    $(empIdObj[i]).val( Math.floor((Math.random() * 10000000000) + 100000000));
+                }
+            }
+
+   
+            $("#guard_div").show();
+            $('#escort_div .back, #escort_div .home').fadeOut(600);
+            $("#escort_slider").animate({ bottom: "100%" }, "slow");
+            $("#guard_div").animate({ top: "0px" }, "slow")
+                .queue(function() {
+                    $('#escort_div').hide();
+                    $("#guard_div .back, #guard_div .home").fadeIn(600);
+                });            
+        });
+
+        //go back actions
+        
+        $('#add_visitor_back_btn').click(function () {
+            window.location.href = '/home';
+        });
+
+        $('#purpose_before_btn').click(function () {
+            $("#purpose_div").animate({ marginTop: "100%" }, "slow");
+            $("#purpose_div").hide();
+            $('#name_question').show();
+            $("#name_question").animate({ bottom: "4%" }, "slow");
+        });
+        $('#info_before_btn').click(function () {
+            $("#info_div").animate({ marginTop: "100%" }, "slow");
+            $("#info_div").hide();
+            $('#purpose_div').show();
+            $("#purpose_div").animate({ marginTop: "-9%" }, "slow");
+        });
+        $('#escort_before_btn').click(function () {
+            $('#escort_div').animate({ marginTop: "100%" }, "slow");
+            $('#escort_div').hide();
+            $('#info_div').show();
+            $("#info_div").animate({ marginTop: "-9%" }, "slow");
+        });
+        $('#guard_before_btn').click(function () {
+       
+            $('#guard_div').animate({ marginTop: "100%" }, "slow");
+            $('#guard_div').hide();
+            $('#escort_div').show();
+            $("#escort_div").animate({ marginTop: "-5%" }, "slow");
+        });
+
+        $('#txt_visitor_name').on('input',function () {
+            if ($('#txt_visitor_name').val() != '') {
+                $('#next_btn').removeClass("disabled");
+            }
+            else {
+                $('#next_btn').addClass("disabled");
+            }
+        });
+
+
+        $(document).on('input', '.info-input', function () {
+            checkInfoValidation();
+        });
+        $('#txt_visit_purpose').on('input',function () {
+            checkPurposeValidation();
+            updateOtherPurpose();
+        });
+        $('.purpose-btns').click(function () {
+            $('.purpose-btns').removeClass('btn_on_click');
+            $(this).addClass('btn_on_click');
+            if ($(this).text() === 'Audit' || $(this).text() === 'Meeting' || $(this).text() === 'Other') {
+                $('#btn_company_other').removeClass("disabled");
+            }
+            else {
+                $('#btn_company_other').addClass("disabled");
+            }
+            if ($(this).text() === 'Other') {
+                $('#txt_visit_purpose').show();
+            }
+            else {
+                $('#txt_visit_purpose').hide();
+            }
+            checkPurposeValidation();
+        });
+        // $('.company-btns').click(function () {
+        //     $('.company-btns').removeClass('btn_on_click');
+        //     $(this).addClass('btn_on_click');
+        //     if ($(this).text() === 'Other') {
+        //         $('#company_div').show();
+        //         $('#employee_div').hide();
+        //     }
+        //     else {
+        //         $('#company_div').hide();
+        //         $('#employee_div').show();
+        //     }
+        //     checkInfoValidation();
+        // });
+        $("#guardConsent").change(function () {
+            if (this.checked) {
+                $('#submit').removeClass("disabled");
+            }
+        });
+    })
+</script>
+<script>
+    // Added by Abhishek as part of review on 15-Mar-2019 
+    // For animating the name and visit purpose question
+
+    $(document).ready(function () {
+
+        $(".question-div .image_div img").hide();
+        $('#info_next_btn').closest('div.image_div').hide();
+        $("#text_div span:eq(0)").animate({ top: "0px" }, 600)
+            .delay(1500)
+            .queue(function () {
+                $("#text_div span:eq(1)").animate({ top: "0px" }, 400);
+                $("#text_div span:eq(2)").animate({ top: "0px" }, 500)
+                .delay(1500)
+                .queue(function () {
+                    $("#text_div input, #initial_select").animate({ top: "0px" }, 400);
+                    $("#sel_visit_purpose").animate({ top: "0px" }, 500);
+                })
+            });
+            
+        $("#name_question .back").fadeIn("slow");
+
+        window.addEventListener("resize", function () {
+            var div = $("#text_div")[0];
+            var marTop = (div.clientHeight) / 2;
+            div.style.marginTop = "-" + marTop + "px";
+        }, false);
+
+        var div = $("#text_div")[0];
+        var marTop = (div.clientHeight) / 2;
+        div.style.marginTop = "-" + marTop + "px";
+
+        $("#text_div input, #text_div select").change(function() {
+            var input = $("#text_div input");
+            var selInitial = $("#initial_select");
+            var selVisitPurpose = $("#sel_visit_purpose");
+            var img = $(".question-div .image_div img");
+                
+            if (input.val().trim() != '' &&  selInitial.find(":selected").val() != '' && selVisitPurpose.find(":selected").val() != '') 
+                img.fadeIn("medium");
+            else
+                img.fadeOut("fast");
+        });
+
+        $(".company-form-div input[type='text']").change(function() {
+            $(".company-form-div .image_div span img").show();
+            $('#info_next_btn').closest('div.image_div').fadeIn(600);
+            
+            
+            //var flag = true;
+            //$(".company-form-div input[type='text']").each(function() {
+            //    if ($(this).val().trim() == "") {
+            //        $(".company-form-div .image_div img").hide(600);
+            //        flag = false;
+            //        return false;
+            //    }
+            //});
+
+            //if (flag) {
+            //    $('#info_next_btn').fadeIn(600);
+            //    $(".company-form-div .image_div img").show(600);
+            //}
+        });
+    });
+
+    function middleAlign( div) {
+        div.style.top = "50%";
+        var marTop = (div.clientHeight) / 2;
+        div.style.marginTop = "-" + marTop + "px";
+    }
+</script>
+
+<body class="form-body">
+    <div class="modal fade" id="visitorEscortModal" tabindex="-1" role="dialog" aria-labelledby="visitorEscortModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(to right, #3a90cb , #2ed9d0);">
                 </div>
-                <div class="col-sm-6 padding_15px">
-                    <img class="slider" id="slider" src="/public/images/Slider white.png" /> 
-                </div>
-                <div class="col-sm-3 padding_15px">
-                    <a href = "/"><img class="homeicon_new" id="homeicon_new" src="/public/images/home_icon.png" /></a>
+                <div class="modal-body text-center font-weight-bold">
                 </div>
             </div>
         </div>
-	<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
-		<!-- Indicators -->
+    </div>
+    <div class="modal fade" id="FlashMessage" tabindex="-1" role="dialog" aria-labelledby="FlashMessageLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(to right, #3a90cb , #2ed9d0);">
+                </div>
+                <div class="modal-body text-center font-weight-bold">
+                </div>
+                <div class="pb-3 text-center">
+                    <button type="button" class="btn btn-primary btn-lg" onclick="return alertOkBtnClicked();"
+                        data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form id='myform' method="POST" action="/addVisitor">
+        <input type="hidden" name="visitor_company" id="visitor_company" value="" />
+        <input type="hidden" name="visitor_purpose" id="visitor_purpose" value="" />
+        <div class="main">
+            <div class="question-div" id="name_question">
+                <header id="mainPageHeader">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <img src="/public/images/arrow_left.png" class="back" id="add_visitor_back_btn">
+                        </div>
+                        <div class="col-sm-6">
+                            <!--<img src="/public/images/logout.png"  class="float-right"style="cursor: pointer; height: 64px;">-->
+                        </div>
+                    </div>
+                </header>
+                <div id="text_div">
+                    <span>Hi Guest.</span>
+                    <br />
+                    <br />
+                    <span>Let's start by knowing your name</span><br />
+                    <span>and the purpose of visit.</span>
+                    <br />
+                    <select id="initial_select" style="display: inline; width: 130px;">
+                        <option disabled selected value="">Salutation</option>
+                        <option value="Mr.">Mr.</option>
+                        <option value="Ms.">Ms.</option>
+                        <option value="Dr.">Dr.</option>
+                    </select>
+                    <input type="text" id="txt_visitor_name" name="visitor_name" placeholder="Full name" oninput="this.value=this.value.replace(/[^a-zA-Z .,]/g,'');"
+                        style="display: inline; width: 400px;" />
+                    <select id="sel_visit_purpose">
+                        <option disabled selected value="">Purpose of visit/ reason for escorting</option>
+                        <option value="newjoinee">I'm a new Lilly employee</option>
+                        <option value="lostcard">I lost my identity card</option>
+                        <option value="deallocation">I'm currently deallocated</option>
+                        <option value="internalaudit">Internal audit</option>
+                        <option value="externalaudit">External audit</option>
+                        <option value="floorwalk">ODC floor walk</option>
+                        <option value="maintenance">Maintenance work</option>
+                    </select>
+                </div>
+                <div class="image_div">
+                    <span id="next_btn">
+                        <img src="/public/images/arrow_white_385666.png" class="arrow-right" />
+                    </span>
+                </div>
+                <!--<div class="question-text" style="top: 44%;">
+                    <div>Hi! May I know your name please?</div>
+                    <div class="row">
+                        <div class="col-sm-5 dropdown">
+                            <select class="initial float-right" id="initial_select">
+                                <option>-</option>
+                                <option>Mr.</option> 
+                                <option>Ms.</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-7">
+                            <input class="input-boxes name-input" placeholder="Your Name Please" name="visitor_name"
+                                oninput="this.value=this.value.replace(/[^a-zA-Z .,]/g,'');" id="txt_visitor_name">
+                        </div>
+                    </div>
+                    <!-- <button type="button" class="btn btn-primary btn-lg proceed-button" id="next_btn">Proceed</button>
+                    <footer>
+                        <div class="row mt-5">
+                            <div class="col-sm-12 mt-5">
+                                <span id="next_btn">
+                                    <i class="fa fa-angle-right float-right white-arrow right-arrow1 " aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </footer>
+                </div>-->
+            </div>
+            <div id="purpose_div" class="initial-position">
+                <!--<header style="padding: 5% 7%;">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span id="purpose_before_btn">
+                                    <img src="/public/images/arrow_left.png" class="back">
+                                    <!--<i class="fa fa-angle-left" aria-hidden="true" style="font-size: 50px; color: white;"></i>
+                                </span>
+                            </div>
+                            <div class="col-sm-6">
+                                <img src="/public/images/home.png" class = "home" onclick = "javascript:window.location.href = 'secondPage.html'">
+                            </div>
+                        </div>
+                </header>-->
+                <div id="purpose_question">
+                    <div class="purpose-question-text">
+                        <div>May we have the purpose of your visit?</div>
+                    </div>
+                </div>
+            </div>
+            <!--SIGNATURE MODAL STARTS-->
+            <div class="modal fade" id="visitorSignatureModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header" style="color: white; font-size: 2em; background: linear-gradient(to right, #3a90cb , #2ed9d0);">
+                            Declaration Form
+                        </div>
+                        <div class="modal-body">
+                            <div style="font-size: 18px;">
+                                I hereby declare that I am not carrying any asset such as
+                                Mobile Phone with Camera, CD/DVD, HDD, Voice Recorder, USB Drive/ Pen Drive, CD Player,
+                                Data Storage
+                                Device or any such device in the ODC
+                            </div>
+                            <div name="visitorSignature1" class="w-100 "></div>
 
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="visitor_clear_signature1" class="btn btn-error">
+                                Clear
+                                signature</button>
+                            <button type="button" id="visitor_save_signature1" class="btn btn-success" data-dismiss="modal">
+                                I Agree</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="escortSignatureModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Declaration Form</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <span style="font-size: 18px;">I hereby declare that I have check the mentioned ID(s)
+                                    for the visitor and information provided
+                                    is
+                                    correct in nature.</span>
+                            </div>
+                            <div id="escortSignature1" class="w-100"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="escort_clear_signature1" class="btn btn-error">
+                                Clear
+                                Signature</button>
+                            <button type="button" id="escort_save_signature" class="btn btn-success" data-dismiss="modal">
+                                I Agree</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--SIGNATURE MODAL ENDS-->
+            <div id="info_div">
+                <div id="visitorInfoDiv">
+                    <header>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span id="info_before_btn">
+                                    <img src="/public/images/arrow_left.png" class="back">
+                                </span>
+                            </div>
+                            <div class="col-sm-6">
+                                <img src="/public/images/home.png" class="home">
+                            </div>
+                        </div>
+                    </header>
+                    <div class="company-form-div">
+                        <div class="row mt-3 ml-2 mr-2" id="company_div">
+                            <div class="col-sm-12">
+                                <span>
+                                    <img src="/public/images/company (1).png" style="width: 32.5px; height: 32.5px; margin-left: 1%;">
+                                </span>
+                                <input type="text" class="input-boxes info-input focus required" id="visitor_company_other"
+                                    maxlength="50" oninput="this.value=this.value.replace(/[^a-zA-Z0-9,&()` .,]/g,'');"
+                                    name="visitor_company_other" placeholder="Company Name">
+                            </div>
+                        </div>
+                        <div class="row mt-3 ml-2 mr-2 repeatable_item area_div">
+                            <div class="col-sm-12">
+                                <div class="form-group w-100">
+                                    <span><img src="/public/images/department.png" style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
+                                    <input type="text" class="input-boxes focus info-input required" oninput="this.value=this.value.replace(/[^a-zA-Z0-9,&()` .,]/g,'');"
+                                        id="txt_visitor_Area" name="area" placeholder="Department/ area" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3 ml-2 mr-2 repeatable_item" id="employee_div">
+                            <div class="col-sm-12">
+                                <div class="form-group w-100">
+                                    <span><img src="/public/images/employee.png" style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
+                                    <input type="text" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="input-boxes focus info-input required"
+                                        maxlength="7" name="visitor_empid" placeholder="Employee ID" maxlength="7">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3 ml-2 mr-2 repeatable_item d-none nameRow">
+                            <div class="col-sm-12">
+                                <div class="form-group w-100">
+                                    <span><i class="fas fa-user form-icons purpose-form-icons"></i></span>
+                                    <input class="input-boxes focus info-input required" placeholder="Full Name"
+                                        oninput="this.value=this.value.replace(/[^a-zA-Z .,]/g,'');" maxlength="100"
+                                        name="visitor_name_new">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3 ml-2 mr-2 repeatable_item smart_card_div">
+                            <div class="col-sm-12">
+                                <div class="form-group w-100">
+                                    <span><img src="/public/images/smartcard.png" style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
+                                    <input type="text" class="input-boxes focus info-input required" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                        name="visitor_smartcard" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                        placeholder="Smart card number" maxlength="8">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3 repeatable_item">
+                            <div class="col-sm-6 asset_txt">Carrying a laptop?
+                                <div class="form-check radio-form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input assetRadio assetRadio-yes radio-button"
+                                            name="asset_radio">
+                                        <span class="radio-label-txt">Yes</span>
+                                    </label>
+                                </div>
+                                <div class="form-check radio-form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class=" form-check-input assetRadio assetRadio-no radio-button"
+                                            name="asset_radio" checked>
+                                        <span class="radio-label-txt">No</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-6">
 
-		<div class="carousel-inner">
-			<div class="item active">
+                                    </div>
+                                    <div class="col-sm-6">
 
-				<!-- Visitor Form -->
-				<div class=" container form_content">
-					<div class="row">
-						<H1 style="text-decoration: italics;">Visitor Details</H1>
-					</div>
-					<form class="form-inline row_padding_top_bottom" method="POST" action="/submit">						
-						<div class="row control-group" id="fields">
-							<div class="controls">
-								<div role="form" autocomplete="off" id="repeatable_item">
-									<div class="entry input-group row top-spacing">
-										<input class="form-group col-md-5 left-spacing" name="visitor_name" type="text" placeholder="Employee Name" id="visitor_name" required maxlength="20"  onblur="validation1()"/>
-										
-										<input id="visitor_id" name="visitor_empid" type="text" placeholder="Employee ID" class="form-group col-md-3 left-spacing-half" maxlength="7" onblur="validation8()" >
-										
-										<input id="smart_card" name="visitor_smartcard" type="text" placeholder="Smart Card Number" class="form-group col-md-3 left-spacing-half" required maxlength="7" onblur="validation4()" >
-										
-										<span class="input-group-btn">
-											<button class="btn btn-success btn-add" type="button">
-												<span class="glyphicon glyphicon-plus"></span>
-											</button>
-										</span>
-										
-									</div>
-									
-								</div>
-								<span id="demo1"></span><span id="demo"></span><span id="demo4"></span>
-							</div>
-						</div>
-						<!-- Multiple Radios -->
-						<div class="row form-inline row_padding_top_bottom">
-							<div class="form-group col-md-6">
-								<label class="col-md-6" for="company">Company<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
-								<div class="radio col-md-3">
-									<label for="company-0">
-										<input type="radio" name="visitor_company" id="company-0" value="TCS" checked="checked">
-										TCS
-									</label>
-								</div>
-								<div class="radio col-md-3">
-									<label class="" for="company-1">
-										<input type="radio" name="visitor_company" id="company-1" value="Other">
-										Other
-									</label>
-								</div>
-							</div>
-							<div class="form-group col-md-6">
-								<input id="other" name="visitor_company_other" type="text" placeholder="" class="radio_input col-md-10"
-								 disabled>
-							</div>
-						</div>
-						<!-- Text input-->
-						<div class="row form-inline  row_padding_top_bottom">
-							<!-- Text input-->
-							<div class="form-group col-md-6">
-								<label class=" col-md-6 control-label" for="project">Project<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
-								<div class="col-md-6 input-group">
-									<input id="project" name="project" type="text" placeholder="" class="form-control" maxlength="15" required onblur="validation3()">
-									
-								</div>
-								<span id ="demo3"></span>
-							</div>
-							<div class="form-group col-md-6">
-								<label class=" col-md-4 control-label" for="area">Area<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
-								<div class="col-md-6 input-group">
-									<input id="area" name="area" type="text" placeholder="" class="form-control" maxlength="20" required onblur="validation6()">
-									
-									<!-- <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> -->
-								</div>
-								
-							</div>
-							<span id="demo8"></span>
-						</div>
-						<!-- Text input-->
-						<div class="row form-inline  row_padding_top_bottom">
-							<!-- Text input-->
-							<div class="form-group col-md-6">
-								<label class=" col-md-6 control-label" for="visitor_asset">Asset ID</label>
-								<div class="col-md-6 input-group">
-									<input id="visitor_asset" name="visitor_asset" type="text" placeholder="" maxlength="20" class="form-control">
-								</div>
-							</div>
-							<div class="form-group col-md-6">
-								<label class=" col-md-4 control-label" for="visitor_access">Card Type</label>
-								<div class="radio" class=" col-md-4">
-									<label for="company-0">
-										<input type="radio" name="visitor_access" id="-0" value="Permanent" checked="checked">
-										Permanent
-									</label>
-								</div>
-								<div class="radio" class=" col-md-4">
-									<label class="" for="company-1">
-										<input type="radio" name="visitor_access" id="-1" value="Temporary">
-										Temporary
-									</label>
-								</div>
-							</div>
-						</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3 ml-2 mr-2 mb-3 repeatable_item asset_div">
+                            <div class="col-sm-12">
+                                <div class="form-group w-100">
+                                    <span><i class="fas fa-laptop form-icons purpose-form-icons"></i></span>
+                                    <input type="text" class="input-boxes focus info-input " name="visitor_asset"
+                                        maxlength="20" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                        placeholder="Asset Id">
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mt-4 ml-2 mr-2 mb-3 repeatable_item">
+                            <div class="col-sm-12">
+                                <div class="form-group w-100">
+                                    <span name="signatureDiv" class="d-none"><i class="fas fa-file-signature" style="font-size: 2.5em"
+                                            data-toggle="modal" onclick="showVisitorSignatureModal(this);"></i></span>
+                                    <div style="font-size: 11pt; line-height: 1.5;" class="mb-3">
+                                        I hereby declare that I'm not carrying
+                                        any asset
+                                        such as a
+                                        mobile phone with
+                                        Camera, CD/ DVD, HDD, voice recorder, USB drive/ pen drive, CD player, data
+                                        storage device or any
+                                        such device in
+                                        the ODC.
+                                    </div>
+                                    <hr />
+                                    <!--<div style="font-size: 15pt;">
+                                        <label>Signature</label>
+                                    </div>-->
+                                    <div style="width: 100%; height: 200px;">
+                                        <div style="width: 90%; margin: 0 auto;">
+                                            <div name="visitorSignature" class="sign"></div>
+                                            <button type="button" name="visitor_clear_signature" class="btn btn-error btn-clear-sign">Clear</button>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="visitor_signature_JSON" name="visitor_signature_JSON">
+                                    <input type="hidden" id="visitor_signature_JSOnFinal" name="visitor_signature_JSOnFinal">
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row mt-4 ml-2 mr-2 mb-3 repeatable_item">
+                            <div class="col-sm-12">
+                                <div class="form-group w-100">
+                                    <label class="addsomeoneMsg" style='padding-right: 5px; font-size: 14pt; margin-bottom: 0px !important; vertical-align: middle;'>
+                                        Someone accompanying you? Add details for another visitor</label>
+                                    <span>
+                                        <img src="/public/images/add_blue.png" style="height: 40px;width: 40px;"
+                                            onclick="cloneDiv(this);" class="img-add" />
+                                    </span>
+                                    <span><i class="fa fa-minus-square" onclick="removeCloneDiv(this);" style="display: none; margin-left: 21px; font-size: 2.5em"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="multipleVisitors"></div>
+                <footer>
+                    <div class="row mt-3">
+                        <div class="col-sm-12" style="position: static !important;">
+                            <div class="image_div">
+                                <span id="info_next_btn">
+                                    <img src="/public/images/arrow_white_385666.png" class="arrow-right" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- Sign up form -->
+            <section class="signup" id="escort_div">
+                <div id="escort_slider">
+                    <header>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span id="escort_before_btn">
+                                    <img src="/public/images/arrow_left.png" class="back">
+                                </span>
+                            </div>
+                            <div class="col-sm-6">
+                                <img src="/public/images/home.png" class="home">
+                            </div>
+                        </div>
+                    </header>
+                    <div class="container container-div">
+                        <div class="pt-4 pb-4 pr-5">
+                            <div class="pl-5">
+                                <div>
+                                    <!--
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-title">Escort Details</div>
+                                    </div>
+                                </div>-->
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <img id="escortPhoto" onerror="this.src='public/images/no-image-available.png'"
+                                                src="/public/images/no-image-available.png" class="no-image-available">
+                                        </div>
+                                        <div class="col-8">
+                                            <div style="width: 100%; height: 100%; display: table;">
+                                                <div style="width: 100%; height: 100%; display: table-cell; vertical-align: middle;">
+                                                    <div class="form-group w-100 right-align">
+                                                        <span><i class="fas  fa-id-badge form-icons"></i></span>
+                                                        <input type="text" id="escort_id" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                                            name="escort_empid" class="input-boxes focus escortDetails"
+                                                            maxlength="7" placeholder="Employee Id">
+                                                    </div>
+                                                    <div class="form-group w-100 right-align">
+                                                        <span><i class="fa fa-user form-icons"></i></span>
+                                                        <input type="text" class="input-boxes focus escortDetails"
+                                                            readonly maxlength="100" id="escort_name" name="escort_name"
+                                                            placeholder="Name">
+                                                    </div>
+                                                    <div class="form-group w-100 right-align">
+                                                        <span><i class="fa fa-address-card form-icons"></i></span>
+                                                        <input type="text" name="escort_smartcard" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                                            id="escort_smartcard" class="input-boxes focus escortDetails"
+                                                            maxlength="8" placeholder="Smart Card Number">
+                                                    </div>
+                                                    <div class="form-group w-100 right-align">
+                                                        <span><i class="fa fa-user form-icons"></i></span>
+                                                        <input type="text" class="input-boxes focus escortDetails"
+                                                            oninput="this.value=this.value.replace(/[^a-zA-Z .,]/g,'');"
+                                                            maxlength="100" id="escort_unit" name="escort_unit"
+                                                            placeholder="Department/Area">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="form-group w-100" style="text-align: center;">
+                                            <div>
+                                                <span style="font-size: 11pt; font-family: Arial;">I hereby declare
+                                                    that I've
+                                                    check the mentioned ID(s)
+                                                    for the visitor and the information provided
+                                                    is correct.</span>
+                                            </div>
+                                            <hr />
+                                            <div name="escortSignature" class="sign">
+                                            </div>
+                                            <br>
+                                            <button type="button" id="escort_clear_signature" class="btn btn-error">
+                                                Clear
+                                            </button>
+                                        </div>
+                                        <input type="hidden" id="escort_signature_JSON" name="escort_signature_JSON">
+                                        <!--
+                                    <div class="col-7">
+                                        <div class="row">
+                                            
+                                            <div class="row mt-4 ml-2 mr-2 mb-3 ">
+                                                <div class="col-sm-12 text-right">
+                                                    <div class="form-group w-100">
+                                                        <div>
+                                                            <span style="font-size: 18px;"> I hereby declare that I have
+                                                                check the mentioned ID(s)
+                                                                for the visitor and information provided
+                                                                is correct in nature.</span>
+                                                        </div>
+                                                        <div name="escortSignature" class="sign">
+                                                        </div>
 
-						<!-- Text input-->
-						<div class="row form-inline">
-							<!-- Text input-->
-							<table>
-								<tr>
-									<td class="col-md-3">
-										<div class="vcenter">
-											<label class="col-md-12 control-label" for="Purpose">Purpose<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
-										</div>
-									</td>
-									<td class="col-md-9">
-										<div id="checkboxlist">
-											<table class="table-borderless table-condensed">
-												<tr>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="Purpose0" name="visitor_purpose" value="New Joinee"> New joinee
-														</label>
-													</td>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="Purpose1" name="visitor_purpose" value="Meeting"> Meeting
-														</label>
-													</td>												
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="Purpose2" name="visitor_purpose" value="Audit"> Audit
-														</label>
-													</td>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="Purpose3" name="visitor_purpose" value="Other">Other
-														</label>
-													</td>
-												</tr>
-											</table>
-											<span id="demo0"></span>
-										</div>
-									<td>
-								</tr>
-							</table>
-							
-						</div><br>
-						<div class="row form-inline">
-							<!-- Text input-->
-							<table>
-								<tr>
-									<td class="col-md-3">
-										<div class="vcenter">
-											<label class="col-md-12 control-label" for="Hall">Hall<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
-										</div>
-									</td>
-									<td class="col-md-9">
-										<div id="checkboxlist">
-											<table class="table-borderless table-condensed">
-												<tr>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="Hall0" name="Hall" value="Fourth Floor"> Fourth Floor
-														</label>
-													</td>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="Hall1" name="Hall" value="Fifth Floor"> Fifth Floor
-														</label>
-													</td>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="Hall2" name="Hall" value="Tenth Floor"> Tenth Floor
-														</label>
-													</td>
-												</tr>
-											</table>
-											<span id ="demo9"></span>
-										</div>
-									<td>
-								</tr>
-							</table>
-						</div>
-						<a id="modal" class="row carousel-control" href="#myCarousel" data-slide="next"  data-target="#myModalVisitor">
-							<div class="btn_sub">
-								<input id ="formValidation1" class="btn btn-primary" type="button" value="PROCEED">
-								<!--<span class="glyphicon glyphicon-chevron-right"></span>-->
-							</div>
-						</a>
-				</div>
-			</div>
+                                                    </div>
 
-			<div class="item escort_data">
-				<!-- Escort Form -->
-				<div class=" container form_content">
-					<div class="row">
-						<H1 style="text-decoration: italics;">Escorting Person Details</H1>
-					</div>
-					<div class="row form-inline  row_padding_top_bottom">
-						<div class="form-group col-md-6">
-							<label class=" col-md-6 control-label text-right" for="escort_name">Person Escorting</label>
-							<div class="col-md-6 input-group">
-								<input id="escort_name" name="escort_name" type="text" placeholder="" class="form-control" disabled>
-								<!-- <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span> -->
-							</div>
-						</div>
-						<div class="form-group col-md-6">
-							<label class=" col-md-4 control-label" for="input_Date">Date<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
-							<div class="col-md-6 input-group">
-								<input id="visitor_date" name="escort_date" type="date" placeholder="" class="form-control">
-								<!-- <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> -->
-							</div>
-							<span id ="demo5"></span>
-						</div>						
-					</div>
-					<div class="row form-inline  row_padding_top_bottom">
-						<div class="form-group col-md-6">
-							<label class=" col-md-6 control-label" for="escort_empid">Employee ID<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
-							<div class="col-md-6 input-group">
-								<input id="escort_id" name="escort_empid" type="text" placeholder="" class="form-control" required>
-								<span id="validateEscort" class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-							</div>
-						</div>
-						<div class="form-group col-md-6">
-							<label class=" col-md-4 control-label" for="input_in_time">In Time<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
-							<div class="col-md-6 input-group">
-								<input id="escort_time_from" name="escort_time_from" type="time" placeholder="" class="form-control">
-								<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
-							</div>
-							<span id ="demo2"></span>
-						</div>						
-					</div>
-					<div class="row form-inline row_padding_top_bottom">
-						<div class="form-group col-md-6">
-							<label class=" col-md-6 control-label" for="escort_unit">Project</label>
-							<div class="col-md-6 input-group">
-								<input id="escort_unit" name="escort_unit" type="text" placeholder="" class="form-control" disabled>
-							</div>
-						</div>
-						<div class="form-group col-md-6">
-							<label class=" col-md-4 control-label" for="input_out_time">Out Time</label>
-							<div class="col-md-6 input-group">
-								<input id="escort_time_to" name="escort_time_to" type="time" placeholder="" class="form-control">
-								<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
-							</div>
-						</div>
-					</div>
-					<div class="row form-inline">
-						<div class="form-group col-md-6">
-							<label class=" col-md-6 control-label" for="escort_card_no">Smart Card #</label>
-							<div class="col-md-6 input-group">
-								<input id="escort_smartcard" name="escort_smartcard" type="text" placeholder="" class="form-control" disabled>
-							</div>
-						</div>
-					</div>
-					<div class="row form-inline row_padding_top_bottom">
-						<div class="form-group col-md-12">
-							<table class="table">
-								<tr>
-									<td class="col-md-3 table-borderless">
-										<div class="vcenter">
-											<label class=" col-md-12 control-label " for="escort_project">Identification<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
-										</div>
-									</td>
-									<td class="col-md-9 table-borderless">
-										<div id="checkboxlist">
-											<table class="table table-condensed">
-												<tr>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" name="Identification" id="idCheckbox1" value="smartCard"> Smart Card
-														</label>
-													</td>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="idCheckbox2" name="Identification1" value="visitorCard"> Visitor Card
-														</label>
-													</td>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="idCheckbox3" name="Identification2" value="passport"> Passport
-														</label>
-													</td>
-												</tr>
-												<tr>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="idCheckbox1" name="Identification3" value="voterCard"> Voter ID Card
-														</label>
-													</td>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="idCheckbox2" name="Identification4" value="panCard"> PAN Card
-														</label>
-													</td>
-													<td class="table-borderless">
-														<label class="checkbox-inline">
-															<input type="checkbox" id="idCheckbox3" name="Identification5" value="driverLicense"> Driver's License
-														</label>
-													</td>
-												</tr>
-											</table>
-											<span id="demo6"></span>
-										</div>
-									<td>
-								</tr>
-							</table>
-							
-						</div>
-					</div>
-				</div>
-				<!-- </form> -->
-				<div class="visitor_dec Escort_dec">
+                                                    <input type="hidden" id="escort_signature_JSON"
+                                                        name="escort_signature_JSON">
+                                                </div>
+                                            </div>
+                                        </div>
+                                         <div class="row w-100 mt-2">
+                                            <div class="col-sm-6">
+                                                <button type="button"
+                                                    class="btn btn-primary btn-lg proceed-button float-right"
+                                                    id="escort_before_btn">Back</button>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button type="button" class="btn btn-primary btn-lg proceed-button"
+                                                    id="sbmt_escort_details">Proceed</button>
+                                            </div>
+                                        </div> 
+                                    </div>
+-->
+                                    </div>
+                                    <!-- <button type="button" class="btn btn-primary btn-lg form-buttons mt-3" id="escort_next_btn">Next</button> -->
+                                </div>
+                            </div>
 
-					<span>Visitor Declaration</span>
-					<p>
-						<span><input type="checkbox" name="visitor_signature" class="form-control" placeholder="Enter your EmpID here"
-							 value="Y" style="display:inline-block;border:2px; height: 20px; width: 20px" /></span>
-						<span>I hereby declare that I am not carrying any asset such as Mobile Phone with
-							Camera, CD/DVD, HDD, Voice Recorder, USB Drive/ Pen Drive, CD Player, Data Storage Device or any such device in
-							the
-							ODC</span>
-					</p>
-					<p>
-						I confirm that the information provided above is best and truthful in nature and deviations from the same can
-						result
-						in serious jurisdiction measure
-					</p>
-				</div>
-				<div class="btns">
-					<div class="btn_sub sub1">
-						<input id="submit" class="btn btn-primary" type="submit" value="Submit" disabled>
-					</div>
+                        </div>
+                    </div>
+                    <footer>
+                        <div class="row mt-3">
+                            <div class="col-sm-12 mt-3" style="position: static !important;">
+                                <div class="image_div">
+                                    <span id="sbmt_escort_details">
+                                        <img src="/public/images/arrow_white_385666.png" class="arrow-right" />
+                                    </span>
+                                </div>
 
-					<div class="btn_sub sub2">
-						<input id="escortDeclaration" class="btn btn-primary" type="button" value="Declaration" 
-						 data-target="#myModal" disabled>
-					</div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </section>
+        </div>
+        <!-- The escort declaration modal -->
+        <div class="modal fade" id="escortDeclarationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+            aria-hidden="true" style="top: 25%;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modalLabel" style="color: #2ed9d0;">Declaration</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="font-size: 18px;">
+                        I hereby declare that I have check the mentioned ID(s) for the visitor and information provided
+                        is
+                        correct in nature.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-agree form-buttons proceed-button" data-dismiss="modal" id="escort_next_btn">
+                            I
+                            Agree</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="visitorDeclarationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+            aria-hidden="true" style="top: 25%;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" style="color: #2ed9d0;">Declaration</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="font-size: 18px;">
+                        I hereby declare that I am not carrying any asset such as Mobile Phone with
+                        Camera, CD/DVD, HDD, Voice Recorder, USB Drive/ Pen Drive, CD Player, Data Storage Device or
+                        any
+                        such device in
+                        the ODC
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-agree form-buttons proceed-button" data-dismiss="modal" id="visitor_next_btn">
+                            I
+                            Agree</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="form-group initial-position" id="guard_div">
+            <header>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <span id="guard_before_btn">
+                            <img src="/public/images/arrow_left.png" class="back">
+                        </span>
+                    </div>
+                    <div class="col-sm-6">
+                        <img src="/public/images/home.png" class="home">
+                    </div>
+                </div>
+            </header>
+            <div class="item guard_verify">
+                <!-- Escort Form -->
+                <div class=" container form_content">
+                    <div class="row">
+                        <div class="col-12">
+                            <h1 class="text-center">गार्ड द्वारा सत्यापन</h1>
+                        </div>
+                    </div>
+                    <div class="row mt-3 ">
+                        <div class="col-6 text-center">
+                            <div class="row mt-3 ">
+                                <div class="col-12 text-center">
+                                    <h3>आगंतुक का नाम:<span id="GuardVisitorName"></span></h3>
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-12 text-center">
+                                    <h4 id="visitor_name1"></h4>
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-12 text-center">
+                                    <!--  <img
+                                        src="data:image/png;base64,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"
+                                        
+                                        > -->
+                                    <img style="height: 150px; border: 1px solid #6BC2E3" class="rounded-circle"
+                                        onerror="this.src='public/images/gray_person.png'" src="/public/images/gray_person.png" />
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-12 text-center">
+                                    <!-- 
+                                    <div id="redraw_visitor_signature" class="sign"> -->
+                                    <img id="redraw_visitor_signature" style='border: 1px solid black' class="sign " />
+                                    <!--  </div> -->
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-12 text-center">
+                                    <div id="showMoreVisitors" class="point" style="font-size: 15pt">
+                                        You are
+                                        accompanying <span class="personsCount font-weight-bold">10</span> more
+                                        person(s).Click to view
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 text-center">
+                            <div class="row mt-3 ">
+                                <div class="col-12 text-center">
+                                    <h3>एस्कॉर्ट का नाम:<span></span></h3>
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-12 text-center">
+                                    <h4 id="GuardEscortName"></h4>
+                                </div>
+                            </div>
 
+                            <div class="row mt-3 ">
+                                <div class="col-12 text-center">
+                                    <!--   <h4>(<span id="GuardEscortId"></span>)</h4> -->
+                                    <img style="height: 150px; border: 1px solid #6BC2E3" id="escortPhotoGaurdVerification"
+                                        class="rounded-circle" onerror="this.src='data:image/png;base64,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'"
+                                        src="data:image/png;base64,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">
+                                </div>
+                            </div>
+                            <div class="row mt-3 ">
+                                <div class="col-12 text-center">
+                                    <!--  <div id="redraw_escort_signature" class="sign"></div>
+                               -->
+                                    <img id="redraw_escort_signature" style='border: 1px solid black' class="sign " />
+                                </div>
+                            </div>
 
+                        </div>
+                        </div>
+                     <div class="mt-3">
+                        <input id="guardDeclaration" class="btn btn-primary w-100" type="button" data-toggle="modal"
+                            value="Proceed/आगे बढ़ें" data-target="#modalGuard">
+                    </div> 
+                         <div class="btn_sub goback">
+                        <input id="guard_before_btn" class="btn btn-primary w-100" type="button" value="Go Back">
+                    </div> 
+                       
+                    <footer>
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <span id="guardDeclaration" data-toggle="modal" data-target="#modalGuard">
+                                    <i class="fa fa-angle-right float-right white-arrow right-arrow1 " aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </footer>
 
-				</div>
-				<div class="btn_sub goback">
-					<input id="" class="btn btn-primary" type="button" value="Go Back">
-					<a class="left carousel-control" href="#myCarousel" data-slide="prev">
-						<span class="glyphicon glyphicon-chevron-left"></span>
-						<span class="sr-only">Previous</span>
-					</a>
-				</div>
+                    <div class="modal fade" id="modalGuard" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+                        aria-hidden="true" style="top: 25%;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header" style="border-bottom: 2px solid lightgray;">
+                                    <h4 class="modal-title" id="myModalLabel">Guard Declaration/गार्ड घोषणा</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="font-size: 18px;">
+                                    <p>
+                                        <input type="checkbox" id="guardConsent">
+                                        <span>I hereby declare that the details entered by the Visitor and the Escort
+                                            are
+                                            correct.</span><br>
+                                        <span>मैं घोषणा करता हूं कि आगंतुक और एस्कॉर्ट द्वारा दर्ज किए गए विवरण सही
+                                            हैं।</span>
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="row">
+                                        <div class="col-sm-10 offset-sm-2">
+                                            <div class="row w-100">
+                                                <div class="col-sm-10">
+                                                    <input id="modalGuardName" class="input-boxes" name="guard_Signature"
+                                                        type="text" placeholder="Guard Name" readonly="" value="Ramesh Singh">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <input id="submit" class="btn btn-cyan proceed-button" type="submit"
+                                                        value="Submit" disabled="" style="font-size: 22px; margin-right: 25px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-
-			</div>
-			<!-- Modal Visitor -->
-			<div class="modal fade" id="myModalVisitor" tabindex="-1" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="myModalLabel">Escorting Person Declaration</h4>
-						</div>
-						<div class="modal-body">
-							<div class="visitor_dec">
-
-								<span>Visitor Declaration</span>
-
-								<p>
-									<span>
-										<input id="visitor_dec" type="checkbox" name="escort_signature" class="form-control" placeholder="Enter your EmpID here"
-										 value="Y" style="display: inline-block;border:2px; height: 20px; width: 20px" required="" /></span>
-									<span>I hereby declare that I am not carrying any asset such as Mobile Phone with
-										Camera, CD/DVD, HDD, Voice Recorder, USB Drive/ Pen Drive, CD Player, Data Storage Device or any such device
-										in the ODC</span>
-								</p>
-								<p>
-									I confirm that the information provided above is best and truthful in nature and deviations from the same can
-									result in serious jurisdiction measure
-								</p>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<!-- <input id="modale_escort_name" name="modale_escort_name" type="text" placeholder="Employee ID">
-					
-					<button type="button" class="btn btn-danger">Save changes</button> -->
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Modal Escort -->
-			<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="myModalLabel">Escorting Person Declaration</h4>
-						</div>
-						<div class="modal-body">
-							<p>
-								I hereby declare that I have checked the mentioned ID(s) for the visitor and the information provided is
-								correct
-								in nature
-							</p>
-						</div>
-						<div class="modal-footer">
-							<input id="modale_escort_name" name="escort_signature" type="text" placeholder="Employee ID" disabled>
-							<button id="i_agree" type="button" class="btn btn-default" data-dismiss="modal">I Agree</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			</form>
-
-			<!-- <img class="d-block w-100" src="..." alt="Second slide"> -->
-		</div>
-		<!-- Left and right controls -->
-		<!-- <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-      <span class="glyphicon glyphicon-chevron-left"></span>
-      <span class="sr-only">Previous</span>
-    </a> -->
-
-	</div>
-	</div>
-
-
-	<!-- <div class="btn_sub">
-<input id="btnSubmit" class="btn btn-primary" type="button" value="Submit">
-</div> -->
-
-
-	<script src="/public/javascripts/VisiterEntryScript.js"></script>
-	<script src="/public/scripts/jquery.jqGrid.min.js" type="text/javascript"></script>
-
-
-
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </form>
 </body>
 
 </html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/public/stylesheets/style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="/public/javascripts/addvisitor.js"></script>
+    <script src="/public/javascripts/checkFloor.js"></script>
+</head>
+<!-- <script>
+	$(function () {
+		$("#visiitor_date").datepicker();
+	});
+	$(document).ready(function () {
+		$('#myModalVisitor').on('hidden.bs.modal', function () {
+			if ($('#visitor_dec').prop("checked") == true) {
+				//alert("true");
+				$('#myCarousel').carousel('next');
+			}
+
+		})
+	});
+
+</script> -->
+<style>
+	.btn_sub.goback {
+    margin-left: 40%;
+    margin-top: 1%;
+}
+.carousel-control.left {
+    background-image: none;
+    top: 87%;
+    color: white;
+    left: 35%;
+    opacity: 1.1;
+}
+.visitor_dec.Escort_dec{
+	display:none;
+}
+ .carousel-control.left{
+  background-image:none;
+ }
+ .carousel-control.right {
+    background-image: none;
+    /* bottom: 32%; */
+    position: fixed;
+    color: white;
+    top: 86%;
+    left: 46%;
+    opacity: 1;
+}
+ .btn_sub {
+ 
+    width: 214px;
+    height: 48px;
+    border-radius: 15px;
+    background-color: #f01716;
+    text-align: center;
+    margin-left: 37%;
+
+}
+
+.row_padding_top_bottom{
+	margin-top: 10pt;
+	margin-bottom: 10pt;
+}
+
+.sub1{
+margin-left: 25% !important;
+}
+.sub2{
+margin-left: 10% !important;
+}
+input.btn.btn-primary {
+    background-color: transparent;
+    border-color: transparent;
+    /* text-align: center; */
+    width: 150px;
+    height: 35px;
+    color: #ffffff;
+    font-family: "SF Pro Text";
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: 0.21px;
+    line-height: 30px;
+    text-transform: uppercase;
+}
+.btns{
+ display:flex;
+}
+.radio {
+    display: inline-block;
+}
+.form-horizontal legend {
+	margin-top: 15px;
+    margin-left: 10px;
+    margin-bottom: 30px;
+    font-size: 40px;
+}
+/*#field {
+    margin-bottom:20px;
+}*/
+
+.carousel-control{
+	position:relative !important;
+}
+
+.left-spacing{
+	margin-left:5%;
+}
+ </style>
+
+<body>
+	<div class="header">
+            <div class="">
+                <div class="col-sm-3 padding_15px">
+                    <a href = "/home"><img class="cross_new" id="cross_new" src="/public/images/cross.png" /></a>
+                </div>
+                <div class="col-sm-6 padding_15px">
+                    <img class="slider" id="slider" src="/public/images/Slider white.png" /> 
+                </div>
+                <div class="col-sm-3 padding_15px">
+                    <a href = "/"><img class="homeicon_new" id="homeicon_new" src="/public/images/home_icon.png" /></a>
+                </div>
+            </div>
+        </div>
+	<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+		<!-- Indicators -->
+
+
+		<div class="carousel-inner">
+			<div class="item active">
+
+				<!-- Visitor Form -->
+				<div class=" container form_content">
+					<div class="row">
+						<H1 style="text-decoration: italics;">Visitor Details</H1>
+					</div>
+					<form class="form-inline row_padding_top_bottom" method="POST" action="/submit">						
+						<div class="row control-group" id="fields">
+							<div class="controls">
+								<div role="form" autocomplete="off" id="repeatable_item">
+									<div class="entry input-group row top-spacing">
+										<input class="form-group col-md-5 left-spacing " name="visitor_name" type="text" placeholder="Employee Name" id="visitor_name" required maxlength="20"  onblur="validation1()"/>
+										
+										<input id="visitor_id" name="visitor_empid" type="text" placeholder="Employee ID" class="form-group col-md-3 left-spacing-half selector" maxlength="7" onblur="validation8()" >
+										
+										<input id="smart_card" name="visitor_smartcard" type="text" placeholder="Smart Card Number" class="form-group col-md-3 left-spacing-half" required maxlength="7" onblur="validation4()" >
+										
+										<span class="input-group-btn">
+											<button class="btn btn-success btn-add" type="button">
+												<span class="glyphicon glyphicon-plus"></span>
+											</button>
+                                            <button class="btn btn-danger btn-remove second_add_btn" type="button">
+												<span class="glyphicon glyphicon-minus"></span>
+											</button>
+										</span>
+										
+									</div>
+									
+								</div>
+								<span id="demo1"></span><span id="demo"></span><span id="demo4"></span>
+							</div>
+						</div>
+						<!-- Multiple Radios -->
+						<div class="row form-inline row_padding_top_bottom">
+							<div class="form-group col-md-6">
+								<label class="col-md-6" for="company">Company<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
+								<div class="radio col-md-3">
+									<label for="company-0">
+										<input type="radio" name="visitor_company" id="company-0" value="TCS" checked="checked">
+										TCS
+									</label>
+								</div>
+								<div class="radio col-md-3">
+									<label class="" for="company-1">
+										<input type="radio" name="visitor_company" id="company-1" value="Other">
+										Other
+									</label>
+								</div>
+							</div>
+							<div class="form-group col-md-6">
+								<input id="other" name="visitor_company_other" type="text" placeholder="" class="radio_input col-md-10"
+								 disabled>
+							</div>
+						</div>
+						<!-- Text input-->
+						<div class="row form-inline  row_padding_top_bottom">
+							<!-- Text input-->
+							<div class="form-group col-md-6">
+								<label class=" col-md-6 control-label" for="project">Project<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
+								<div class="col-md-6 input-group">
+									<input id="project" name="project" type="text" placeholder="" class="form-control" maxlength="15" required onblur="validation3()">
+									
+								</div>
+								<span id ="demo3"></span>
+							</div>
+							<div class="form-group col-md-6">
+								<label class=" col-md-4 control-label" for="area">Area<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
+								<div class="col-md-6 input-group">
+									<input id="area" name="area" type="text" placeholder="" class="form-control" maxlength="20" required onblur="validation6()">
+									
+									<!-- <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> -->
+								</div>
+								
+							</div>
+							<span id="demo8"></span>
+						</div>
+						<!-- Text input-->
+						<div class="row form-inline  row_padding_top_bottom">
+							<!-- Text input-->
+							<div class="form-group col-md-6">
+								<label class=" col-md-6 control-label" for="visitor_asset">Asset ID</label>
+								<div class="col-md-6 input-group">
+									<input id="visitor_asset" name="visitor_asset" type="text" placeholder="" maxlength="20" class="form-control">
+								</div>
+							</div>
+							<div class="form-group col-md-6">
+								<label class=" col-md-4 control-label" for="visitor_access">Card Type</label>
+								<div class="radio" class=" col-md-4">
+									<label for="company-0">
+										<input type="radio" name="visitor_access" id="-0" value="Permanent" checked="checked">
+										Permanent
+									</label>
+								</div>
+								<div class="radio" class=" col-md-4">
+									<label class="" for="company-1">
+										<input type="radio" name="visitor_access" id="-1" value="Temporary">
+										Temporary
+									</label>
+								</div>
+							</div>
+						</div>
+
+						<!-- Text input-->
+						<div class="row form-inline">
+							<!-- Text input-->
+							<table>
+								<tr>
+									<td class="col-md-3">
+										<div class="vcenter">
+											<label class="col-md-12 control-label" for="Purpose">Purpose<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
+										</div>
+									</td>
+									<td class="col-md-9">
+										<div id="checkboxlist">
+											<table class="table-borderless table-condensed">
+												<tr>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Purpose0" name="visitor_purpose" value="New Joinee"> New joinee
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Purpose1" name="visitor_purpose" value="Meeting"> Meeting
+														</label>
+													</td>												
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Purpose2" name="visitor_purpose" value="Audit"> Audit
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Purpose3" name="visitor_purpose" value="Other">Other
+														</label>
+													</td>
+												</tr>
+											</table>
+											<span id="demo0"></span>
+										</div>
+									<td>
+								</tr>
+							</table>
+							
+						</div><br>
+						<div class="row form-inline">
+							<!-- Text input-->
+							<table>
+								<tr>
+									<td class="col-md-3">
+										<div class="vcenter">
+											<label class="col-md-12 control-label" for="Hall">Hall<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
+										</div>
+									</td>
+									<td class="col-md-9">
+										<div id="checkboxlist">
+											<table class="table-borderless table-condensed">
+												<tr>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Hall0" name="Hall" value="floor_4_hall_1"> Fourth Floor Hall 1
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Hall1" name="Hall" value="floor_4_hall_2"> Fourth Floor Hall 2
+														</label>
+													</td>
+                                                    <td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Hall2" name="Hall" value="floor_5"> Fifth Floor
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="Hall3" name="Hall" value="floor_10"> Tenth Floor
+														</label>
+													</td>
+												</tr>
+											</table>
+											<span id ="demo9"></span>
+										</div>
+									<td>
+								</tr>
+							</table>
+						</div>
+						<a id="modal" class="row carousel-control" href="#myCarousel" data-slide="next"  data-target="#myModalVisitor">
+							<div class="btn_sub">
+								<input id ="formValidation1" class="btn btn-primary" type="button" value="PROCEED">
+								<!--<span class="glyphicon glyphicon-chevron-right"></span>-->
+							</div>
+						</a>
+				</div>
+			</div>
+
+			<div class="item escort_data">
+				<!-- Escort Form -->
+				<div class=" container form_content">
+					<div class="row">
+						<H1 style="text-decoration: italics;">Escorting Person Details</H1>
+					</div>
+					<div class="row form-inline  row_padding_top_bottom">
+						<div class="form-group col-md-6">
+							<label class=" col-md-6 control-label text-right" for="escort_name">Person Escorting</label>
+							<div class="col-md-6 input-group">
+								<input id="escort_name" name="escort_name" type="text" placeholder="" class="form-control" disabled>
+								<!-- <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span> -->
+							</div>
+						</div>
+						<div class="form-group col-md-6">
+							<label class=" col-md-4 control-label" for="input_Date">Date<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
+							<div class="col-md-6 input-group">
+								<input id="visitor_date" name="escort_date" type="date" placeholder="" class="form-control">
+								<!-- <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> -->
+							</div>
+							<span id ="demo5"></span>
+						</div>						
+					</div>
+					<div class="row form-inline  row_padding_top_bottom">
+						<div class="form-group col-md-6">
+							<label class=" col-md-6 control-label" for="escort_empid">Employee ID<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
+							<div class="col-md-6 input-group">
+								<input id="escort_id" class ="escort_id" name="escort_empid" type="number" required placeholder="" class="form-control" required maxlength="7">
+								<span id="validateEscort" class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+							</div>
+						</div>
+						<div class="form-group col-md-6">
+							<label class=" col-md-4 control-label" for="input_in_time">In Time<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
+							<div class="col-md-6 input-group">
+								<input id="escort_time_from" name="escort_time_from" type="time" placeholder="" class="form-control">
+								<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+							</div>
+							<span id ="demo2"></span>
+						</div>						
+					</div>
+					<div class="row form-inline row_padding_top_bottom">
+						<div class="form-group col-md-6">
+							<label class=" col-md-6 control-label" for="escort_unit">Project</label>
+							<div class="col-md-6 input-group">
+								<input id="escort_unit" name="escort_unit" type="text" placeholder="" class="form-control" disabled>
+							</div>
+						</div>
+						<div class="form-group col-md-6">
+							<label class=" col-md-4 control-label" for="input_out_time">Out Time</label>
+							<div class="col-md-6 input-group">
+								<input id="escort_time_to" name="escort_time_to" type="time" placeholder="" class="form-control">
+								<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+							</div>
+						</div>
+					</div>
+					<div class="row form-inline">
+						<div class="form-group col-md-6">
+							<label class=" col-md-6 control-label" for="escort_card_no">Smart Card #</label>
+							<div class="col-md-6 input-group">
+								<input id="escort_smartcard" name="escort_smartcard" type="text" placeholder="" class="form-control" disabled>
+							</div>
+						</div>
+					</div>
+					<div class="row form-inline row_padding_top_bottom">
+						<div class="form-group col-md-12">
+							<table class="table">
+								<tr>
+									<td class="col-md-3 table-borderless">
+										<div class="vcenter">
+											<label class=" col-md-12 control-label " for="escort_project">Identification<sup><span class="" data-toggle="tooltip" title="This is a mandatory field">*</span></sup></label>
+										</div>
+									</td>
+									<td class="col-md-9 table-borderless">
+										<div id="checkboxlist">
+											<table class="table table-condensed">
+												<tr>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" name="Identification" id="idCheckbox1" value="smartCard"> Smart Card
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="idCheckbox2" name="Identification1" value="visitorCard"> Visitor Card
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="idCheckbox3" name="Identification2" value="passport"> Passport
+														</label>
+													</td>
+												</tr>
+												<tr>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="idCheckbox1" name="Identification3" value="voterCard"> Voter ID Card
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="idCheckbox2" name="Identification4" value="panCard"> PAN Card
+														</label>
+													</td>
+													<td class="table-borderless">
+														<label class="checkbox-inline">
+															<input type="checkbox" id="idCheckbox3" name="Identification5" value="driverLicense"> Driver's License
+														</label>
+													</td>
+												</tr>
+											</table>
+											<span id="demo6"></span>
+										</div>
+									<td>
+								</tr>
+							</table>
+							
+						</div>
+					</div>
+				</div>
+				<!-- </form> -->
+				<div class="visitor_dec Escort_dec">
+
+					<span>Visitor Declaration</span>
+					<p>
+						<span><input type="checkbox" name="visitor_signature" class="form-control" placeholder="Enter your EmpID here"
+							 value="Y" style="display:inline-block;border:2px; height: 20px; width: 20px" /></span>
+						<span>I hereby declare that I am not carrying any asset such as Mobile Phone with
+							Camera, CD/DVD, HDD, Voice Recorder, USB Drive/ Pen Drive, CD Player, Data Storage Device or any such device in
+							the
+							ODC</span>
+					</p>
+					<p>
+						I confirm that the information provided above is best and truthful in nature and deviations from the same can
+						result
+						in serious jurisdiction measure
+					</p>
+				</div>
+				<div class="btns">
+					<div class="btn_sub sub1">
+						<input id="submit" class="btn btn-primary" type="submit" value="Submit" disabled>
+					</div>
+
+					<div class="btn_sub sub2">
+						<input id="escortDeclaration" class="btn btn-primary" type="button" value="Declaration" 
+						 data-target="#myModal" disabled>
+					</div>
+
+
+
+
+				</div>
+				<div class="btn_sub goback">
+					<input id="" class="btn btn-primary" type="button" value="Go Back">
+					<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+						<span class="glyphicon glyphicon-chevron-left"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+				</div>
+
+
+			</div>
+			<!-- Modal Visitor -->
+			<div class="modal fade" id="myModalVisitor" tabindex="-1" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">Escorting Person Declaration</h4>
+						</div>
+						<div class="modal-body">
+							<div class="visitor_dec">
+
+								<span>Visitor Declaration</span>
+
+								<p>
+									<span>
+										<input id="visitor_dec" type="checkbox" name="escort_signature" class="form-control" placeholder="Enter your EmpID here"
+										 value="Y" style="display: inline-block;border:2px; height: 20px; width: 20px" required="" /></span>
+									<span>I hereby declare that I am not carrying any asset such as Mobile Phone with
+										Camera, CD/DVD, HDD, Voice Recorder, USB Drive/ Pen Drive, CD Player, Data Storage Device or any such device
+										in the ODC</span>
+								</p>
+								<p>
+									I confirm that the information provided above is best and truthful in nature and deviations from the same can
+									result in serious jurisdiction measure
+								</p>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<!-- <input id="modale_escort_name" name="modale_escort_name" type="text" placeholder="Employee ID">
+					
+					<button type="button" class="btn btn-danger">Save changes</button> -->
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal Escort -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">Escorting Person Declaration</h4>
+						</div>
+						<div class="modal-body">
+							<p>
+								I hereby declare that I have checked the mentioned ID(s) for the visitor and the information provided is
+								correct
+								in nature
+							</p>
+						</div>
+						<div class="modal-footer">
+							<input id="modale_escort_name" name="escort_signature" type="text" placeholder="Employee ID" disabled>
+							<button id="i_agree" type="button" class="btn btn-default" data-dismiss="modal">I Agree</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			</form>
+
+			<!-- <img class="d-block w-100" src="..." alt="Second slide"> -->
+		</div>
+		<!-- Left and right controls -->
+		<!-- <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      <span class="sr-only">Previous</span>
+    </a> -->
+
+	</div>
+	</div>
+
+
+	<!-- <div class="btn_sub">
+<input id="btnSubmit" class="btn btn-primary" type="button" value="Submit">
+</div> -->
+
+
+	<script src="/public/javascripts/VisiterEntryScript.js"></script>
+	<script src="/public/scripts/jquery.jqGrid.min.js" type="text/javascript"></script>
+
+
+
+</body>
+
+</html>

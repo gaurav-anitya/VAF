@@ -1,0 +1,68 @@
+.intro_text {
+    margin-top: 5%;
+}
+.select_text {
+    margin-top: 5%;
+}
+.intro_text p {
+    text-align: center;
+    color: white;
+    font-size: 60px;
+}
+.select_text p {
+    text-align: center;
+    color: #ffcfc1 ;
+    font-size: 30px;
+}
+.first_floor {
+    width: 25%;
+ 
+    text-align: center;
+    height: 25%;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    background-color: rgb(243, 106, 80);
+  box-shadow: 0px 0px 15.36px 0.64px rgba(213, 43, 30, 0.34);
+}
+.fourth_floor {
+    width: 25%;
+    background-color: rgb(243, 106, 80);
+  box-shadow: 0px 0px 15.36px 0.64px rgba(213, 43, 30, 0.34);
+    text-align: center;
+    height: 25%;
+}
+.third_floor {
+    width: 25%;
+    background-color: rgb(254, 158, 135);
+    box-shadow: 0px 0px 15.36px 0.64px rgba(213, 43, 30, 0.34);
+    text-align: center;
+    height: 25%;    
+    margin-right: 5px;
+    
+}
+.floor_selection{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.second_floor{
+    width: 25%;
+    background-color: rgb(254, 158, 135);
+    box-shadow: 0px 0px 15.36px 0.64px rgba(213, 43, 30, 0.34);
+    text-align: center;
+    height: 25%;
+    margin-bottom: 5px;
+}
+.floor_selection span {
+    color: black;
+    font-size: 25px;
+}
+.home{
+    /*background-image: url()*/
+}
+.landing{
+background-image: url(/public/images/Backgroundimage.png);
+}
+.hello_icon {
+    background-image: url(/public/images/Options_circle.png);
+}
