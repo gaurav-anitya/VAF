@@ -1,6 +1,10 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 const app = express.Router();
+var cron = require('node-cron');
+ 
+
+
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -18,218 +22,344 @@ var DATABASE = 'Onboarding';
 
 
 var con = mysql.createConnection({
-    host: HOST,
-    port: PORT,
-    user: MYSQL_USER,
-    password: MYSQL_PASS,
-    database: DATABASE
+   host: HOST,
+   port: PORT,
+   user: MYSQL_USER,
+   password: MYSQL_PASS,
+   database: DATABASE
 });
 
 con.connect(function(err) {
-    console.log(err);
-    if (err) throw err;
-    console.log("Connected!");
-    con.query("Select * from VisiterRecord", function (err, result) {
-        if (err) throw err;
-        //console.log(result);
-        console.log((JSON.stringify(result[0].escort_date)).substring(1,11).split("-").reverse().join('-'));
-    });
+   console.log(err);
+   if (err) throw err;
+   console.log("Connected!");
+   con.query("Select * from VisiterRecord", function (err, result) {
+       if (err) throw err;
+       //console.log(result);
+       console.log((JSON.stringify(result[0].escort_date)).substring(1,11).split("-").reverse().join('-'));
+   });
 });
+function timeNow() {
+    var d = new Date(),
+      h = (d.getHours()<10?'0':'') + d.getHours(),
+      m = (d.getMinutes()<10?'0':'') + d.getMinutes();
+   return h + ':' + m;
+  }
 
-app.post('/submit', function(req, res) {
-    console.log(req.body);
-    if(req.body.visitor_company == "Other")  
-    {
-        req.body.visitor_company=req.body.visitor_company_other;
-    }
-    console.log("NewSignature:"+req.body.escort_signature);
-    if(req.body.escort_signature != "")
-    {
-        req.body.escort_signature="Y";
-        console.log("sign:"+req.body.escort_signature)
-    }
-
-    var escort = "select * from escort_table where escort_Id="+req.body.escort_empid;
-    con.query(escort,function(err, result)     
-              {                                                      
-        if (err)
-            throw err;
-        req.body.escort_name=result[0].escort_Name;
-        req.body.escort_unit=result[0].project;
-        req.body.escort_smartcard=result[0].smartCard;
-
+  app.get('/getFloors', function(req,res){
+   // var userIdLocalstorage = req.body.loggedInUser;
+    var query = `SELECT * from floor`;
+    con.query(query, function(err,result){
+      if (err)
+      throw err;
+      let arr=[];
+      for (let index = 0; index < result.length; index++) {
+      
+        arr.push({floorcode:result[index].floorcode,floorname:result[index].floorname});
+      }
+      res.json(arr);
     });
+  });
+  app.post('/localStorageUserId', function(req,res){
+    var userIdLocalstorage = req.body.loggedInUser;
+    var chckUserinDb = `SELECT is_login FROM guard_details WHERE user_id = '${userIdLocalstorage}'`;
+    con.query(chckUserinDb, function(err,result){
+      if(result[0].is_login == 0){
+        res.send({loggedOutInDB: true});
+      }
+      else
+      {
+        res.send({loggedOutInDB: false});
+      }
+    });
+  });
 
-    var identification="";
+app.post('/addVisitor', function(req, res) {
+   console.log(req.body);
+  
+   //if(req.body.visitor_company == "Other")  
+   //{
+       req.body.visitor_company=req.body.visitor_company_other;
+//}
+   
+   console.log("NewSignature:"+req.body.escort_signature);
+   if(req.body.escort_signature != "")
+   {
+       req.body.escort_signature="Y";
+       console.log("sign:"+req.body.escort_signature)
+   }
+   req.body.escort_time_from='TIME(now())';
+   req.body.escort_date=new Date();
+   req.body.visitor_access = "Permanent";
+   //if ( typeof(req.body.txt_whom_to_meet)=="undefined")
+   //{
+    req.body.txt_whom_to_meet="";
+   //}
+   req.body.txt_purpose_escort_unit="";
+                req.body.txt_project="";
+/* 
+   var escort = "select * from escort_table where escort_Id="+req.body.escort_empid;
+   con.query(escort,function(err, result)     
+             {                                                      
+       if (err)
+           throw err;
+       req.body.escort_name=result[0].escort_Name;
+       req.body.escort_unit=result[0].project;
+       req.body.escort_smartcard=result[0].smartCard;
 
-    if(req.body.Identification)
-    {
-        identification= identification+","+req.body.Identification;
-    }
-    if(req.body.Identification1)
-    {
-        identification= identification+","+req.body.Identification1;
-    }
-    if(req.body.Identification2)
-    {
-        identification= identification+","+req.body.Identification2;
-    }
-    if(req.body.Identification3 )
-    {
-        identification= identification+","+req.body.Identification3;
-    }
-    if(req.body.Identification4)
-    {
-        identification= identification+","+req.body.Identification4;
-    }
-    if(req.body.Identification5)
-    {
-        identification= identification+","+req.body.Identification5;
-    }
+   }); */
 
-    console.log(req.body.visitor_empid);
-    var inputs = Array.isArray(req.body.visitor_name);
-    if(inputs){
-        var i=0;
-        var length = (req.body.visitor_name).length;
-        var data = [];
-        console.log(data);
-        
-            con.query("SELECT COUNT(DISTINCT(groupId)) AS alias from visiterrecord", function (err, result) {
-                if (err) 
-                    throw err;
+   var identification="";
+/* 
+   if(req.body.Identification)
+   {
+       identification= identification+","+req.body.Identification;
+   }
+   if(req.body.Identification1)
+   {
+       identification= identification+","+req.body.Identification1;
+   }
+   if(req.body.Identification2)
+   {
+       identification= identification+","+req.body.Identification2;
+   }
+   if(req.body.Identification3 )
+   {
+       identification= identification+","+req.body.Identification3;
+   }
+   if(req.body.Identification4)
+   {
+       identification= identification+","+req.body.Identification4;
+   }
+   if(req.body.Identification5)
+   {
+       identification= identification+","+req.body.Identification5;
+   }
+
+ */   
+console.log(req.body.visitor_empid);
+   var inputs = Array.isArray(req.body.visitor_name_new);
+   if(inputs){
+       var i=0;
+       var length = (req.body.visitor_name_new).length;
+       var data = [];
+       console.log(data);
+
+       con.query("SELECT count( distinct groupId) AS alias from visiterrecord where groupid<>'"+"Individual'", function (err, result) {
+           if (err) 
+               throw err;
                  var   groupId= "group"+result[0].alias;
-                console.log(groupId);
-                while(i<length){
-                    var name = req.body.visitor_name[i].trim();  
-                    check(req.body.visitor_empid[i],name,req.body.visitor_company,req.body.project,req.body.visitor_smartcard[i],req.body.visitor_access,req.body.visitor_asset,req.body.visitor_purpose,req.body.escort_empid,req.body.escort_name,req.body.escort_unit,req.body.escort_smartcard,req.body.escort_date,req.body.escort_time_from,req.body.escort_time_to,identification,req.body.escort_signature,req.body.visitor_signature, req.body.area, req.body.Hall, groupId);
-                    console.log(req.body.project);
-                    i++;
-                
-            }
-            });
+           console.log(groupId);
+           while(i<length){
+
+               check(req.body.visitor_empid[i],req.body.visitor_name_new[i]
+                ,req.body.visitor_company,req.body.escort_unit,
+                req.body.visitor_smartcard[i],req.body.visitor_access,
+                req.body.visitor_asset[i],req.body.visitor_purpose,req.body.escort_empid
+                ,req.body.escort_name,req.body.escort_unit,req.body.escort_smartcard,
+                'now()',req.body.escort_time_from,req.body.escort_time_to,
+                identification,req.body.escort_signature,req.body.visitor_signature,
+                 req.body.area[i], req.body.Hall, groupId,req.body.escort_signature_JSON
+                 ,req.body.visitor_signature_JSON[i],req.body.txt_whom_to_meet,req.body.txt_purpose_escort_unit
+                 ,req.body.txt_project);
+               console.log(req.body.project);
+               i++;
+
+           }
+       });
             res.redirect('/visitorGrid');
         //res.render('Visitor_Status', {layout: true});
 
-    }else{
-        var groupId = "Individual";
-        var Hall = req.body.Hall;
-        var name = req.body.visitor_name.trim();
-        var getId="select * from VisiterRecord where visitor_empid="+req.body.visitor_empid ;
-        con.query(getId,function(err, result,fields)   
-                  {     
-            console.log("Test:"+result);
-            var diffDays=8;
+   }else{
+       var groupId = "Individual";
+       var Hall = req.body.Hall;
+       var getId="select * from VisiterRecord where visitor_empid="+req.body.visitor_empid ;
+       con.query(getId,function(err, result,fields)   
+                 {     
+           console.log("Test:"+result);
+           var diffDays=8;
 
-            if (err)
-                throw err;
-            else{ 
-                var secondDate= new Date((req.body.escort_date).toString() ); 
-                if(result.length >0)
-                {
-                    console.log("HelloEnter");
-                    var diffDays = parseInt((secondDate - result[result.length-1].escort_date) / (1000 * 60 * 60 * 24));
-                }
-                if(result.length >0 && req.body.visitor_access == "Permanent" && req.body.visitor_company == "TCS" && req.body.visitor_purpose=="New Joinee" && diffDays < 8)
-                {
-                    con.query("select count(*) as count from VisiterRecord where DATEDIFF('"+req.body.escort_date+"',escort_date) < 8 and visitor_empid="+req.body.visitor_empid,function(err, result)     
-                              {  
-                        console.log(result);                                                    
-                        if (err)
-                            throw err;
-                        else if(result[0].count < 3)
-                        {
-                            var approvalStatus="pending";
-                            var dayCount=result[0].count+1;
-                            var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area) VALUES ('"+req.body.visitor_empid+"','"+name+"','"+req.body.visitor_company+"','"+req.body.project+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"','"+req.body.escort_date+"','"+req.body.escort_time_from+"','"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+req.body.area+"') ";
-                            con.query(sql,function(err, result)     
-                                      {                                                      
-                                if (err)
-                                    throw err;
-                                else{
-                                    var sql1 = "Insert into escort_signature (escort_Id,escort_Name,Signature,visitor_Id,visitor_name,visitor_cardNo,Date) VALUES ('"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_signature+"','"+req.body.visitor_empid+"','"+req.body.visitor_name+"','"+req.body.visitor_smartcard+"','"+req.body.escort_date+"')";
-                                    con.query(sql1,function(err, result)     
-                                              {                                                      
-                                        if (err)
-                                            throw err;
+           if (err)
+               throw err;
+           else{ 
+            
+            //   var secondDate=  req.body.escort_date; 
+               if(result.length >0)
+               {
+                   console.log("HelloEnter");
+                  // var diffDays = parseInt((secondDate - result[result.length-1].escort_date) / (1000 * 60 * 60 * 24));
+               }
+               if(result.length >0 && req.body.visitor_access == "Permanent" && req.body.visitor_company == "Tata Consultancy Services (TCS)" && req.body.visitor_purpose=="New Joinee") //&& diffDays < 8)
+               {
+                   con.query("select count(*) as count from VisiterRecord where DATEDIFF('"+req.body.escort_date+"',escort_date) < 8 and visitor_empid="+req.body.visitor_empid,function(err, result)     
+                             {  
+                       console.log(result);                                                    
+                       if (err)
+                           throw err;
+                       else if(result[0].count < 3)
+                       {
+                           var approvalStatus="pending";
+                           var dayCount=result[0].count+1;
+                           var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area,visitor_signature,escort_signature,persontomeet,areaofvisit,projectofvisit) VALUES ('"+req.body.visitor_empid+"','"+req.body.visitor_name_new+"','"+req.body.visitor_company+"','"+req.body.escort_unit+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"',now(),"+req.body.escort_time_from+",'"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+req.body.area+"','"+req.body.visitor_signature_JSON+"','"+req.body.escort_signature_JSON+"','"+req.body.txt_whom_to_meet +"','"+req.body.txt_purpose_escort_unit+"','"+req.body.txt_project+"') ";
+                           con.query(sql,function(err, result)     
+                                     {                                                      
+                               if (err)
+                                   throw err;
+                               else{
+                                   var sql1 = "Insert into escort_signature (escort_Id,escort_Name,Signature,visitor_Id,visitor_name,visitor_cardNo,Date) VALUES ('"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_signature+"','"+req.body.visitor_empid+"','"+req.body.visitor_name_new+"','"+req.body.visitor_smartcard+"',now())";
+                                  console.log(sql1);
+                                   con.query(sql1,function(err, result)     
+                                             {                                                      
+                                       if (err)
+                                           throw err;
 
-                                    });
-                                    var sql2 = "Insert into visitor_signature (visitor_name,Signature,visitor_cardNo,Date) VALUES ('"+req.body.visitor_name+"','"+req.body.visitor_signature+"','"+req.body.visitor_smartcard+"','"+req.body.escort_date+"')";
-                                    con.query(sql2,function(err, result)     
-                                              {                                                      
-                                        if (err)
-                                            throw err;
+                                   });
+                                   var sql2 = "Insert into visitor_signature (visitor_name,Signature,visitor_cardNo,Date) VALUES ('"+req.body.visitor_name_new+"','"+req.body.visitor_signature+"','"+req.body.visitor_smartcard+"',now())";
+                                   con.query(sql2,function(err, result)     
+                                             {                                                      
+                                       if (err)
+                                           throw err;
 
-                                    });
-                                }
-                            });
+                                   });
+                               }
+                           });
                             res.redirect('/visitorGrid');
                            // res.redirect('Visitor_Status', {layout: true});
-                        }
-                        else{
+                       }
+                       else{
 
-                            res.render('SubmitResponse', {layout: true});
-                        }
+                           res.render('SubmitResponse', {layout: true});
+                       }
 
-                    });
+                   });
 
-                    //    if(result[result.length-1].dayCount <3 )
-                    //    {
-                    //   console.log("if");
-                    //   //var updateRecord="update VisiterRecord set dayCount=dayCount+1 where visitor_empid="+req.body.visitor_empid+ "and dayCount < 3";
-                    //   con.query('UPDATE VisiterRecord SET dayCount= dayCount+1 WHERE visitor_empid= ? and dayCount=?',[req.body.visitor_empid,result[result.length-1].dayCount],function(err, result)     
-                    //   {                                                      
-                    //     if (err)
-                    //       throw err;
-                    //       console.log(result);
+                   //    if(result[result.length-1].dayCount <3 )
+                   //    {
+                   //   console.log("if");
+                   //   //var updateRecord="update VisiterRecord set dayCount=dayCount+1 where visitor_empid="+req.body.visitor_empid+ "and dayCount < 3";
+                   //   con.query('UPDATE VisiterRecord SET dayCount= dayCount+1 WHERE visitor_empid= ? and dayCount=?',[req.body.visitor_empid,result[result.length-1].dayCount],function(err, result)     
+                   //   {                                                      
+                   //     if (err)
+                   //       throw err;
+                   //       console.log(result);
 
-                    //   });
-                    //    res.render('Status', {layout: true});
-                    //   }
-                    // else{
-                    //   res.render('SubmitResponse', {layout: true});
+                   //   });
+                   //    res.render('Status', {layout: true});
+                   //   }
+                   // else{
+                   //   res.render('SubmitResponse', {layout: true});
 
-                    //     }
+                   //     }
 
-                }
-                else
-                {
-                    var approvalStatus="pending";
-                    var dayCount=1;
+               }
+               else
+               {
+                   var approvalStatus="pending";
+                   var dayCount=1;
 
-                    var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall, groupId, area) VALUES ('"+req.body.visitor_empid+"','"+name+"','"+req.body.visitor_company+"','"+req.body.project+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"','"+req.body.escort_date+"','"+req.body.escort_time_from+"','"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+req.body.area+"') ";
-                    con.query(sql,function(err, result)     
-                              {                                                      
-                        if (err)
-                            throw err;
-                        else{
-                            var sql1 = "Insert into escort_signature (escort_Id,escort_Name,Signature,visitor_Id,visitor_name,visitor_cardNo,Date) VALUES ('"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_signature+"','"+req.body.visitor_empid+"','"+req.body.visitor_name+"','"+req.body.visitor_smartcard+"','"+req.body.escort_date+"')";
-                            con.query(sql1,function(err, result)     
-                                      {                                                      
-                                if (err)
-                                    throw err;
+                   var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area,visitor_signature,escort_signature,persontomeet,areaofvisit,projectofvisit) VALUES ('"+req.body.visitor_empid+"','"+req.body.visitor_name_new+"','"+req.body.visitor_company+"','"+req.body.escort_unit+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"',now(),"+req.body.escort_time_from+",'"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+req.body.area+"','"+req.body.visitor_signature_JSON +"','"+req.body.escort_signature_JSON+"','"+txt_whom_to_meet +"','"+txt_purpose_escort_unit+"','"+txt_project+"') ";
+                   console.log(sql);
+                   con.query(sql,function(err, result)     
+                             {                                                      
+                       if (err)
+                           throw err;
+                       else{
+                           var sql1 = "Insert into escort_signature (escort_Id,escort_Name,Signature,visitor_Id,visitor_name,visitor_cardNo,Date) VALUES ('"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_signature+"','"+req.body.visitor_empid+"','"+req.body.visitor_name_new+"','"+req.body.visitor_smartcard+"',now())";
+                           console.log(sql1);
+                           con.query(sql1,function(err, result)     
+                                     {                                                      
+                               if (err)
+                                   throw err;
 
-                            });
-                            var sql2 = "Insert into visitor_signature (visitor_name,Signature,visitor_cardNo,Date) VALUES ('"+req.body.visitor_name+"','"+req.body.escort_signature+"','"+req.body.visitor_smartcard+"','"+req.body.escort_date+"')";
-                            con.query(sql2,function(err, result)     
-                                      {                                                      
-                                if (err)
-                                    throw err;
+                           });
+                           var sql2 = "Insert into visitor_signature (visitor_name,Signature,visitor_cardNo,Date) VALUES ('"+req.body.visitor_name_new+"','"+req.body.escort_signature+"','"+req.body.visitor_smartcard+"',now())";
+                           console.log(sql2);
+                           con.query(sql2,function(err, result)     
+                                     {                                                      
+                               if (err)
+                                   throw err;
 
-                            });
+                           });
 
-                        }
+                       }
 
-                    });
+                   });
+
 
                     res.redirect('/visitorGrid');
-                    //res.redirect('Visitor_Status', {layout: true});
-                }
-            }
+               }
+           }
 
 
-        });
-    }
+       });
+   }
+});
+
+app.post('/checkGuard', function(req,res){
+    var userId = req.body.guard_id.toUpperCase();
+    var password_received = req.body.guard_password;  
+    var password_db;
+    var isAuth = `SELECT * FROM guard_details WHERE upper(user_id) = '${userId}'`;
+    var setLogin = `UPDATE guard_details SET is_login = 1 WHERE upper(user_id) = '${userId}'`;
+    console.log(isAuth);
+    con.query(isAuth, function(err, result){
+      if (result == '' || result == null || result == undefined){
+        res.send({authenticated : false});
+      }
+      else if(result[0].is_login == 1){
+        res.send({already_loggedin : true});
+      }
+      else{
+        password_db = result[0].password;
+        if (err)
+          throw err;    
+        if( password_received === password_db ){
+          con.query(setLogin, function(err, result){
+            if (err)
+              throw err;
+          });
+          res.send({authenticated: true, userId: userId, name: result[0].name});
+          console.log(result[0].name);
+        }
+        else{
+          res.send({authenticated : false});
+          console.log('not authorized');
+        } 
+      }   
+    });  
+  });
+  
+  app.post('/logoutGuard', function(req,res){
+      var logout_user = req.body.user_id;
+      var logoutQuery = `UPDATE guard_details SET is_login = 0 WHERE user_id = '${logout_user}'`;
+      con.query(logoutQuery, function(err){
+        if (err){
+          throw err;        
+        }
+        else{
+          res.send({logged_out: true});
+        }
+      })
+  });
+  
+  app.post('/localStorageUserId', function(req,res){
+    var userIdLocalstorage = req.body.loggedInUser;
+    var chckUserinDb = `SELECT is_login FROM guard_details WHERE user_id = '${userIdLocalstorage}'`;
+    con.query(chckUserinDb, function(err,result){
+      if(result[0].is_login == 0){
+        res.send({loggedOutInDB: true});
+      }
+    });
+  });
+  
+cron.schedule('0 6,14,22 * * *', () => {
+  var logoutQuery = `UPDATE guard_details SET is_login = 0 WHERE 1`;
+    con.query(logoutQuery, function(err){
+      if (err){
+        throw err;   
+             
+      }      
+    });
 });
 
 app.post("/getApprovalToken",function(req, res) {
@@ -318,91 +448,91 @@ app.post("/visitorApproved",function(req, response,callback) {
   var timeDiff="";
   //-------------------------------Expire count from generated end-----------------------//
 
-  getTimeStamp(req.body.visitor_id,function(timeStamp){
-console.log("savedTime: "+timeStamp);
-    var currentTimestamp= Math.floor(Date.now() / 1000);
+   getTimeStamp(req.body.visitor_id,function(timeStamp){
+       console.log("savedTime: "+timeStamp);
+       var currentTimestamp= Math.floor(Date.now() / 1000);
 
-    timeDiff=currentTimestamp-timeStamp;
-console.log("currentTime: "+currentTimestamp);
+       timeDiff=currentTimestamp-timeStamp;
+       console.log("currentTime: "+currentTimestamp);
 
-    con.query('delete from otp_table WHERE Id= ?',[req.body.escort_id],function(err, res)     
-    {                                                      
-      if (err)
-        throw err;
-        console.log(res);
-       // response.send(true);
+       con.query('delete from otp_table WHERE Id= ?',[req.body.escort_id],function(err, res)     
+                 {                                                      
+           if (err)
+               throw err;
+           console.log(res);
+           // response.send(true);
     });
 
-  
 
-  //-----------------------------------end-----------------------------------------//
-    
 
-  //-----------Expire OTP from approver End generation------------//
-  //var approverId=req.body.getToken.split(req.body.escort_id);
-  // var tempTime="";
-   var id="";
-   var escortLength=req.body.escort_id.length;
-   var actualId=verifyAgain.split('');
-   for(var i=1;i<=escortLength;i++)
-  {
-     id = id+""+actualId[i];
-  }
-   console.log("approverIdtemp"+id);
-  // for(var i=escortLength+1; i<verifyAgain.length;i++)
-  // {
-  //   tempTime=tempTime+""+actualId[i];
-  // }
-  
-  // console.log("time1: "+tempTime);
-  //  var temp=approvalToken(tempTime);
-  //  var timestamp=approvalToken(temp);
-  // console.log("timestamp: "+timestamp);
-  // var currentTimestamp=Math.floor(Date.now() / 1000);
+       //-----------------------------------end-----------------------------------------//
 
-  //  var timeDiff= currentTimestamp-timestamp;
-  //  console.log(timeDiff);
-//   var dd="";
-//   var mm="";
-//   console.log(approverId[0]+" "+approverId[1]+" "+approverId[2]+" "+approverId[approverId.length-2]+" "+approverId[approverId.length-1]);
-//   console.log(req.body.getToken.length+"/"+req.body.escort_id.length);
-// for(var hr=1; hr < temp1.length;hr++)
-// {
-//   hrs=hrs+temp1[hr];
-// }
 
-// dd=temp3[0]+""+temp3[1];
-// mm= temp3[temp3.length-4]+""+temp3[temp3.length-3];
-// min=temp3[temp3.length-2]+""+temp3[temp3.length-1];
- 
-//  var date=new Date();
-//  var currentHrs=date.getHours();
-//  var currentMin=date.getMinutes();
-//  var currentDay=date.getDay();
-//  if(currentDay.length == 1)
-//  {
-//    currentDay="0"+currentDay;
-//  }
-//  if(currentMonth.length == 1)
-//  {
-//   currentMonth="0"+currentMonth;
-//  }
-//  var currentMonth=date.getMonth();
-// console.log(hrs+":"+min);
+       //-----------Expire OTP from approver End generation------------//
+       //var approverId=req.body.getToken.split(req.body.escort_id);
+       // var tempTime="";
+       var id="";
+       var escortLength=req.body.escort_id.length;
+       var actualId=verifyAgain.split('');
+       for(var i=1;i<=escortLength;i++)
+       {
+           id = id+""+actualId[i];
+       }
+       console.log("approverIdtemp"+id);
+       // for(var i=escortLength+1; i<verifyAgain.length;i++)
+       // {
+       //   tempTime=tempTime+""+actualId[i];
+       // }
 
-// if(currentDay == dd && currentMonth == mm)
-// {
-// if(currentHrs == hrs || (currentHrs-hrs) < 2)
-// {
-// timeDiff=currentMin-min;
+       // console.log("time1: "+tempTime);
+       //  var temp=approvalToken(tempTime);
+       //  var timestamp=approvalToken(temp);
+       // console.log("timestamp: "+timestamp);
+       // var currentTimestamp=Math.floor(Date.now() / 1000);
 
-// }
-// }
-// console.log("timeDiff:"+timeDiff);
+       //  var timeDiff= currentTimestamp-timestamp;
+       //  console.log(timeDiff);
+       //   var dd="";
+       //   var mm="";
+       //   console.log(approverId[0]+" "+approverId[1]+" "+approverId[2]+" "+approverId[approverId.length-2]+" "+approverId[approverId.length-1]);
+       //   console.log(req.body.getToken.length+"/"+req.body.escort_id.length);
+       // for(var hr=1; hr < temp1.length;hr++)
+       // {
+       //   hrs=hrs+temp1[hr];
+       // }
 
-//---------------------------------------******-------------------------------//
+       // dd=temp3[0]+""+temp3[1];
+       // mm= temp3[temp3.length-4]+""+temp3[temp3.length-3];
+       // min=temp3[temp3.length-2]+""+temp3[temp3.length-1];
 
-console.log("timeDiff: "+timeDiff);
+       //  var date=new Date();
+       //  var currentHrs=date.getHours();
+       //  var currentMin=date.getMinutes();
+       //  var currentDay=date.getDay();
+       //  if(currentDay.length == 1)
+       //  {
+       //    currentDay="0"+currentDay;
+       //  }
+       //  if(currentMonth.length == 1)
+       //  {
+       //   currentMonth="0"+currentMonth;
+       //  }
+       //  var currentMonth=date.getMonth();
+       // console.log(hrs+":"+min);
+
+       // if(currentDay == dd && currentMonth == mm)
+       // {
+       // if(currentHrs == hrs || (currentHrs-hrs) < 2)
+       // {
+       // timeDiff=currentMin-min;
+
+       // }
+       // }
+       // console.log("timeDiff:"+timeDiff);
+
+       //---------------------------------------******-------------------------------//
+
+       console.log("timeDiff: "+timeDiff);
 
 if(timeDiff < 10*60)
 {
@@ -468,126 +598,129 @@ else{
 
   });
 
-  app.post("/validateVisitor",function(req, res) {
-
+app.post("/validateVisitor",function(req, res) {
     try{
-    console.log(req.body.visitor_id);
-    var getId="select * from VisiterRecord where visitor_empid="+req.body.visitor_id;
-    con.query(getId, function (err, result) {
-        if (err) 
-            throw err;
-        if(result.length>0)
-        {
-            res.send(result[0].approvalStatus);
-            console.log(result);
-        }
-        else{
-            res.send("null");
-        }
-    });
+   console.log(req.body.visitor_id);
+   var getId="select * from VisiterRecord where visitor_empid="+req.body.visitor_id;
+   con.query(getId, function (err, result) {
+       if (err) 
+           throw err;
+       if(result.length>0)
+       {
+           res.send(result[0].approvalStatus);
+           console.log(result);
+       }
+       else{
+           res.send("null");
+       }
+   });
   }
 catch(error)
 {
   console.error(error);
 }
-    });
+});
 
-    app.post("/validateEscort",function(req, res) {
+app.post("/validateEscort",function(req, res) {
       try{
       console.log(req.body.escort_id);
-      var getId="select * from escort_table where escort_Id="+req.body.escort_id;
-      con.query(getId, function (err, result) {
-        if (err) 
-            throw err;
-        console.log(result);
-        if(result.length>0 && result[0].IsActive == "Y")
-        {
-            res.send(JSON.stringify(result));
-            console.log(result);
-        }
-        else{
-            res.send(false);
-          }
-      });
+   if(req.body.escort_id ==='')
+   return;
+   var getId="select * from escort_table where escort_Id="+req.body.escort_id;   
+   console.log(getId); 
+   con.query(getId, function (err, result) {
+       if (err) 
+           throw err;
+       console.log(result);
+       if(result.length>0 && result[0].IsActive == "Y")
+       {
+           res.send(JSON.stringify(result));
+           console.log(result);
+       }
+       else{
+           res.send(false);
+       }
+   });
     }
   catch(error)
   {
   console.error(error);
   }
-      });
+});
+//
+//
+//
+app.post("/visitorRecord",function(req, res) {
 
-
-
-    app.post("/visitorRecord",function(req, res) {
-          
       try{
-          var getId="select * from VisiterRecord t1 LEFT JOIN approver_table t2 on t1.approverRole_Id = t2.Role_Id";
-          con.query(getId, function (err, result,fields) {
-            if (err) 
-              throw err;
-             // console.log(result);
-              res.send(JSON.stringify(result));
-            
-          });
+   var getId=`select * from VisiterRecord t1 LEFT JOIN approver_table t2 on t1.approverRole_Id =
+    t2.Role_Id WHERE cast(escort_date as date)=cast(now() as date)
+    order by escort_date desc`;
+   con.query(getId, function (err, result,fields) {
+       if (err) 
+           throw err;
+       // console.log(result);
+       res.send(JSON.stringify(result));
+
+   });
 
         }
       catch(error)
       {
         console.error(error);
       }
-          });
+});
 
 app.post("/updateOutTime",function(req, response){
-try{  
-console.log("updateOut");
-console.log(req.body);
-var date=new Date();
-var outTime= date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-console.log("outTime: "+outTime);
-console.log("Floor "+req.body.floorCode);
+   try{  
+       console.log("updateOut");
+       console.log(req.body);
+       var date=new Date();
+       var outTime= date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+       console.log("outTime: "+outTime);
+       console.log("Floor "+req.body.floorCode);
 
+       if(req.body.floorCode != ""){
+           con.query('UPDATE VisiterRecord SET escort_time_to = ? WHERE Id= ?',[outTime,req.body.visitor_id],function(err, res)     
+                     {   
+               console.log(res);                                                 
+               if (err)
+                   throw err;
 
-if(req.body.floorCode != ""){
-  con.query('UPDATE VisiterRecord SET escort_time_to = ? WHERE Id= ?',[outTime,req.body.visitor_id],function(err, res)     
-      {   
-        console.log(res);                                                 
-        if (err)
-          throw err;
-        
-          getFloor(req.body.floorCode,function(floorName){
-            console.log(floorName);
-            checkIfVisiterExistOnFloor(req.body,floorName,function(isExist){
-              console.log("bool "+isExist);
-           if(isExist) 
-           {  
-            if(floorName == 0 )
-            {
-              response.send(false)
-            }
-            else{
-            con.query('UPDATE ?? SET OutTime = ?, status="Out" WHERE visitor_cardNo= ? and visitor_name= ?',[floorName,outTime,req.body.visitor_smartcard,req.body.visitor_name],function(err, res)     
-            {   
-              console.log(res);                                                 
-              if (err)
-                throw err;
+               getFloor(req.body.floorCode,function(floorName){
+                   console.log(floorName);
+                   checkIfVisiterExistOnFloor(req.body,floorName,function(isExist){
+                       console.log("bool "+isExist);
+                       if(isExist) 
+                       {  
+                           if(floorName == 0 )
+                           {
+                               response.send(false)
+                           }
+                           else{
+                               con.query('UPDATE ?? SET OutTime = ?, status="Out" WHERE visitor_cardNo= ? and visitor_name= ?',[floorName,outTime,req.body.visitor_smartcard,req.body.visitor_name],function(err, res)     
+                                         {   
+                                   console.log(res);                                                 
+                                   if (err)
+                                       throw err;
 
-                 response.send(true);
+                                   response.send(true);
 
-            });  
-             }
-         }
-     }); 
+                               });  
+                           }
+                       }
+                   }); 
 
-});
-});
-}
-    else{
-        response.send(false);
-    }
-  }catch(error)
-  {
-    console.error(error);
-  }
+               });
+           });
+       }
+       else{
+           response.send(false);
+       }
+   }catch(error)
+   {
+       console.error(error);
+   }
 }); 
 
 app.post("/updateInTime",function(req, response){
@@ -631,13 +764,13 @@ app.post("/updateInTime",function(req, response){
   else{
     response.send("NoOut");
 
-  }
-  });
-}catch(error)
-{
-  console.error(error);
-}
-  }); 
+           }
+       });
+   }catch(error)
+   {
+       console.error(error);
+   }
+}); 
 
 
   app.post("/floorAuthentication",function(req, response){
@@ -709,29 +842,29 @@ console.log(floorName);
 } 
 
 function visitorAccessOnFloor(body,callback){
-  try{
-  console.log("visitorAccessOnFloor");
-  console.log("body.visitor: "+body.visitor_name);
-  console.log("body.visitor: "+body.visitor_smartcard);
+   try{
+       console.log("visitorAccessOnFloor");
+       console.log("body.visitor: "+body.visitor_name);
+       console.log("body.visitor: "+body.visitor_smartcard);
 
-  con.query("select Hall from visiterrecord where visitor_name=? and visitor_smartcard=?",[body.visitor_name,body.visitor_smartcard],function(err,res){
+       con.query("select Hall from visiterrecord where visitor_name=? and visitor_smartcard=?",[body.visitor_name,body.visitor_smartcard],function(err,res){
 
-    if(err)
-    throw err;
-    else if(res.length>0){
-      var hall=res[0].Hall.split(',');
-      console.log("hall"+hall);
-      callback(hall);
-    }
-    else{
-      callback(false);
-    }
-    
-  });
-}catch(error)
-{
-  console.error(error);
-}
+           if(err)
+               throw err;
+           else if(res.length>0){
+               var hall=res[0].Hall.split(',');
+               console.log("hall"+hall);
+               callback(hall);
+           }
+           else{
+               callback(false);
+           }
+
+       });
+   }catch(error)
+   {
+       console.error(error);
+   }
 
 }
 
@@ -1119,133 +1252,162 @@ console.log(ApproverRoleId);
 
 }
 
-function callelse(result,id,name,visitor_company,project,card,visitor_access,visitor_asset,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,identification,escort_signature,visitor_signature,area, Hall, groupId){
-    var approvalStatus="pending";
-    var dayCount=result[0].count+1;
-    var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area) VALUES ('"+id+"','"+name+"','"+visitor_company+"','"+project+"','"+card+"','"+visitor_access+"','"+visitor_asset+"','"+visitor_purpose+"','"+escort_empid+"','"+escort_name+"','"+escort_unit+"','"+escort_smartcard+"','"+escort_date+"','"+escort_time_from+"','"+escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+area+"') ";
-    con.query(sql,function(err, result)     
-              {                                                      
-        if (err)
-            throw err;
-        else{
-            var sql1 = "Insert into escort_signature (escort_Id,escort_Name,Signature,visitor_Id,visitor_name,visitor_cardNo,Date) VALUES ('"+escort_empid+"','"+escort_name+"','"+escort_signature+"','"+id+"','"+name+"','"+card+"','"+escort_date+"')";
-            con.query(sql1,function(err, result)     
-                      {                                                      
-                if (err)
-                    throw err;
+function callelse(result,id,name,visitor_company,project,card,
+  visitor_access,visitor_asset,visitor_purpose,
+  escort_empid,escort_name,escort_unit,
+  escort_smartcard,escort_date,escort_time_from,
+  escort_time_to,identification,escort_signature
+  ,visitor_signature,area, Hall, groupId,escort_empid,escort_name
+  ,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to
+  ,identification,escort_signature,visitor_signature,area, 
+  Hall, groupId,escort_signature_JSON,visitor_signature_JSON){
+   var approvalStatus="pending";
+   var dayCount=result[0].count+1;
+   var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area,visitor_signature,escort_signature,persontomeet,areaofvisit,projectofvisit) VALUES ('"+id+"','"+name+"','"+visitor_company+"','"+project+"','"+card+"','"+visitor_access+"','"+visitor_asset+"','"+visitor_purpose+"','"+escort_empid+"','"+escort_name+"','"+escort_unit+"','"+escort_smartcard+"',"+escort_date+","+escort_time_from+",'"+escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+area+"','"+visitor_signature_JSON+"','"+escort_signature_JSON+"','"+txt_whom_to_meet +"','"+txt_purpose_escort_unit+"','"+txt_project+"') ";
+   console.log(sql);
+   con.query(sql,function(err, result)     
+             {                                                      
+       if (err)
+           throw err;
+       else{
+           var sql1 = "Insert into escort_signature (escort_Id,escort_Name,Signature,visitor_Id,visitor_name,visitor_cardNo,Date) VALUES ('"+escort_empid+"','"+escort_name+"','"+escort_signature+"','"+id+"','"+name+"','"+card+"',"+escort_date+")";
+           console.log(sql1)
+           con.query(sql1,function(err, result)     
+                     {                                                      
+               if (err)
+                   throw err;
 
-            });
-            var sql2 = "Insert into visitor_signature (visitor_name,Signature,visitor_cardNo,Date) VALUES ('"+name+"','"+visitor_signature+"','"+card+"','"+escort_date+"')";
-            con.query(sql2,function(err, result)     
-                      {                                                      
-                if (err)
-                    throw err;
+           });
+           var sql2 = "Insert into visitor_signature (visitor_name,Signature,visitor_cardNo,Date) VALUES ('"+name+"','"+visitor_signature+"','"+card+"',"+escort_date+")";
+           console.log(sql2)
+           con.query(sql2,function(err, result)     
+                     {                                                      
+               if (err)
+                   throw err;
 
-            });
-        }
-    });
-    // res.render('Visitor_Status', {layout: true});
-    return true;
+           });
+       }
+   });
+   // res.render('Visitor_Status', {layout: true});
+   return true;
 }
-function call(id,name,visitor_company,visitor_unit,card,visitor_access,visitor_asset,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,identification,escort_signature,visitor_signature,area, Hall, groupId){
-    var approvalStatus="pending";
-    var dayCount=1;
+function call(id,name,visitor_company,visitor_unit,card,
+  visitor_access,visitor_asset,visitor_purpose,
+  escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,
+  escort_time_from,escort_time_to,identification,escort_signature
+  ,visitor_signature,
+  area, 
+  Hall, 
+  groupId,
+  escort_empid,
+  escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,
+  identification,escort_signature,visitor_signature,area, Hall, groupId,escort_signature_JSON,
+  visitor_signature_JSON,txt_whom_to_meet,txt_purpose_escort_unit,txt_project){
+   var approvalStatus="pending";
 
-    var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area) VALUES ('"+id+"','"+name+"','"+visitor_company+"','"+visitor_unit+"','"+card+"','"+visitor_access+"','"+visitor_asset+"','"+visitor_purpose+"','"+escort_empid+"','"+escort_name+"','"+escort_unit+"','"+escort_smartcard+"','"+escort_date+"','"+escort_time_from+"','"+escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+area+"') ";
-    con.query(sql,function(err, result)     
-              {                                                      
-        if (err)
-            throw err;
-        else{
-            var sql1 = "Insert into escort_signature (escort_Id,escort_Name,Signature,visitor_Id,visitor_name,visitor_cardNo,Date) VALUES ('"+escort_empid+"','"+escort_name+"','"+escort_signature+"','"+id+"','"+name+"','"+card+"','"+escort_date+"')";
-            con.query(sql1,function(err, result)     
-                      {                                                      
-                if (err)
-                    throw err;
+   var dayCount=1;
 
-            });
-            var sql2 = "Insert into visitor_signature (visitor_name,Signature,visitor_cardNo,Date) VALUES ('"+name+"','"+escort_signature+"','"+card+"','"+escort_date+"')";
-            con.query(sql2,function(err, result)     
-                      {                                                      
-                if (err)
-                    throw err;
+   var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area,visitor_signature,escort_signature,persontomeet,areaofvisit,projectofvisit) VALUES ('"+id+"','"+name+"','"+visitor_company+"','"+visitor_unit+"','"+card+"','"+visitor_access+"','"+visitor_asset+"','"+visitor_purpose+"','"+escort_empid+"','"+escort_name+"','"+escort_unit+"','"+escort_smartcard+"',"+escort_date+","+escort_time_from+",'"+escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+area+"','"+visitor_signature_JSON+"','"+escort_signature_JSON+"','"+txt_whom_to_meet +"','"+txt_purpose_escort_unit+"','"+txt_project+"') ";
+   console.log(sql);
+   con.query(sql,function(err, result)     
+             {                                                      
+       if (err)
+           throw err;
+       else{
+           var sql1 = "Insert into escort_signature (escort_Id,escort_Name,Signature,visitor_Id,visitor_name,visitor_cardNo,Date) VALUES ('"+escort_empid+"','"+escort_name+"','"+escort_signature+"','"+id+"','"+name+"','"+card+"',"+escort_date+")";
+           console.log(sql1);
+           con.query(sql1,function(err, result)     
+                     {                                                      
+               if (err)
+                   throw err;
 
-            });
-        }
+           });
+           var sql2 = "Insert into visitor_signature (visitor_name,Signature,visitor_cardNo,Date) VALUES ('"+name+"','"+escort_signature+"','"+card+"',"+escort_date+")";
+           console.log(sql2);
+           con.query(sql2,function(err, result)     
+                     {                                                      
+               if (err)
+                   throw err;
 
-    });
+           });
+       }
+
+   });
 
 
-    // res.render('Visitor_Status', {layout: true});
+   // res.render('Visitor_Status', {layout: true});
 
-    return true;
+   return true;
 }
-function check(id,name,visitor_company,project,card,visitor_access,visitor_asset,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,identification,escort_signature,visitor_signature, area, Hall, groupId){
-    console.log("id"+id);
-    var getId="select * from VisiterRecord where visitor_empid="+id ;
-    con.query(getId,function(err, result,fields)   
-              {     
-        //  console.log("Test:"+result);
-        var diffDays=8;
+function check(id,name,visitor_company,project,card,visitor_access,visitor_asset,visitor_purpose,
+  escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,
+  escort_time_to,identification,escort_signature,visitor_signature, area, Hall, groupId,escort_signature_JSON
+  ,visitor_signature_JSON,txt_whom_to_meet,txt_purpose_escort_unit,txt_project){
+   console.log(id);
+   var getId="select * from VisiterRecord where visitor_empid="+id ;
+   con.query(getId,function(err, result,fields)   
+             {     
+       //  console.log("Test:"+result);
+       var diffDays=8;
 
-        if (err)
-            throw err;
-        else{ 
-            var secondDate= new Date((escort_date).toString() ); 
-            if(result.length >0)
-            {
-                console.log("HelloEnter");
-                var diffDays = parseInt((secondDate - result[result.length-1].escort_date) / (1000 * 60 * 60 * 24));
-            }
-            if(result.length >0 && visitor_access == "Permanent" && visitor_company == "TCS" && visitor_purpose=="New Joinee" && diffDays < 8)
-            {
-                con.query("select count(*) as count from VisiterRecord where DATEDIFF('"+escort_date+"',escort_date) < 8 and visitor_empid="+id,function(err, result)     
-                          {  
-                    //console.log(result);                                                    
-                    if (err)
-                        throw err;
-                    else if(result[0].count < 3)
-                    {
-                        callelse(result,id,name,visitor_company,project,card,visitor_access,visitor_asset,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,identification,escort_signature,visitor_signature,area, Hall, groupId);
-                        // res.render('Visitor_Status', {layout: true});
-                        return true;
+       if (err)
+           throw err;
+       else{ 
+          // var secondDate= new Date((escort_date).toString() ); 
+          // if(result.length >0)
+         //  {
+          //     console.log("HelloEnter");
+          //     var diffDays = parseInt((secondDate - result[result.length-1].escort_date) / (1000 * 60 * 60 * 24));
+         //  }
+           if(result.length >0 && visitor_access == "Permanent" && visitor_company == "Tata Consultancy Services (TCS)" && visitor_purpose=="New Joinee")// && diffDays < 8)
+           {
+               con.query("select count(*) as count from VisiterRecord where DATEDIFF("+escort_date+",escort_date) < 8 and visitor_empid="+id,function(err, result)     
+                         {  
+                   //console.log(result);                                                    
+                   if (err)
+                       throw err;
+                   else if(result[0].count < 3)
+                   {
+                       callelse(result,id,name,visitor_company,project,card,visitor_access,visitor_asset,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,identification,escort_signature,visitor_signature,area, Hall, groupId,escort_signature_JSON,visitor_signature_JSON,txt_whom_to_meet,txt_purpose_escort_unit,txt_project);
+                       // res.render('Visitor_Status', {layout: true});
+                       return true;
 
-                    }
-                    else{
+                   }
+                   else{
 
-                        // res.render('SubmitResponse', {layout: true});
-                        return false;
-                    }
+                       // res.render('SubmitResponse', {layout: true});
+                       return false;
+                   }
 
-                });
+               });
 
-                //    if(result[result.length-1].dayCount <3 )
-                //    {
-                //   console.log("if");
-                //   //var updateRecord="update VisiterRecord set dayCount=dayCount+1 where visitor_empid="+req.body.visitor_empid+ "and dayCount < 3";
-                //   con.query('UPDATE VisiterRecord SET dayCount= dayCount+1 WHERE visitor_empid= ? and dayCount=?',[req.body.visitor_empid,result[result.length-1].dayCount],function(err, result)     
-                //   {                                                      
-                //     if (err)
-                //       throw err;
-                //       console.log(result);
+               //    if(result[result.length-1].dayCount <3 )
+               //    {
+               //   console.log("if");
+               //   //var updateRecord="update VisiterRecord set dayCount=dayCount+1 where visitor_empid="+req.body.visitor_empid+ "and dayCount < 3";
+               //   con.query('UPDATE VisiterRecord SET dayCount= dayCount+1 WHERE visitor_empid= ? and dayCount=?',[req.body.visitor_empid,result[result.length-1].dayCount],function(err, result)     
+               //   {                                                      
+               //     if (err)
+               //       throw err;
+               //       console.log(result);
 
-                //   });
-                //    res.render('Status', {layout: true});
-                //   }
-                // else{
-                //   res.render('SubmitResponse', {layout: true});
+               //   });
+               //    res.render('Status', {layout: true});
+               //   }
+               // else{
+               //   res.render('SubmitResponse', {layout: true});
 
-                //     }
+               //     }
 
-            }
-            else
-            {
-                call(id,name,visitor_company,project,card,visitor_access,visitor_asset,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,identification,escort_signature,visitor_signature,area, Hall, groupId);
-            }
+           }
+           else
+           {
+               call(id,name,visitor_company,project,card,visitor_access,visitor_asset,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,identification,escort_signature,visitor_signature,area, Hall, groupId,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,identification,escort_signature,visitor_signature,area, Hall, groupId,escort_signature_JSON,visitor_signature_JSON,txt_whom_to_meet,txt_purpose_escort_unit,txt_project);
+           }
 
-        }
+       }
 
-    });
+   });
 
 }
 

@@ -1,0 +1,52 @@
+<html lang="en">
+    <head>
+        <title>Vendor Page</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+        <script type="text/javascript" src="/public/javascripts/jquery.signature.js"></script>
+        <link type="text/css" href="/public/stylesheets/jquery.signature.css" rel="stylesheet"> 
+        <style>
+        .disable_scroll{
+           
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+    position: fixed;
+}
+        
+        </style>
+        <script>
+               $(function() {
+                    $('#selector').signature({syncField: '#JSONCollector',
+			syncFormat: 'JSON'});
+                                  
+               });
+               $(function(){
+                $('#JSONDisplay').click(function() {
+                    var sigval=$('#JSONCollector').val();
+                    console.log(sigval);
+                    $('#JSONDisplay').signature().signature('draw',sigval);
+                    
+               }); 
+               });
+
+        </script>
+    </head>
+    <body>
+        <div id = "selector" class="disable_scroll" style="width: 400px; height:200px; border : 1px solid black;">
+        </div>
+        
+        
+        <input type="text" id = "JSONCollector" style="margin-top:250px; border : 1px solid black;"/>
+        <div id = "JSONDisplay" class="disable_scroll" style="margin-top:50px; width: 400px; height:200px; border : 1px solid black;">
+        </div>
+        
+    </body>
+    <footer>
+    </footer>
+    
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Device Registration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+   <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> -->
+    <!--    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+   <style>
+        html, body, #main_container {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            background-color: black;
+            font-family: Arial;
+        }
+
+        #main_container {
+            /*border: 5px solid red;*/
+            position: relative;
+            background-image: url('/public/images/background_7.png');
+            background-size: cover;   
+        }
+
+        #header-container {
+            position: fixed;
+            width: 100%;
+            height: 80px;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 100;
+            line-height: 80px;
+            color: white;
+            font-size: 19pt;
+            text-align: center;
+        }
+
+            #header-container img {
+                position: absolute;
+                top: 50%;
+                margin-top: -20px;
+                left: 0px;
+                margin-left: 12.5px;
+                height: 40px;
+                -webkit-transform: scaleX(-1);
+                transform: scaleX(-1);
+            }                        
+        
+        #inner_container {
+            width: 90%;
+            height: 90%;
+            border-left: 1px solid #505050;
+            border-right: 1px solid #505050;
+            border-bottom: 1px solid #505050;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            left: 0px;
+            bottom: 0px;
+            margin: auto;
+            background-image: url('/public/images/background_7.png');
+            background-size: cover;   
+        }
+
+        #outer_control_container {
+            /*border: 5px solid green;*/
+            background-color: rgba(10,34,60,0.7); 
+            width: 100%;
+            height: 40%;
+            position: absolute;
+            bottom: 0px;            
+        }
+
+        #inner_control_container {
+            width: 90%;
+            height: 175px;
+            margin: 0 auto;
+            color: white;
+            text-align: center;
+            font-size: 14pt;
+            position: relative;
+            top: 50%;
+            margin-top: -87.5px;
+        }
+
+        #inner_control_container img {
+            width: 120px;
+            height: 120px;
+            margin: 20px;
+            margin-left: 0px;
+        }
+
+            #inner_control_container select {
+                width: 50%;
+                height: 70px;
+                display: inline;
+                font-family: Arial !important;
+                font-size: 13pt;  
+            }
+            
+            #inner_control_container select:required:invalid {
+                color: gray;
+            }
+
+            option[value=""][disabled] {
+                display: none;
+            }
+            
+            option {
+                color: black;                
+            }
+        #btn_register {
+/*
+            display: block;
+            width: 40%;
+*/
+            height: 70px;
+            background-color: #33b5e5;
+            margin: 0 auto;
+            margin-top: -10px;
+            border: none;
+           font-size: 13pt;
+            padding: 0px 20px;
+            border-radius: 8px;
+                    }
+        }                  
+    </style>
+  <script type="text/javascript">
+  $.get('/getFloors',{}, function(res){
+        let dataHtml='';
+        dataHtml+= '<option value="" disabled selected>Select the floor at which this device will be used</option>';
+                    
+        for(var i=0;i<res.length;i++)
+        {
+       dataHtml+='<option value="'+res[i].floorcode+'">'+res[i].floorname+'</option>';
+        }
+       $('#selectFloor').html(dataHtml);
+    });  
+  </script>
+</head>
+<body>
+    
+    <div id = "main_container">
+        <div id = "header-container">
+           <!--  <img src = "arrow_white_385666.png"/> -->
+            Device Registration
+        </div>
+        <div id = "inner_container">
+        </div>
+        <div id="outer_control_container">
+            <div id="inner_control_container">
+                <img src = "https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/smartphone-and-tablet-icon-18-256.png" /> 
+                <select class="form-control" id="selectFloor" required>
+                  
+                </select>
+                <form>
+                <input type = "submit" id = "btn_register" formaction="/" value = "Continue"  />
+            </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="/public/javascripts/VisiterEntryScript.js"></script>
+</html>
