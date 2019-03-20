@@ -30,6 +30,10 @@ router.get("/addVisitor",function(req, res) {
     res.render('Visitor_form', {layout: true});
 });
 
+router.get("/addVisitorold",function(req, res) {
+
+    res.render('Visitor_formnew', {layout: true});
+});
 router.get("/visitorGrid",function(req, res) {
 
     res.render('Visitor_Status', {layout: true});
@@ -57,7 +61,9 @@ router.post("/submit_asset", function(req,res){
 router.get("/", function(req,res){
     res.render('GuardLogin', {layout:true});
 });
-  
+router.get("/gaurdlogin", function(req,res){
+    res.render('GuardLogin', {layout:true});
+});
 
 
 module.exports=router;

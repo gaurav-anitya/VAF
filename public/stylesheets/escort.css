@@ -7,6 +7,20 @@ html, body {
     padding: 0px;
 }
 
+ /*CSS added ash Aiswarya A*/
+
+   .btn-clear-sign {
+    margin-top: 1%;
+}
+
+   #scrolladd{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+   }
+
 /* Added by Abhishek as part of review on 15-Mar-2019 */
 
 /* Appplied to "Back" icon on every div/ Page */
@@ -32,7 +46,7 @@ html, body {
 }
 
 .no-image-available {
-    width: 190px;
+    width: 210px;
     display: block;
     margin: 0 auto;
 }
@@ -55,7 +69,8 @@ hr {
 #visitorInfoDiv {
     width: 100%;
     height: 100%;
-    position: fixed;
+    margin-bottom: 4%; /*ash*/
+    /*position: fixed; ash*/
 }
 
 .signup {
@@ -63,14 +78,14 @@ hr {
     height: 100%;
     position: fixed;
     top: 100%;
-    border: solid 5px red;
+    /* border: solid 5px red; */
 }
 
 #escort_slider {
     width: 100%;
     height: 100%;
     position: fixed;
-    border: 5px solid green;
+   /*  border: 5px solid green; */
 }
 
 /* CSS for bouncing right arrow */
@@ -657,8 +672,9 @@ input:focus:-moz-placeholder {
 .company-form-div {
     width: 80%;
     margin: 0 auto; 
-    height: 80%;
-    overflow: scroll; 
+    /*height: 80%;
+    overflow: scroll; ash*/
+    margin-bottom:2%; /*ash*/
     overflow-x: hidden;
     position: relative;
     top: 50%;

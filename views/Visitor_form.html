@@ -354,7 +354,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
     lastDiv.find("input").val("");
     lastDiv.find(".addsomeoneMsg").text("Add/Remove person(s)");
     lastDiv.find('span[name="signatureDiv"]').removeClass('signatureAdded');
-    $(".fa-minus-square:not(:first)").show();
+    $(".removecloned:not(:first)").show();
     signatureFieldCount++;
     lastDiv.find("[name='visitor_signature_JSON']").attr('id', 'visitor_signature_JSON' + signatureFieldCount);
     // lastDiv.find("[name='visitor_signature_JSOnFinal']").attr('id','visitor_signature_JSOnFinal'+signatureFieldCount);
@@ -548,9 +548,15 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
 
     function getEscortPhotos() {
         var escortId = $("#escort_id").val();
+        var height=$("#escortPhoto").height();
         var url='public/images/escorts/' + escortId + '.png';
+        var width=$("#escortPhoto").width();
         $("#escortPhoto").attr('src', url);
+        $("#escortPhoto").width(width);
+        $("#escortPhoto").height(height);
+        
         $("#escortPhotoGaurdVerification").attr('src', url);
+   
      
 
     }
@@ -572,6 +578,8 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
     }
     $(document).ready(function () {
         window.history.forward(-1);
+
+        
         $(document).on('blur',"[name='visitor_empid']",function (e) {
             var currentval=$(e.target).val();
             let idcount=0;
@@ -633,10 +641,10 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         $("input[type='submit']").click(function () {
             document.getElementById("myform").submit();
         });
-        //var loggedInUser = localStorage.getItem('userLoggedIn');
-        //if (loggedInUser == undefined || loggedInUser == null) {
-        //    window.location.href = '/';
-        //}
+        var loggedInUser = localStorage.getItem('userLoggedIn');
+        if (loggedInUser == undefined || loggedInUser == null) {
+           window.location.href = '/';
+        }
         $('.company-btns').click(function () {
             $("#visitor_company").val($(this).text());
 
@@ -674,13 +682,13 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         $(document).on('input','.escortDetails',function(){
             if(this.value.trim().length>0)
             {
-                if($(this).hasClass('error'))
-                    $(this).removeClass('error');
+                if($(this).hasClass('bounce'))
+                    $(this).removeClass('bounce');
             }
         });
         
         // CLick handler for the next button on the Escort screen.
-        $('#sbmt_escort_details').closest('div.image_div').click(function (e) {
+        $('#sbmt_escort_details').click(function (e) {
             var isInputNonEmpty = false;
             $(".escortDetails").removeClass('error');
             $(".escortDetails").each(function() {
@@ -745,11 +753,11 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             $('.purpose-question-text').find('div').html("Okay, " + name_initial + " " + name + ".<br /><span>Please help with a few additional details.</span>");
 
             $("#name_question .back").hide();
-            $("#name_question").animate({ bottom: "100%" }, 450);
+            $("#name_question").animate({ bottom: "100%" }, 450,function(){});
             $("#purpose_div").animate({ top: "0px" }, 450)
             //$(".purpose-question-text").animate({line-height: "10px"}), 600)
                 .queue(function() {
-                    $("#name_question").hide();
+                 
                 });
 
             $('.purpose-question-text div span').animate({top: "0px"}, 600)
@@ -778,7 +786,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                 });
         });
         
-        $("#info_next_btn").click(function () {
+        $("#info_next_btn").closest("div.image_div").click(function () {
             //if ($(this).hasClass('disabled')) {
             //        return;
             //    }
@@ -850,7 +858,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             if (visitorEmpId.trim().length > 0)
                 visitorEmpId = '(' + visitorEmpId + ')';
             
-            $('#visitor_name1').text(name_initial + ". " + visitorName + visitorEmpId);
+            $('#visitor_name1').text(name_initial + " " + visitorName + visitorEmpId);
             $('#GuardEscortName').text(escortName + '(' + escortId + ')');
 
             var empIdObj=  $('[name="visitor_empid"]');
@@ -886,14 +894,31 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         $('#info_before_btn').click(function () {
             $("#info_div").animate({ marginTop: "100%" }, "slow");
             $("#info_div").hide();
-            $('#purpose_div').show();
-            $("#purpose_div").animate({ marginTop: "-9%" }, "slow");
+            $('#name_question').show();
+            $("#purpose-question-text").css({'top':'0px'});
+            $("#name_question").animate({ top: "0px" }, 600)
+            .delay(1500)
+            .queue(function () {
+                $("#text_div span:eq(1)").animate({ top: "0px" }, 400);
+                $("#text_div span:eq(2)").animate({ top: "0px" }, 500)
+                .delay(1500)
+                .queue(function () {
+                    $("#text_div input, #initial_select").animate({ top: "0px" }, 400);
+                    $("#sel_visit_purpose").animate({ top: "0px" }, 500);
+                })
+            });
+       
+         
+            //  $("#purpose_div").animate({ marginTop: "-9%" }, "slow");
         });
         $('#escort_before_btn').click(function () {
             $('#escort_div').animate({ marginTop: "100%" }, "slow");
             $('#escort_div').hide();
             $('#info_div').show();
-            $("#info_div").animate({ marginTop: "-9%" }, "slow");
+            $('#info_div').show();
+                    $("#info_div").animate({ top: "0px" }, "slow");
+                     
+         /*    $("#info_div").animate({ marginTop: "-9%" }, "slow"); */
         });
         $('#guard_before_btn').click(function () {
        
@@ -989,7 +1014,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         var marTop = (div.clientHeight) / 2;
         div.style.marginTop = "-" + marTop + "px";
 
-        $("#text_div input, #text_div select").change(function() {
+        $("#text_div input, #text_div select").on('change input',function() {
             var input = $("#text_div input");
             var selInitial = $("#initial_select");
             var selVisitPurpose = $("#sel_visit_purpose");
@@ -1203,6 +1228,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             </div>
             <!--SIGNATURE MODAL ENDS-->
             <div id="info_div">
+                    <div id="scrolladd"> 
                 <div id="visitorInfoDiv">
                     <header>
                         <div class="row">
@@ -1245,11 +1271,11 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-3 ml-2 mr-2 repeatable_item d-none nameRow">
+                        <div class="row mt-3 ml-2 mr-2 mb-2 repeatable_item d-none nameRow">
                             <div class="col-sm-12">
                                 <div class="form-group w-100">
                                     <span><i class="fas fa-user form-icons purpose-form-icons"></i></span>
-                                    <input class="input-boxes focus info-input required" placeholder="Full Name"
+                                    <input class="input-boxes  info-input required" placeholder="Full Name"
                                         oninput="this.value=this.value.replace(/[^a-zA-Z .,]/g,'');" maxlength="100"
                                         name="visitor_name_new">
                                 </div>
@@ -1344,13 +1370,17 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                                         <img src="/public/images/add_blue.png" style="height: 40px;width: 40px;"
                                             onclick="cloneDiv(this);" class="img-add" />
                                     </span>
-                                    <span><i class="fa fa-minus-square" onclick="removeCloneDiv(this);" style="display: none; margin-left: 21px; font-size: 2.5em"></i></span>
+                                    <span>
+                                            <!-- <img src="/public/images/subtract_blue.png" style="height: 35px;width: 35px; margin-left: 6px; display:none !important;"
+                                            onclick="removeCloneDiv(this);" /> -->
+                                            <i class="fa fa-minus-circle removecloned" onclick="removeCloneDiv(this);" style="margin-left: 10px;font-size: 1.95em; color: #03a6ff;position: relative;top: 8px; display:none;"></i></span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div id="multipleVisitors"></div>
+                    </div>
                 <footer>
                     <div class="row mt-3">
                         <div class="col-sm-12" style="position: static !important;">
@@ -1397,25 +1427,31 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                                             <div style="width: 100%; height: 100%; display: table;">
                                                 <div style="width: 100%; height: 100%; display: table-cell; vertical-align: middle;">
                                                     <div class="form-group w-100 right-align">
-                                                        <span><i class="fas  fa-id-badge form-icons"></i></span>
-                                                        <input type="text" id="escort_id" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                                        <!-- <span><i class="fas  fa-id-badge form-icons"></i></span>
+                                                         -->
+                                                         
+ <span><img src="/public/images/employee.png" style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
+                                                         <input type="text" id="escort_id" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
                                                             name="escort_empid" class="input-boxes focus escortDetails"
                                                             maxlength="7" placeholder="Employee Id">
                                                     </div>
                                                     <div class="form-group w-100 right-align">
-                                                        <span><i class="fa fa-user form-icons"></i></span>
+                                                        <span><i class="fa fa-user form-icons"style="color:#0654a7;font-size:25pt !important"></i></span>
                                                         <input type="text" class="input-boxes focus escortDetails"
                                                             readonly maxlength="100" id="escort_name" name="escort_name"
                                                             placeholder="Name">
                                                     </div>
                                                     <div class="form-group w-100 right-align">
-                                                        <span><i class="fa fa-address-card form-icons"></i></span>
+                                                       <!--  <span><i class="fa fa-address-card form-icons"></i></span>
+                                                        -->
+                                                        <span><img src="/public/images/smartcard.png" style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
                                                         <input type="text" name="escort_smartcard" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
                                                             id="escort_smartcard" class="input-boxes focus escortDetails"
                                                             maxlength="8" placeholder="Smart Card Number">
                                                     </div>
                                                     <div class="form-group w-100 right-align">
-                                                        <span><i class="fa fa-user form-icons"></i></span>
+                                                       <!--  <span><i class="fa fa-user form-icons"></i></span> -->
+                                                       <span><img src="/public/images/department.png" style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
                                                         <input type="text" class="input-boxes focus escortDetails"
                                                             oninput="this.value=this.value.replace(/[^a-zA-Z .,]/g,'');"
                                                             maxlength="100" id="escort_unit" name="escort_unit"
@@ -1642,13 +1678,13 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
 
                         </div>
                         </div>
-                     <div class="mt-3">
+                 <!--     <div class="mt-3">
                         <input id="guardDeclaration" class="btn btn-primary w-100" type="button" data-toggle="modal"
                             value="Proceed/आगे बढ़ें" data-target="#modalGuard">
                     </div> 
                          <div class="btn_sub goback">
                         <input id="guard_before_btn" class="btn btn-primary w-100" type="button" value="Go Back">
-                    </div> 
+                    </div>  -->
                        
                     <footer>
                         <div class="row mt-3">

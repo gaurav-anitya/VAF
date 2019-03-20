@@ -16,7 +16,7 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="/public/javascripts/checkFloor.js"></script>
-    <!--  <link rel="stylesheet" href="style.css"> -->
+    
     <style>
         html,
         body,
@@ -27,6 +27,7 @@
             margin: 0px;
             padding: 0px;
             overflow: hidden;
+            overflow-y: hidden;
         }
 
         .startupPage {
@@ -36,6 +37,10 @@
             margin: 0px;
             padding: 0px;
             overflow-x: hidden;
+            overflow-y: hidden;
+            position: fixed;
+            right: 0px;
+           /*  border: 5px solid purple; */
         }
 
         p {
@@ -201,6 +206,12 @@
             color: #fff;
             text-decoration: none;
         }
+
+        video {
+            overflow: hidden;
+            overflow-y: hidden;
+            overflow-x: hidden;
+        }
     </style>
 </head>
 <script>
@@ -209,7 +220,7 @@
         if (loggedInUser == undefined || loggedInUser == null) {
             window.location.href = '/';
         }
-        
+
         var vid = document.getElementById("video1");
         vid.load();
         vid.play();
@@ -221,7 +232,7 @@
     var dataText = ["नमस्ते", "Bonjour", "Hallo", "Ciao", "Hola", "你好", "Hello"];
 
     $(document).ready(function () {
-        setTimeout(HelloText, 6000);
+        setTimeout(HelloText, 4000);
         $("#second").find("div").css('cursor', 'pointer');
         $("#third").find("div").css('cursor', 'pointer');
         $("#first").find("div").css('cursor', 'pointer');
@@ -232,10 +243,6 @@
             $("#third").animate({ top: "100%", marginTop: "0px" }, 200, function () {
                 window.location.href = '/visitorGrid';
             });
-            /*   $(":animated").promise().done(function () {
-                  window.location.href = '/visitorGrid';
-              }); */
-            //window.location.href='./visitor-list.html';
         });
 
         $("#first").find('div').click(function () {
@@ -244,34 +251,28 @@
             $("#third").animate({ top: "100%", marginTop: "0px" }, 200, function () {
                 window.location.href = '/addVisitor';
             });
-            /*  $(":animated").promise().done(function () {
-                 window.location.href = '/addVisitor';
-             });
-             ; */
-            //window.location.href='./visitor-list.html';
         });
-
-
     });
     function redirectToLandingPage() {
-        $("#greeting").fadeOut('slow', function () {
-            $(".hello p#greeting").stop();
-            $(".hello p#greeting").addClass('d-none');
-        });
-        $("#divAppTitle").fadeOut('slow', function () {
-            $(".startupPage").animate({ width: '0px', }, 'slow', function () {
+        //$("#greeting").fadeOut('slow', function () {
+        //    $(".hello p#greeting").stop();
+        //    $(".hello p#greeting").addClass('d-none');
+        //});
+        //$("#divAppTitle").fadeOut('slow', function () {
+        //    $(".startupPage").animate({ width: '0px', }, 'slow', function () {
 
-                $(".startupPage").addClass('d-none')
+        //        $(".startupPage").addClass('d-none')
 
-            });
-            $(".container-div").removeClass('d-none');
-            animateLandingPage();
-        });
+        //    });
+        //    $(".container-div").removeClass('d-none');
+        //    animateLandingPage();
+        //});
     }
 
     function animateLandingPage() {
+        $(".startupPage").animate({ right: "100%" }, 600);
         $(".main-page-right-div2").animate({ left: "0px" }, "slow")
-            .delay(1500)
+            .delay(2000)
             .queue(function () {
                 $(".question-div").animate({ bottom: "100%" }, "slow")
                     .delay(250)
@@ -281,8 +282,8 @@
                         $("#third").animate({ top: "50%", marginTop: "-182.5px" }, 600);
                     })
             });
-
     }
+
     function cycleGreeting() {
         $(".hello p#greeting").fadeOut("slow", function () {
             if (i == (dataText.length)-1) {
@@ -298,14 +299,12 @@
         $("#text_content").fadeIn("slow");
         setInterval(cycleGreeting, 4000);
     }
-
 </script>
 <body>
-
-    <div class="container-fluid ">
-        <div class='startupPage '>
+    <div class="container-fluid">
+        <div class='startupPage'>
             <div style="width: 100%; height: 100%; background-color: black;">
-                <video id = "video1" width="100%" height="100%; overflow: hidden;" autoplay = "autoplay" muted = "muted">
+                <video id = "video1" width="100%" height="100%;" autoplay = "autoplay" muted = "muted">
                     <source src="public/video/video.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
@@ -316,7 +315,7 @@
                 <div class="hello">
                     <p id="greeting">Hello</p>
                 </div>
-                <div id="divAppTitle" style='cursor: pointer' onclick='redirectToLandingPage();'>
+                <div id="divAppTitle" style='cursor: pointer' onclick='animateLandingPage();'>
                     Get started with Visitor Authorization
                     <a>
                         <div style='cursor: pointer' class="arrow arrow-right"></div>
@@ -324,7 +323,7 @@
                 </div>
             </div>
         </div>
-        <div class="container-div d-none">
+        <div class="container-div">
             <div class="main-page-right-div2">
                 <div class="question-div">
                     <div class="question-text">What do you want to do today?</div>
