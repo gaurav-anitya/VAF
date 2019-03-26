@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="icon" href="../../../../favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+    <title>Security Personnel Sign In</title>
+
+    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/4.0/examples/album/album.css" rel="stylesheet">
+
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        main {
+            width: 500px;
+            margin: 0 auto;
+            height: 455px;
+            position: relative;
+            top: 50%;
+            margin-top: -227.5px;
+            font-family: Arial, sans-serif;
+
+        }
+
+        .form-control {
+            display: block;
+            width: 100%;
+            height: 60px;
+            padding: 1.375rem 4.75rem;
+            font-size: 14pt;
+            line-height: 0.5;
+            color: black;
+            background-color: white;
+            background-clip: padding-box;
+            border: 1px solid #f9f9f9;
+            border-radius: .25rem;
+            margin-bottom: 15px;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+
+            .form-control:focus {
+                border: 2px solid #007bff;
+                color: black;
+            }
+
+        #username_reqd, #password_reqd {
+            display: none;
+        }
+
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%; /* Could be more or less, depending on screen size */
+        }
+
+        .fa {
+            position: absolute;
+            left: 8%;
+            top: 25%;
+            color: #000000;
+            font-size: 25px;
+            float: left;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        .background-img {
+            background-image: url(/public/images/Login_background_screen.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .bg-specs {
+            width: 100%;
+            height: 100%;
+            background-color: #355457;
+            opacity: 0.75;
+        }
+
+        .h1 {
+            color: white;
+            padding: 6px;
+            font-size: 30px;
+            text-align: Center;
+            margin-top: -30px;
+        }
+
+        .align-content-footer {
+            text-align: center;
+            color: #f6f6f6;
+        }
+
+        #guardLogin {
+            width: 95%;
+            margin: 0 auto;
+            line-height: 2;
+            font-size: 14pt; 
+        }
+
+        .fields_div {
+            opacity: 1.0;
+        }
+    </style>
+</head>
+<body class="background-img">
+    <main class="align-class" role="main">
+        <div class="jumbotron text-center bg-specs">
+            <div class="container fields_div">
+                <h2 class="h1 mb-3 font-weight-normal" style = "font-size: 19.5pt;">Security Personnel sign in</h2>
+                <img class="mb-4" src="/public/images/nodejs-icon.svg" alt="" width="72" height="72">
+                <form>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <i class="fa fa-user icon"></i>
+                            <label  class="sr-only">User Id</label>
+                            <input type="text"  id="guard_user_id" class="form-control" placeholder="Security Personnel ID" required>
+                            <p id="username_reqd">Security Personnel ID is required!</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12" style = "vertical-align: middle;">
+                            <i class="fa fa-key icon"></i>
+                            <label class="sr-only">Password</label>
+                            <input type="password"  id="guard_password_id" class="form-control" placeholder="Password" required>           
+                            <p id="password_reqd">Password is required!</p>
+                        </div>
+                        <input type="submit" id="guardLogin" class="btn btn-lg btn-primary btn-block" value="Sign me in!">
+                    </div> 
+                </form> 
+            </div>
+        </div>  
+    </main>
+    <div id="errorModal" class="modal">
+    <!-- Modal content -->
+        <div class="modal-content">
+            <p class="errorTag"></p>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="modalClose">OK</button>
+            </div>
+        </div>
+    </div>
+    <footer class="text-muted"></footer>
+
+    <script src="/public/scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -2,7 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 const app = express.Router();
 var cron = require('node-cron');
- 
+var fs = require('fs');
+//var pdf = require('html-pdf');
 
 
 
@@ -45,6 +46,21 @@ function timeNow() {
       m = (d.getMinutes()<10?'0':'') + d.getMinutes();
    return h + ':' + m;
   }
+/* function htmlToPDF(request)
+{
+  //you can collect fields to be displayed in html from request.body object and create a dynamic html string which can be passed directly to 
+  // code provided below
+  //for more references refer https://www.npmjs.com/package/html-pdf
+  var html = '<html><body><div style="color:red">54564trtytyty5665r</div></body></html>';
+  var options = { format: 'Letter' };
+  //try to keep it unique for each request
+   var pdfname='businesscard.pdf';
+  pdf.create(html, options).toFile('./'+pdfname, function(err, res) {
+    if (err) return console.log(err);
+    console.log(res); // { filename: '/app/businesscard.pdf' }
+  });
+
+} */
 
   app.get('/getFloors', function(req,res){
    // var userIdLocalstorage = req.body.loggedInUser;
@@ -83,15 +99,28 @@ app.post('/addVisitor', function(req, res) {
 //}
    
    console.log("NewSignature:"+req.body.escort_signature);
-   if(req.body.escort_signature != "")
-   {
+//    if(req.body.escort_signature != "")
+//    {
        req.body.escort_signature="Y";
        console.log("sign:"+req.body.escort_signature)
-   }
+  // }
    req.body.escort_time_from='TIME(now())';
    req.body.escort_date=new Date();
    req.body.visitor_access = "Permanent";
-/* 
+   if ( typeof(req.body.txt_whom_to_meet)=="undefined")
+   {
+    req.body.txt_whom_to_meet="";
+   }
+   if ( typeof(req.body.txt_purpose_escort_unit)=="undefined")
+   {
+   req.body.txt_purpose_escort_unit="";
+   }
+
+   if ( typeof(req.body.txt_project)=="undefined")
+   {
+                req.body.txt_project="";
+   }
+                /* 
    var escort = "select * from escort_table where escort_Id="+req.body.escort_empid;
    con.query(escort,function(err, result)     
              {                                                      
@@ -251,7 +280,7 @@ console.log(req.body.visitor_empid);
                    var approvalStatus="pending";
                    var dayCount=1;
 
-                   var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area,visitor_signature,escort_signature,persontomeet,areaofvisit,projectofvisit) VALUES ('"+req.body.visitor_empid+"','"+req.body.visitor_name_new+"','"+req.body.visitor_company+"','"+req.body.escort_unit+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"',now(),"+req.body.escort_time_from+",'"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+req.body.area+"','"+req.body.visitor_signature_JSON +"','"+req.body.escort_signature_JSON+"','"+txt_whom_to_meet +"','"+txt_purpose_escort_unit+"','"+txt_project+"') ";
+                   var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area,visitor_signature,escort_signature,persontomeet,areaofvisit,projectofvisit) VALUES ('"+req.body.visitor_empid+"','"+req.body.visitor_name_new+"','"+req.body.visitor_company+"','"+req.body.escort_unit+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"',now(),"+req.body.escort_time_from+",'"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+req.body.area+"','"+req.body.visitor_signature_JSON +"','"+req.body.escort_signature_JSON+"','"+req.body.txt_whom_to_meet +"','"+req.body.txt_purpose_escort_unit+"','"+req.body.txt_project+"') ";
                    console.log(sql);
                    con.query(sql,function(err, result)     
                              {                                                      

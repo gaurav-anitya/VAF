@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Escort a new Visitor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
 
     <style>
         .carousel-control-prev,
@@ -14,8 +14,7 @@
 
     <link rel="stylesheet" href="/public/stylesheets/escort.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" href="/public/stylesheets/jquery.signature.css">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
@@ -24,8 +23,8 @@
     <script type="text/javascript" src="/public/javascripts/jquery.ui.touch-punch.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="/public/javascripts/addvisitor_new.js"></script>
-    <script src="/public/javascripts/guardLogin.js"></script>
-    <script src="/public/javascripts/checkFloor.js"></script>
+    <!--<script src="/public/javascripts/guardLogin.js"></script>
+    <script src="/public/javascripts/checkFloor.js"></script>-->
     <script src="/public/javascripts/jquery.signature.js"></script>
 </head>
 <script>
@@ -45,20 +44,19 @@
         else
             return false;
     }
+
     function alertOkBtnClicked() {
         if (checkifAlertMessageClassExists('errorclass')) {
             $('.error').addClass('bounce');
             return;
 
         }
-
     }
-
 
     function showEscortSignatureModal(targetObj) {
         //$('[name="escortSignature"]').Signature().signature('destroy');
 
-        var sig = $('[name="escortSignature"]').signature({ guideline:true,guidelineOffset: 25, guidelineIndent: 20,syncField: '#escort_signature_JSON' });
+        var sig = $('[name="escortSignature"]').signature({ guideline: true, guidelineOffset: 25, guidelineIndent: 20, syncField: '#escort_signature_JSON' });
 
         $('#escort_clear_signature').click(function () {
             $('[name="escortSignature"]').signature('clear');
@@ -82,19 +80,16 @@
     }
 
     function initializeEscortSignature() {
-if($('[name="escortSignature"]').signature().signature('isEmpty'))
-{
-        var sig = $('[name="escortSignature"]').signature({ syncFormat:'JPEG',guideline:true,guidelineOffset: 25, guidelineIndent: 20,syncField: '#escort_signature_JSON' });
-}
+        if ($('[name="escortSignature"]').signature().signature('isEmpty')) {
+            var sig = $('[name="escortSignature"]').signature({ syncFormat: 'JPEG', guideline: true, guidelineOffset: 25, guidelineIndent: 20, syncField: '#escort_signature_JSON' });
+        }
         $('#escort_clear_signature').click(function () {
             $('[name="escortSignature"]').signature('clear');
             $('#escort_signature_JSON').val('');
             // $(targetObj).closest('span[name="signatureDiv"]').removeClass('signatureAdded');
             // $("#"+syncFieldId).val($("#"+syncFieldId).val());
         });
-
     }
-
 
     var visitorSignDivHeight;
 
@@ -103,14 +98,14 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
     function renderSignForGaurdVerification() {
         $('#redraw_visitor_signature').attr('src', $('#visitor_signature_JSON').val())
 
-      /*   $('#redraw_visitor_signature').signature().signature('enable').
-            signature('draw', $('#visitor_signature_JSON').val()).
-            signature('disable'); */
-            $('#redraw_escort_signature').attr('src', $('#escort_signature_JSON').val())
+        /*   $('#redraw_visitor_signature').signature().signature('enable').
+              signature('draw', $('#visitor_signature_JSON').val()).
+              signature('disable'); */
+        $('#redraw_escort_signature').attr('src', $('#escort_signature_JSON').val())
 
-     /*    $('#redraw_escort_signature').signature().signature('enable').
-            signature('draw', $('#escort_signature_JSON').val()).
-            signature('disable'); */
+        /*    $('#redraw_escort_signature').signature().signature('enable').
+               signature('draw', $('#escort_signature_JSON').val()).
+               signature('disable'); */
 
     }
     function setSignatureCanvasDimension() {
@@ -140,9 +135,8 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
     function initializeVisitorSignature(targetObj) {
         if (typeof (targetObj) === 'undefined') {
             var syncFieldId = $('.company-form-div').find('input[name="visitor_signature_JSON"]')[0].id;
-            if($('[name="visitorSignature"]').signature().signature('isEmpty'))
-            {
-            var sig = $('[name="visitorSignature"]').signature().signature({syncFormat:'JPEG',guideline:true,guidelineOffset: 25, guidelineIndent: 20,syncField: '#' + syncFieldId });
+            if ($('[name="visitorSignature"]').signature().signature('isEmpty')) {
+                var sig = $('[name="visitorSignature"]').signature().signature({ syncFormat: 'JPEG', guideline: true, guidelineOffset: 25, guidelineIndent: 20, syncField: '#' + syncFieldId });
             }
             /* $('[name="visitor_clear_signature"]').click(function (e) {
                 $('[name="visitorSignature"]').signature('clear');
@@ -153,17 +147,17 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         }
         else {
             var syncFieldId = targetObj.find('input[name="visitor_signature_JSON"]')[0].id;
-          //  if(targetObj.find('[name="visitorSignature"]').signature().signature('isEmpty')){
+            //  if(targetObj.find('[name="visitorSignature"]').signature().signature('isEmpty')){
             targetObj.find('[name="visitorSignature"]').find('canvas').remove();
             var sig = targetObj.find('[name="visitorSignature"]').signature(
-               {syncFormat:'JPEG', guideline:true,guidelineOffset: 25, guidelineIndent: 20,syncField: '#' + syncFieldId });
+                { syncFormat: 'JPEG', guideline: true, guidelineOffset: 25, guidelineIndent: 20, syncField: '#' + syncFieldId });
             //}
-               /*   targetObj.find('[name="visitor_clear_signature"]').click(function () {
-                 targetObj.find('[name="visitorSignature"]').signature('clear');
-                     $('#' + syncFieldId).val('');
-                    // $(targetObj).closest('span[name="signatureDiv"]').removeClass('signatureAdded');
-                     // $("#"+syncFieldId).val($("#"+syncFieldId).val());
-                 }); */
+            /*   targetObj.find('[name="visitor_clear_signature"]').click(function () {
+              targetObj.find('[name="visitorSignature"]').signature('clear');
+                  $('#' + syncFieldId).val('');
+                 // $(targetObj).closest('span[name="signatureDiv"]').removeClass('signatureAdded');
+                  // $("#"+syncFieldId).val($("#"+syncFieldId).val());
+              }); */
 
         }
 
@@ -188,7 +182,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         var syncFieldId = ($(targetObj).closest('.company-form-div').find('input[name="visitor_signature_JSON"]')[0].id);
         //var syncFieldId=($(targetObj).closest('.company-form-div').find('input[name="visitor_signature_JSOnFinal"]')[0].id);
         $('[name="visitorSignature"]').signature().signature('destroy');
-        var sig = $('[name="visitorSignature"]').signature({ guideline:true,guidelineOffset: 25, guidelineIndent: 20,syncField: '#' + syncFieldId });
+        var sig = $('[name="visitorSignature"]').signature({ guideline: true, guidelineOffset: 25, guidelineIndent: 20, syncField: '#' + syncFieldId });
 
         if ($('#' + syncFieldId).val() !== "" && $('#' + syncFieldId).val() !== '{"lines":[]}') {
             //$('[name="visitorSignature"]').signature('clear');
@@ -227,7 +221,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         for (let i = 0; i < wordsArray.length; i++) {
             wordsArray[i] = wordsArray[i].substr(0, 1).toUpperCase() + wordsArray[i].substr(1);
         }
-    return wordsArray.join(" ");
+        return wordsArray.join(" ");
     }
 
 
@@ -267,24 +261,24 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             if ($(requiredFieldsObj[i]).val().trim().length === 0) {
                 isRequiredFieldFilled = false;
                 break;
+            }
         }
-    }
-    if (!isRequiredFieldFilled) {
-        $('#info_next_btn').closest('div.image_div').fadeOut(600);
-        //  alertMessage('Please fill fields');
-        return false;
-    }
+        if (!isRequiredFieldFilled) {
+            $('#info_next_btn').closest('div.image_div').fadeOut(600);
+            //  alertMessage('Please fill fields');
+            return false;
+        }
 
-    $('#info_next_btn').closest('div.image_div').fadeIn(600);
+        $('#info_next_btn').closest('div.image_div').fadeIn(600);
 
-    return true;
+        return true;
     }
 
     function checkInfoValidation() {
         checkInfoRequiredFieldValidation();
         return;
 
-        
+
     }
     var repeatableDivCount = 0;
     function removeCloneDiv(obj) {
@@ -294,76 +288,72 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         $(obj).closest('.company-form-div').remove();
         $('.company-form-div:last').append(cloneProceedButton);
         checkInfoValidation();
-
     }
     var signatureFieldCount = 0;
 
     function cloneDiv(obj) {
-       
         var isRequiredFieldFilled = true;
         var requiredFieldsObj = $('.company-form-div').find("input.required:visible");
         $('.error').removeClass('bounce');
         $(requiredFieldsObj).removeClass('error');
-        
+
         for (let i = 0; i < requiredFieldsObj.length; i++) {
             if ($(requiredFieldsObj[i]).val().trim().length === 0) {
                 isRequiredFieldFilled = false;
-            //  break;
-              $(requiredFieldsObj[i]).addClass('error');
-              
+                //  break;
+                $(requiredFieldsObj[i]).addClass('error');
+
+            }
         }
-    }
-    if (!isRequiredFieldFilled) {
+        
+        if (!isRequiredFieldFilled) {
 
-        alertMessage('Please provide your complete details','errorclass');
-        return;
-    }
-    
-    /*     if ($('.company-form-div:last').find("[name='visitor_signature_JSON']").val().length === 0 ||
-            $('.company-form-div:last').find("[name='visitor_signature_JSON']").val() === '{"lines":[]}') */
-                if($('.company-form-div:last').find("[name='visitorSignature']").signature('isEmpty'))
-                {
-            
-                alertMessage('Please provide your signature ');
+            alertMessage('Please provide your complete details', 'errorclass');
             return;
+        }
 
-    }
+        if ($('.company-form-div:last').find("[name='visitorSignature']").signature('isEmpty')) {
 
+            alertMessage('Please provide your signature on the canvas provided below the declaration.');
+            return;
+        }
 
-    var newElement = $("#visitorInfoDiv").find('.company-form-div').clone();
-    $("#visitorInfoDiv").find(".nameRow").removeClass("d-none");
-    newElement.addClass('mt-4');
-    newElement.find('.assetRadio').attr('name','asset_radio'+signatureFieldCount)
-    newElement.appendTo('#multipleVisitors');
-    var repeatableRow = $("#visitorInfoDiv").find('.repeatable_item').clone();
-    repeatableRow.find('.assetRadio').each(function(){
-          
-        $(this).attr('name','asset_radio'+signatureFieldCount);
-        /*      $(this).find('.assetRadio').removeAttr('checked');
-  if($(this).hasClass('assetRadio-no'))
- {
-     $(this).attr('checked',true);
- 
- } */
-    });
-      
-    var lastDiv = $('#multipleVisitors').find('.company-form-div:last');
-    lastDiv.empty();
-    lastDiv.append(repeatableRow);
-    lastDiv.append($(".proceed-visitor-btn").closest('div.row'));
-    lastDiv.find("input").val("");
-    lastDiv.find(".addsomeoneMsg").text("Add/Remove person(s)");
-    lastDiv.find('span[name="signatureDiv"]').removeClass('signatureAdded');
-    $(".removecloned:not(:first)").show();
-    signatureFieldCount++;
-    lastDiv.find("[name='visitor_signature_JSON']").attr('id', 'visitor_signature_JSON' + signatureFieldCount);
-    // lastDiv.find("[name='visitor_signature_JSOnFinal']").attr('id','visitor_signature_JSOnFinal'+signatureFieldCount);
-    initializeVisitorSignature(lastDiv);
+        var newElement = $("#visitorInfoDiv").find('.company-form-div').clone();
+        $("#visitorInfoDiv").find("div.nameRow").removeClass("d-none");
+        newElement.addClass('company-form-div-cloned');
+        newElement.addClass('mt-4');
+        newElement.find('.assetRadio').attr('name', 'asset_radio' + signatureFieldCount)
+        newElement.appendTo('#multipleVisitors');
+        //$("#multipleVisitors").find(".nameRow").removeClass("d-none");
+        var repeatableRow = $("#visitorInfoDiv").find('.repeatable_item').clone();
+        repeatableRow.find('.assetRadio').each(function () {
 
+            $(this).attr('name', 'asset_radio' + signatureFieldCount);
+            /*      $(this).find('.assetRadio').removeAttr('checked');
+      if($(this).hasClass('assetRadio-no'))
+     {
+         $(this).attr('checked',true);
+     
+     } */
+        });
 
-    checkInfoValidation();
-    /*  $('.proceed-visitor-btn)
-     $('.proceed-visitor-btn:last').show(); */
+        $("#multipleVisitors").show();
+        var lastDiv = $('#multipleVisitors').find('.company-form-div:last');
+        lastDiv.empty();
+        lastDiv.append(repeatableRow);
+        lastDiv.append($(".proceed-visitor-btn").closest('div.row'));
+        lastDiv.find("input").val("");
+        lastDiv.find(".addsomeoneMsg").text("Add/ remove visitor(s)");
+        lastDiv.find('span[name="signatureDiv"]').removeClass('signatureAdded');
+        $(".removecloned:not(:first)").show();
+        signatureFieldCount++;
+        lastDiv.find("[name='visitor_signature_JSON']").attr('id', 'visitor_signature_JSON' + signatureFieldCount);
+        // lastDiv.find("[name='visitor_signature_JSOnFinal']").attr('id','visitor_signature_JSOnFinal'+signatureFieldCount);
+        initializeVisitorSignature(lastDiv);
+        
+        checkInfoValidation();
+        /*  $('.proceed-visitor-btn)
+         $('.proceed-visitor-btn:last').show(); */
 
     }
     function updateOtherPurpose() {
@@ -438,7 +428,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                  signature('disable'); */
             $(visitorEscortModal.find('.redraw_visitorEscort_signature')[k]).attr('src', $(visitorEscortModal.find('.visitorSign')[k]).val());
             $(visitorEscortModal.find('.visitorSignImg')[k]).attr('src', 'public/images/gray_person.png');
-        
+
         }
         //});
 
@@ -460,21 +450,19 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         }
         return userArray;
     }
-    function  selectPurposeOnChange()
-    {
+    function selectPurposeOnChange() {
         $("input[type='text']:not('#modalGuardName')").val("");
         $('#purpose_next_btn').removeClass('disabled');
-        $('#visitor_company_other').attr('readOnly',false);
+        $('#visitor_company_other').attr('readOnly', false);
         $('#multipleVisitors').empty();
     }
-    function showRequiredFields() {
 
-      
+    function showRequiredFields() {
         var purpose = $('#sel_visit_purpose option:selected').val();
         $("#visitor_purpose").val(purpose);
         if (purpose === 'newjoinee') {
             $('#visitor_company_other').val('Tata Consultancy Services (TCS)');
-            $('#visitor_company_other').attr('readOnly',true);
+            $('#visitor_company_other').attr('readOnly', true);
             $('#employee_div').show();
             $('#company_div').show();
             $('.smart_card_div').show();
@@ -482,7 +470,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             $('.asset_div').hide();
         } else if (purpose === 'internalaudit') {
             $('#visitor_company_other').val('Tata Consultancy Services (TCS)');
-            $('#visitor_company_other').attr('readOnly',true);
+            $('#visitor_company_other').attr('readOnly', true);
             $('#employee_div').show();
             $('#company_div').show();
             $('.smart_card_div').show();
@@ -504,7 +492,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             $('.asset_div').hide();
         } else if (purpose === 'lostcard') {
             $('#visitor_company_other').val('Tata Consultancy Services (TCS)');
-            $('#visitor_company_other').attr('readOnly',true);
+            $('#visitor_company_other').attr('readOnly', true);
             $('#employee_div').show();
             $('#company_div').show();
             $('.smart_card_div').show();
@@ -512,7 +500,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             $('.asset_div').hide();
         } else if (purpose === 'deallocation') {
             $('#visitor_company_other').val('Tata Consultancy Services (TCS)');
-            $('#visitor_company_other').attr('readOnly',true);
+            $('#visitor_company_other').attr('readOnly', true);
             $('#employee_div').show();
             $('#company_div').show();
             $('.smart_card_div').show();
@@ -520,77 +508,80 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             $('.asset_div').hide();
         } else if (purpose === 'internalaudit)') {
             $('#visitor_company_other').val('Tata Consultancy Services (TCS)');
-            $('#visitor_company_other').attr('readOnly',true);
+            $('#visitor_company_other').attr('readOnly', true);
             $('#employee_div').show();
             $('#company_div').show();
             $('.smart_card_div').show();
             $('.area_div').show();
             $('.asset_div').hide();
         }
-        else if(purpose === 'other')
-        {
+        else if (purpose === 'other') {
             $('#visitor_company_other').val('');
             $('#employee_div').show();
             $('#company_div').show();
             $('.smart_card_div').show();
             $('.area_div').show();
             $('.asset_div').show();
-        } else if(purpose === 'maintenance')
-        {
+        } else if (purpose === 'maintenance') {
             $('#visitor_company_other').val('');
             $('#employee_div').show();
             $('#company_div').show();
             $('.smart_card_div').show();
             $('.area_div').show();
-            $('.asset_div').show();
+            $('.asset_div').hide();
         }
     }
 
     function getEscortPhotos() {
         var escortId = $("#escort_id").val();
-        var height=$("#escortPhoto").height();
-        var url='public/images/escorts/' + escortId + '.png';
-        var width=$("#escortPhoto").width();
+        var height = $("#escortPhoto").height();
+        var url = 'public/images/escorts/' + escortId + '.png';
+        var width = $("#escortPhoto").width();
         $("#escortPhoto").attr('src', url);
         $("#escortPhoto").width(width);
         $("#escortPhoto").height(height);
-        
+
         $("#escortPhotoGaurdVerification").attr('src', url);
-   
-     
+
+
 
     }
 
     function resetEscortPhotos() {
-       
-        var url='public/images/gray_person.png';
+
+        var url = 'public/images/gray_person.png';
         $("#escortPhoto").attr('src', url);
 
     }
 
-    function showProceedButton(obj)
-    {
+    function showProceedButton(obj) {
         obj.fadeIn('slow');
     }
-    function hideProceedButton(obj)
-    {
+    function hideProceedButton(obj) {
         obj.fadeOut('slow');
     }
     $(document).ready(function () {
         window.history.forward(-1);
 
-        
-        $(document).on('blur',"[name='visitor_empid']",function (e) {
-            var currentval=$(e.target).val();
-            let idcount=0;
-            $("[name='visitor_empid']:visible").each(function(){
+        $("#guardDeclaration").click(
 
-                if($(this).val().trim() === currentval.trim())
-                {
-                    idcount++; 
+            function (e) {
+
+$("#modalGuard").modal('show');
+
+            }
+
+        );
+
+        $(document).on('blur', "[name='visitor_empid']", function (e) {
+            var currentval = $(e.target).val();
+            let idcount = 0;
+            $("[name='visitor_empid']:visible").each(function () {
+
+                if ($(this).val().trim() === currentval.trim()) {
+                    idcount++;
                 }
-                if(idcount>1)
-                {
+                if (idcount > 1) {
                     alertMessage('Visitor with same employee Id already present.Please verify');
                     $(e.target).val("");
                 }
@@ -600,25 +591,23 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
 
 
 
-        $(document).on('blur',"[name='visitor_smartcard']",function (e) {
-            var currentval=$(e.target).val();
-            let idcount=0;
-            $("[name='visitor_smartcard']:visible").each(function(){
+        $(document).on('blur', "[name='visitor_smartcard']", function (e) {
+            var currentval = $(e.target).val();
+            let idcount = 0;
+            $("[name='visitor_smartcard']:visible").each(function () {
 
-                if($(this).val().trim() === currentval.trim())
-                {
-                    idcount++; 
+                if ($(this).val().trim() === currentval.trim()) {
+                    idcount++;
                 }
-                if(idcount>1)
-                {
+                if (idcount > 1) {
                     alertMessage('Visitor with same smart card already present.Please verify');
                     $(e.target).val("");
                 }
             });
         });
 
-        $(document).on('click',".assetRadio",function (e) {
-            var companyFormDiv= $(e.target).closest('.company-form-div');
+        $(document).on('click', ".assetRadio", function (e) {
+            var companyFormDiv = $(e.target).closest('.company-form-div');
             if (companyFormDiv.find("input.assetRadio:checked").siblings().text() === 'Yes') {
                 companyFormDiv.find('.asset_div').fadeIn('slow');
                 companyFormDiv.find('[name="visitor_asset"]').addClass('required')
@@ -641,10 +630,10 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         $("input[type='submit']").click(function () {
             document.getElementById("myform").submit();
         });
-        var loggedInUser = localStorage.getItem('userLoggedIn');
-        if (loggedInUser == undefined || loggedInUser == null) {
-           window.location.href = '/';
-        }
+        //var loggedInUser = localStorage.getItem('userLoggedIn');
+        //if (loggedInUser == undefined || loggedInUser == null) {
+        //    window.location.href = '/';
+        //}
         $('.company-btns').click(function () {
             $("#visitor_company").val($(this).text());
 
@@ -658,7 +647,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
 
 
         var guardName = localStorage.getItem('userLoggedInName');
-       // $('#modalGuardName').attr('value', guardName);
+        // $('#modalGuardName').attr('value', guardName);
         $('#modalGuardName').val(guardName);
         $('#guardConsent').on('click', function () {
             if ($('#guardConsent').is(':checked') == true) {
@@ -668,50 +657,49 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                 $('#modalGuard #submit').attr('disabled', 'disabled');
             }
         });
-       
-        $(document).on('input','.required',function(){
-            if(this.value.trim().length>0)
-            {
-                if($(this).hasClass('error'))
-                {
+
+        $(document).on('input', '.required', function () {
+            if (this.value.trim().length > 0) {
+                if ($(this).hasClass('error')) {
                     $(this).removeClass('error');
                     $(this).removeClass('bounce');
                 }
             }
         });
-        $(document).on('input','.escortDetails',function(){
-            if(this.value.trim().length>0)
-            {
-                if($(this).hasClass('bounce'))
+        $(document).on('input', '.escortDetails', function () {
+            if (this.value.trim().length > 0) {
+                if ($(this).hasClass('bounce'))
                     $(this).removeClass('bounce');
             }
         });
-        
+
         // CLick handler for the next button on the Escort screen.
         $('#sbmt_escort_details').click(function (e) {
-            var isInputNonEmpty = false;
-            $(".escortDetails").removeClass('error');
-            $(".escortDetails").each(function() {
-                if (this.value.trim().length === 0) {
-                    isInputNonEmpty = true;
-                    $(this).addClass('error');
-                }
-            });
-            
-           // isInputNonEmpty = false;
-            if (isInputNonEmpty) {
-                alertMessage('Please provide complete details','errorclass');
-                e.preventDefault();
-                event.stopPropagation();
-                return false;
-            }
-            
-            if($('[name="escortSignature"]').signature('isEmpty')) {
-                alertMessage('Please provide your signature');
-                return;
-            }
-      
             $('#escort_next_btn').click();
+            
+            //var isInputNonEmpty = false;
+            //$(".escortDetails").removeClass('error');
+            //$(".escortDetails").each(function () {
+            //    if (this.value.trim().length === 0) {
+            //        isInputNonEmpty = true;
+            //        $(this).addClass('error');
+            //    }
+            //});
+
+            //// isInputNonEmpty = false;
+            //if (isInputNonEmpty) {
+            //    alertMessage('Please provide complete details', 'errorclass');
+            //    e.preventDefault();
+            //    event.stopPropagation();
+            //    return false;
+            //}
+
+            //if ($('[name="escortSignature"]').signature('isEmpty')) {
+            //    alertMessage('Please provide your signature');
+            //    return;
+            //}
+
+            //$('#escort_next_btn').click();
         });
         //End
 
@@ -725,7 +713,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         $('#next_btn').addClass("disabled");
         $('#purpose_next_btn').addClass("disabled");
         //$('#info_next_btn').addClass("disabled");
-        $('#submit').addClass("disabled");
+        // $('#submit').addClass("disabled");
         $('#purpose_div').hide();
         $('#info_div').hide();
         $('#escort_div').hide();
@@ -742,62 +730,53 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             $(this).prev().css('fontSize', '1.1em');
         });
 
-        $('#next_btn').click(function() {
+        $('#next_btn').click(function () {
             //alert();
             $('#txt_visitor_name').val(autoCapitalizeFirstWord($("#txt_visitor_name")[0]));
             var name = $('#txt_visitor_name').val();
             var name_initial = $('#initial_select').val();
             $('[name="visitor_name_new"]').val(name);
-            
+
             $('#purpose_div').show();
             $('.purpose-question-text').find('div').html("Okay, " + name_initial + " " + name + ".<br /><span>Please help with a few additional details.</span>");
 
             $("#name_question .back").hide();
-            $("#name_question").animate({ bottom: "100%" }, 450,function(){});
-            $("#purpose_div").animate({ top: "0px" }, 450)
-            //$(".purpose-question-text").animate({line-height: "10px"}), 600)
-                .queue(function() {
-                 
-                });
-
-            $('.purpose-question-text div span').animate({top: "0px"}, 600)
+            $("#name_question").animate({ bottom: "100%" }, 450);
+            $("#purpose_div").animate({ top: "0px" }, 450);
+            $('.purpose-question-text div span').animate({ top: "0px" }, 600)
                 .delay(3000)
-                .queue(function() {
+                .queue(function () {
                     $(".purpose-question-text").animate({ bottom: "100%" }, 600);
                     $('#info_div').show();
-                    $("#info_div").animate({ top: "0px" }, "slow", function() {
+                    $("#info_div").animate({ top: "0px" }, "slow", function () {
                         initializeVisitorSignature();
                     })
-                    .queue(function() {
-                        $("#purpose_div").hide();
-                        $("#visitorInfoDiv img").fadeIn(600);
-                        showRequiredFields();
+                        .queue(function () {
+                            $("#purpose_div").hide();
+                            $("#visitorInfoDiv img").fadeIn(600);
+                            showRequiredFields();
 
-                        window.addEventListener("resize", function () {
+                            window.addEventListener("resize", function () {
+                                var div = $(".company-form-div")[0];
+                                var marTop = (div.clientHeight) / 2;
+                                div.style.marginTop = "-" + marTop + "px";
+                            }, false);
+
                             var div = $(".company-form-div")[0];
                             var marTop = (div.clientHeight) / 2;
                             div.style.marginTop = "-" + marTop + "px";
-                        }, false);
-
-                        var div = $(".company-form-div")[0];
-                        var marTop = (div.clientHeight) / 2;
-                        div.style.marginTop = "-" + marTop + "px";
-                    });
+                        });
                 });
         });
-        
-        $("#info_next_btn").closest("div.image_div").click(function () {
-            //if ($(this).hasClass('disabled')) {
-            //        return;
-            //    }
-            
+
+        $("#info_next_btn").click(function () {
             if (!checkInfoRequiredFieldValidation())
                 return false;
 
             var signatureObj = $('.company-form-div').find("[name='visitor_signature_JSON']");
             for (let i = 0; i < signatureObj.length; i++) {
-                if($($('.company-form-div').find("[name='visitorSignature']")[i]).signature('isEmpty')) {
-                    alertMessage('Please provide your signature ');
+                if ($($('.company-form-div').find("[name='visitorSignature']")[i]).signature('isEmpty')) {
+                    alertMessage('Please provide your signature on the canvas provided below the declaration.');
                     return;
                 }
             }
@@ -811,16 +790,37 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                 $("#showMoreVisitors").find("span.personsCount").text(itemArray.length - 1);
             }
 
-          
             $("#escort_div").show();
+            $("#thank_visitor_show_escort").show();
             $("#visitorInfoDiv .back, #visitorInfoDiv .home").fadeOut(600);
-            $("#visitorInfoDiv").animate({bottom: "100%"}, 600);
-            $(".signup").animate({top: "0px"}, 600)
+            $("#scrolladd").animate({ bottom: "100%" }, 600);
+            $("#thank_visitor_show_escort").animate({ top: "0px" }, 600);   
+            $("#thank_visitor_show_escort #inner").animate({ "margin-top": "-97.5px" }, 200);
+            $("#thank_visitor_show_escort #inner").animate({ "line-height": "65.62px" }, 600)
+                .delay(3000)
                 .queue(function() {
-                    $('#info_div').hide();
-                    initializeEscortSignature();
-                    $(".signup .back, .signup .home").fadeIn(600);
-                });
+                    $("#info_div").hide();
+                    $(".signup").animate({ top: "0px" }, 600);
+                    $("#thank_visitor_show_escort #outer").animate({ bottom: "100%" }, 600, function() {
+                        $("#thank_visitor_show_escort").hide();
+                        $("#thank_visitor_show_escort #outer").hide();
+
+                        initializeEscortSignature();
+                        $(".signup .back, .signup .home").fadeIn(600);
+
+                        window.addEventListener("resize", function () {
+                            var div = $(".container-div")[0];
+                            div.style.top = "50%";
+                            var marTop = (div.clientHeight) / 2;
+                            div.style.marginTop = "-" + marTop + "px";
+                        }, false);
+
+                        var div = $(".container-div")[0];
+                        div.style.top = "50%";
+                        var marTop = (div.clientHeight) / 2;
+                        div.style.marginTop = "-" + marTop + "px";
+                    });
+                })
         });
 
         $('#visitor_next_btn').click(function () {
@@ -829,15 +829,15 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             $('#escort_div').show();
             $("#escort_div").animate({ marginTop: "-5%" }, "slow");
         })
-        
-        $('#escort_next_btn').click(function() {
-            var currentval=$('.escortDetails').val();
-            let idcount=0;
-            $("[name='visitor_empid']").each(function() {
-                if($(this).val().trim() === currentval.trim())
-                    idcount++; 
-                
-                if(idcount>0) {
+
+        $('#escort_next_btn').click(function () {
+            var currentval = $('.escortDetails').val();
+            let idcount = 0;
+            $("[name='visitor_empid']").each(function () {
+                if ($(this).val().trim() === currentval.trim())
+                    idcount++;
+
+                if (idcount > 0) {
                     alertMessage('Escort person cannot be a visitor.Please verify ');
                     $('.escortDetails').val("");
                     resetEscortPhotos();
@@ -846,7 +846,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                     return;
                 }
             });
-            if($('[name="area"]:visible').length===0)
+            if ($('[name="area"]:visible').length === 0)
                 $('[name="area"]').val($('[name="escort_unit"]').val());
 
             renderSignForGaurdVerification();
@@ -857,30 +857,39 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             var visitorEmpId = $('[name="visitor_empid"]').val();
             if (visitorEmpId.trim().length > 0)
                 visitorEmpId = '(' + visitorEmpId + ')';
-            
+
             $('#visitor_name1').text(name_initial + " " + visitorName + visitorEmpId);
             $('#GuardEscortName').text(escortName + '(' + escortId + ')');
 
-            var empIdObj=  $('[name="visitor_empid"]');
-            for (var i=0; i<empIdObj.length;i++) {
-                if($(empIdObj[i]).val().length==0) {
-                    $(empIdObj[i]).val( Math.floor((Math.random() * 10000000000) + 100000000));
+            var empIdObj = $('[name="visitor_empid"]');
+            for (var i = 0; i < empIdObj.length; i++) {
+                if ($(empIdObj[i]).val().length == 0) {
+                    $(empIdObj[i]).val(Math.floor((Math.random() * 10000000000) + 100000000));
                 }
             }
 
-   
             $("#guard_div").show();
             $('#escort_div .back, #escort_div .home').fadeOut(600);
             $("#escort_slider").animate({ bottom: "100%" }, "slow");
             $("#guard_div").animate({ top: "0px" }, "slow")
-                .queue(function() {
+                .queue(function () {
+                    window.addEventListener("resize", function () {
+                        var div = $(".guard-verify")[0];
+                        var marTop = (div.clientHeight) / 2;
+                        div.style.marginTop = "-" + marTop + "px";
+                    }, false);
+
+                    var div = $(".guard-verify")[0];
+                    var marTop = (div.clientHeight) / 2;
+                    div.style.marginTop = "-" + marTop + "px";
+
                     $('#escort_div').hide();
                     $("#guard_div .back, #guard_div .home").fadeIn(600);
-                });            
+                });
         });
 
         //go back actions
-        
+
         $('#add_visitor_back_btn').click(function () {
             window.location.href = '/home';
         });
@@ -895,20 +904,20 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             $("#info_div").animate({ marginTop: "100%" }, "slow");
             $("#info_div").hide();
             $('#name_question').show();
-            $("#purpose-question-text").css({'top':'0px'});
+            $("#purpose-question-text").css({ 'top': '0px' });
             $("#name_question").animate({ top: "0px" }, 600)
-            .delay(1500)
-            .queue(function () {
-                $("#text_div span:eq(1)").animate({ top: "0px" }, 400);
-                $("#text_div span:eq(2)").animate({ top: "0px" }, 500)
                 .delay(1500)
                 .queue(function () {
-                    $("#text_div input, #initial_select").animate({ top: "0px" }, 400);
-                    $("#sel_visit_purpose").animate({ top: "0px" }, 500);
-                })
-            });
-       
-         
+                    $("#text_div span:eq(1)").animate({ top: "0px" }, 400);
+                    $("#text_div span:eq(2)").animate({ top: "0px" }, 500)
+                        .delay(1500)
+                        .queue(function () {
+                            $("#text_div input, #initial_select").animate({ top: "0px" }, 400);
+                            $("#sel_visit_purpose").animate({ top: "0px" }, 500);
+                        })
+                });
+
+
             //  $("#purpose_div").animate({ marginTop: "-9%" }, "slow");
         });
         $('#escort_before_btn').click(function () {
@@ -916,19 +925,19 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             $('#escort_div').hide();
             $('#info_div').show();
             $('#info_div').show();
-                    $("#info_div").animate({ top: "0px" }, "slow");
-                     
-         /*    $("#info_div").animate({ marginTop: "-9%" }, "slow"); */
+            $("#info_div").animate({ top: "0px" }, "slow");
+
+            /*    $("#info_div").animate({ marginTop: "-9%" }, "slow"); */
         });
         $('#guard_before_btn').click(function () {
-       
+
             $('#guard_div').animate({ marginTop: "100%" }, "slow");
             $('#guard_div').hide();
             $('#escort_div').show();
             $("#escort_div").animate({ marginTop: "-5%" }, "slow");
         });
 
-        $('#txt_visitor_name').on('input',function () {
+        $('#txt_visitor_name').on('input', function () {
             if ($('#txt_visitor_name').val() != '') {
                 $('#next_btn').removeClass("disabled");
             }
@@ -941,7 +950,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         $(document).on('input', '.info-input', function () {
             checkInfoValidation();
         });
-        $('#txt_visit_purpose').on('input',function () {
+        $('#txt_visit_purpose').on('input', function () {
             checkPurposeValidation();
             updateOtherPurpose();
         });
@@ -962,24 +971,13 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             }
             checkPurposeValidation();
         });
-        // $('.company-btns').click(function () {
-        //     $('.company-btns').removeClass('btn_on_click');
-        //     $(this).addClass('btn_on_click');
-        //     if ($(this).text() === 'Other') {
-        //         $('#company_div').show();
-        //         $('#employee_div').hide();
-        //     }
-        //     else {
-        //         $('#company_div').hide();
-        //         $('#employee_div').show();
-        //     }
-        //     checkInfoValidation();
-        // });
+
         $("#guardConsent").change(function () {
             if (this.checked) {
                 $('#submit').removeClass("disabled");
             }
         });
+        $('#submit').attr('disabled', false);
     })
 </script>
 <script>
@@ -987,7 +985,6 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
     // For animating the name and visit purpose question
 
     $(document).ready(function () {
-
         $(".question-div .image_div img").hide();
         $('#info_next_btn').closest('div.image_div').hide();
         $("#text_div span:eq(0)").animate({ top: "0px" }, 600)
@@ -995,13 +992,29 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             .queue(function () {
                 $("#text_div span:eq(1)").animate({ top: "0px" }, 400);
                 $("#text_div span:eq(2)").animate({ top: "0px" }, 500)
-                .delay(1500)
-                .queue(function () {
-                    $("#text_div input, #initial_select").animate({ top: "0px" }, 400);
-                    $("#sel_visit_purpose").animate({ top: "0px" }, 500);
-                })
+                    .delay(1500)
+                    .queue(function () {
+                        $("#text_div input, #initial_select").animate({ top: "0px" }, 400);
+                        $("#sel_visit_purpose").animate({ top: "0px" }, 500);
+                    })
             });
-            
+
+        $('[name=visitor_smartcard]').blur(function(){
+            if($('[name=visitor_empid]').val()===$('[name=visitor_smartcard]').val()){
+                //alert('EmpId and Card Number cannot be same.');
+                $('[name=visitor_smartcard]').val('');
+            }
+            if(parseInt($('[name=visitor_smartcard]').val()) === 0){
+                $('[name=visitor_smartcard]').val('');
+            }
+        });
+        $('[name=visitor_empid]').blur(function(){
+            if(parseInt($('[name=visitor_empid]').val())===0){
+               // alert('EmpId cannot be zero.');
+                $('[name=visitor_empid]').val('');
+            }
+        });
+
         $("#name_question .back").fadeIn("slow");
 
         window.addEventListener("resize", function () {
@@ -1014,23 +1027,23 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         var marTop = (div.clientHeight) / 2;
         div.style.marginTop = "-" + marTop + "px";
 
-        $("#text_div input, #text_div select").on('change input',function() {
+        $("#text_div input, #text_div select").on('change input', function () {
             var input = $("#text_div input");
             var selInitial = $("#initial_select");
             var selVisitPurpose = $("#sel_visit_purpose");
             var img = $(".question-div .image_div img");
-                
-            if (input.val().trim() != '' &&  selInitial.find(":selected").val() != '' && selVisitPurpose.find(":selected").val() != '') 
+
+            if (input.val().trim() != '' && selInitial.find(":selected").val() != '' && selVisitPurpose.find(":selected").val() != '')
                 img.fadeIn("medium");
             else
                 img.fadeOut("fast");
         });
 
-        $(".company-form-div input[type='text']").change(function() {
+        $(".company-form-div input[type='text']").change(function () {
             $(".company-form-div .image_div span img").show();
             $('#info_next_btn').closest('div.image_div').fadeIn(600);
-            
-            
+
+
             //var flag = true;
             //$(".company-form-div input[type='text']").each(function() {
             //    if ($(this).val().trim() == "") {
@@ -1047,16 +1060,15 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
         });
     });
 
-    function middleAlign( div) {
+    function middleAlign(div) {
         div.style.top = "50%";
         var marTop = (div.clientHeight) / 2;
         div.style.marginTop = "-" + marTop + "px";
     }
 </script>
-
 <body class="form-body">
-    <div class="modal fade" id="visitorEscortModal" tabindex="-1" role="dialog" aria-labelledby="visitorEscortModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="visitorEscortModal" tabindex="-1" role="dialog"
+        aria-labelledby="visitorEscortModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background: linear-gradient(to right, #3a90cb , #2ed9d0);">
@@ -1072,11 +1084,11 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             <div class="modal-content">
                 <div class="modal-header" style="background: linear-gradient(to right, #3a90cb , #2ed9d0);">
                 </div>
-                <div class="modal-body text-center font-weight-bold">
+                <div class="modal-body text-center">
                 </div>
                 <div class="pb-3 text-center">
-                    <button type="button" class="btn btn-primary btn-lg" onclick="return alertOkBtnClicked();"
-                        data-dismiss="modal">OK</button>
+                    <button type="button" class="btn btn-clear-sign text-align-center" style = "float: none;" onclick="return alertOkBtnClicked();"
+                        data-dismiss="modal">Got it!</button>
                 </div>
             </div>
         </div>
@@ -1092,7 +1104,6 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                             <img src="/public/images/arrow_left.png" class="back" id="add_visitor_back_btn">
                         </div>
                         <div class="col-sm-6">
-                            <!--<img src="/public/images/logout.png"  class="float-right"style="cursor: pointer; height: 64px;">-->
                         </div>
                     </div>
                 </header>
@@ -1109,11 +1120,12 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                         <option value="Ms.">Ms.</option>
                         <option value="Dr.">Dr.</option>
                     </select>
-                    <input type="text" id="txt_visitor_name" name="visitor_name" placeholder="Full name" oninput="this.value=this.value.replace(/[^a-zA-Z .,]/g,'');"
+                    <input type="text" id="txt_visitor_name" name="visitor_name" placeholder="Full name"
+                        oninput="this.value=this.value.replace(/[^a-zA-Z .,]/g,'');"
                         style="display: inline; width: 400px;" />
                     <select id="sel_visit_purpose">
                         <option disabled selected value="">Purpose of visit/ reason for escorting</option>
-                        <option value="newjoinee">I'm a new Lilly employee</option>
+                        <option value="newjoinee">I'm new to the account</option>
                         <option value="lostcard">I lost my identity card</option>
                         <option value="deallocation">I'm currently deallocated</option>
                         <option value="internalaudit">Internal audit</option>
@@ -1127,47 +1139,8 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                         <img src="/public/images/arrow_white_385666.png" class="arrow-right" />
                     </span>
                 </div>
-                <!--<div class="question-text" style="top: 44%;">
-                    <div>Hi! May I know your name please?</div>
-                    <div class="row">
-                        <div class="col-sm-5 dropdown">
-                            <select class="initial float-right" id="initial_select">
-                                <option>-</option>
-                                <option>Mr.</option> 
-                                <option>Ms.</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-7">
-                            <input class="input-boxes name-input" placeholder="Your Name Please" name="visitor_name"
-                                oninput="this.value=this.value.replace(/[^a-zA-Z .,]/g,'');" id="txt_visitor_name">
-                        </div>
-                    </div>
-                    <!-- <button type="button" class="btn btn-primary btn-lg proceed-button" id="next_btn">Proceed</button>
-                    <footer>
-                        <div class="row mt-5">
-                            <div class="col-sm-12 mt-5">
-                                <span id="next_btn">
-                                    <i class="fa fa-angle-right float-right white-arrow right-arrow1 " aria-hidden="true"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </footer>
-                </div>-->
             </div>
             <div id="purpose_div" class="initial-position">
-                <!--<header style="padding: 5% 7%;">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <span id="purpose_before_btn">
-                                    <img src="/public/images/arrow_left.png" class="back">
-                                    <!--<i class="fa fa-angle-left" aria-hidden="true" style="font-size: 50px; color: white;"></i>
-                                </span>
-                            </div>
-                            <div class="col-sm-6">
-                                <img src="/public/images/home.png" class = "home" onclick = "javascript:window.location.href = 'secondPage.html'">
-                            </div>
-                        </div>
-                </header>-->
                 <div id="purpose_question">
                     <div class="purpose-question-text">
                         <div>May we have the purpose of your visit?</div>
@@ -1178,7 +1151,8 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             <div class="modal fade" id="visitorSignatureModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header" style="color: white; font-size: 2em; background: linear-gradient(to right, #3a90cb , #2ed9d0);">
+                        <div class="modal-header"
+                            style="color: white; font-size: 2em; background: linear-gradient(to right, #3a90cb , #2ed9d0);">
                             Declaration Form
                         </div>
                         <div class="modal-body">
@@ -1195,7 +1169,8 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                             <button type="button" id="visitor_clear_signature1" class="btn btn-error">
                                 Clear
                                 signature</button>
-                            <button type="button" id="visitor_save_signature1" class="btn btn-success" data-dismiss="modal">
+                            <button type="button" id="visitor_save_signature1" class="btn btn-success"
+                                data-dismiss="modal">
                                 I Agree</button>
                         </div>
                     </div>
@@ -1220,7 +1195,8 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                             <button type="button" id="escort_clear_signature1" class="btn btn-error">
                                 Clear
                                 Signature</button>
-                            <button type="button" id="escort_save_signature" class="btn btn-success" data-dismiss="modal">
+                            <button type="button" id="escort_save_signature" class="btn btn-success"
+                                data-dismiss="modal">
                                 I Agree</button>
                         </div>
                     </div>
@@ -1228,159 +1204,170 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
             </div>
             <!--SIGNATURE MODAL ENDS-->
             <div id="info_div">
-                    <div id="scrolladd"> 
-                <div id="visitorInfoDiv">
-                    <header>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <span id="info_before_btn">
-                                    <img src="/public/images/arrow_left.png" class="back">
-                                </span>
-                            </div>
-                            <div class="col-sm-6">
-                                <img src="/public/images/home.png" class="home">
-                            </div>
-                        </div>
-                    </header>
-                    <div class="company-form-div">
-                        <div class="row mt-3 ml-2 mr-2" id="company_div">
-                            <div class="col-sm-12">
-                                <span>
-                                    <img src="/public/images/company (1).png" style="width: 32.5px; height: 32.5px; margin-left: 1%;">
-                                </span>
-                                <input type="text" class="input-boxes info-input focus required" id="visitor_company_other"
-                                    maxlength="50" oninput="this.value=this.value.replace(/[^a-zA-Z0-9,&()` .,]/g,'');"
-                                    name="visitor_company_other" placeholder="Company Name">
-                            </div>
-                        </div>
-                        <div class="row mt-3 ml-2 mr-2 repeatable_item area_div">
-                            <div class="col-sm-12">
-                                <div class="form-group w-100">
-                                    <span><img src="/public/images/department.png" style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
-                                    <input type="text" class="input-boxes focus info-input required" oninput="this.value=this.value.replace(/[^a-zA-Z0-9,&()` .,]/g,'');"
-                                        id="txt_visitor_Area" name="area" placeholder="Department/ area" maxlength="50">
+                <div id="scrolladd">
+                    <div id="visitorInfoDiv">
+                        <header>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <span id="info_before_btn">
+                                        <img src="/public/images/arrow_left.png" class="back">
+                                    </span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <img src="/public/images/home.png" class="home home_icon">
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mt-3 ml-2 mr-2 repeatable_item" id="employee_div">
-                            <div class="col-sm-12">
-                                <div class="form-group w-100">
-                                    <span><img src="/public/images/employee.png" style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
-                                    <input type="text" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="input-boxes focus info-input required"
-                                        maxlength="7" name="visitor_empid" placeholder="Employee ID" maxlength="7">
+                        </header>
+                        <div class="company-form-div">
+                            <div class="row mt-3 ml-2 mr-2" id="company_div">
+                                <div class="col-sm-12">
+                                    <span>
+                                        <img src="/public/images/company (1).png"
+                                            style="width: 32.5px; height: 32.5px; margin-left: 1%;">
+                                    </span>
+                                    <input type="text" class="input-boxes info-input focus required"
+                                        id="visitor_company_other" maxlength="50"
+                                        oninput="this.value=this.value.replace(/[^a-zA-Z0-9,&()` .,]/g,'');"
+                                        name="visitor_company_other" placeholder="Company Name">
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mt-3 ml-2 mr-2 mb-2 repeatable_item d-none nameRow">
-                            <div class="col-sm-12">
-                                <div class="form-group w-100">
-                                    <span><i class="fas fa-user form-icons purpose-form-icons"></i></span>
-                                    <input class="input-boxes  info-input required" placeholder="Full Name"
-                                        oninput="this.value=this.value.replace(/[^a-zA-Z .,]/g,'');" maxlength="100"
-                                        name="visitor_name_new">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-3 ml-2 mr-2 repeatable_item smart_card_div">
-                            <div class="col-sm-12">
-                                <div class="form-group w-100">
-                                    <span><img src="/public/images/smartcard.png" style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
-                                    <input type="text" class="input-boxes focus info-input required" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
-                                        name="visitor_smartcard" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
-                                        placeholder="Smart card number" maxlength="8">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-3 repeatable_item">
-                            <div class="col-sm-6 asset_txt">Carrying a laptop?
-                                <div class="form-check radio-form-check">
-                                    <label class="form-check-label">
-                                        <input type="radio" class="form-check-input assetRadio assetRadio-yes radio-button"
-                                            name="asset_radio">
-                                        <span class="radio-label-txt">Yes</span>
-                                    </label>
-                                </div>
-                                <div class="form-check radio-form-check">
-                                    <label class="form-check-label">
-                                        <input type="radio" class=" form-check-input assetRadio assetRadio-no radio-button"
-                                            name="asset_radio" checked>
-                                        <span class="radio-label-txt">No</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="row">
-                                    <div class="col-sm-6">
-
-                                    </div>
-                                    <div class="col-sm-6">
-
+                            <div class="row mt-3 ml-2 mr-2 repeatable_item area_div">
+                                <div class="col-sm-12">
+                                    <div class="form-group w-100">
+                                        <span><img src="/public/images/department.png"
+                                                style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
+                                        <input type="text" class="input-boxes focus info-input required"
+                                            oninput="this.value=this.value.replace(/[^a-zA-Z0-9,&()` .,]/g,'');"
+                                            id="txt_visitor_Area" name="area" placeholder="Department/ area"
+                                            maxlength="50">
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mt-3 ml-2 mr-2 mb-3 repeatable_item asset_div">
-                            <div class="col-sm-12">
-                                <div class="form-group w-100">
-                                    <span><i class="fas fa-laptop form-icons purpose-form-icons"></i></span>
-                                    <input type="text" class="input-boxes focus info-input " name="visitor_asset"
-                                        maxlength="20" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
-                                        placeholder="Asset Id">
+                            <div class="row mt-3 ml-2 mr-2 repeatable_item" id="employee_div">
+                                <div class="col-sm-12">
+                                    <div class="form-group w-100">
+                                        <span><img src="/public/images/employee.png"
+                                                style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
+                                        <input type="text" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                            class="input-boxes focus info-input required" maxlength="7"
+                                            name="visitor_empid" placeholder="Employee ID" maxlength="7">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row mt-4 ml-2 mr-2 mb-3 repeatable_item">
-                            <div class="col-sm-12">
-                                <div class="form-group w-100">
-                                    <span name="signatureDiv" class="d-none"><i class="fas fa-file-signature" style="font-size: 2.5em"
-                                            data-toggle="modal" onclick="showVisitorSignatureModal(this);"></i></span>
-                                    <div style="font-size: 11pt; line-height: 1.5;" class="mb-3">
-                                        I hereby declare that I'm not carrying
-                                        any asset
-                                        such as a
-                                        mobile phone with
-                                        Camera, CD/ DVD, HDD, voice recorder, USB drive/ pen drive, CD player, data
-                                        storage device or any
-                                        such device in
-                                        the ODC.
+                            <div class="row mt-3 ml-2 mr-2 mb-2 repeatable_item d-none nameRow">
+                                <div class="col-sm-12">
+                                    <div class="form-group w-100">
+                                        <span><img src="/public/images/employee.png"
+                                                style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
+                                        <input class="input-boxes  info-input required" placeholder="Full Name"
+                                            oninput="this.value=this.value.replace(/[^a-zA-Z .,]/g,'');" maxlength="100"
+                                            name="visitor_name_new">
                                     </div>
-                                    <hr />
-                                    <!--<div style="font-size: 15pt;">
+                                </div>
+                            </div>
+                            <div class="row mt-3 ml-2 mr-2 repeatable_item smart_card_div">
+                                <div class="col-sm-12">
+                                    <div class="form-group w-100">
+                                        <span><img src="/public/images/smartcard.png"
+                                                style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
+                                        <input type="text" class="input-boxes focus info-input required"
+                                            oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                            name="visitor_smartcard"
+                                            oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                            placeholder="Smart card number" maxlength="8">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3 repeatable_item">
+                                <div class="col-sm-6 asset_txt">Carrying a laptop?
+                                    <div class="form-check radio-form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio"
+                                                class="form-check-input assetRadio assetRadio-yes radio-button"
+                                                name="asset_radio">
+                                            <span class="radio-label-txt">Yes</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check radio-form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio"
+                                                class=" form-check-input assetRadio assetRadio-no radio-button"
+                                                name="asset_radio" checked>
+                                            <span class="radio-label-txt">No</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3 ml-2 mr-2 mb-3 repeatable_item asset_div">
+                                <div class="col-sm-12">
+                                    <div class="form-group w-100">
+                                        <span><img src="/public/images/laptop-blue.png" style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
+                                        <input type="text" class="input-boxes focus info-input " name="visitor_asset"
+                                            maxlength="20" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                            placeholder="Asset ID">
+                                    </div>
+                                </div>
+                            </div>
+                            <hr style = "margin-top: 0 !important; margin-bottom: -0.5rem !important;">
+                            <div class="row mt-4 ml-2 mr-2 mb-3 repeatable_item">
+                                <div class="col-sm-12">
+                                    <div class="form-group w-100">
+                                        <span name="signatureDiv" class="d-none"><i class="fas fa-file-signature"
+                                                style="font-size: 2.5em" data-toggle="modal"
+                                                onclick="showVisitorSignatureModal(this);"></i></span>
+                                        <div style="font-size: 11pt; line-height: 1.5;" class="mb-3">
+                                            I hereby declare that I'm not carrying
+                                            any asset
+                                            such as a
+                                            mobile phone with
+                                            Camera, CD/ DVD, HDD, voice recorder, USB drive/ pen drive, CD player, data
+                                            storage device or any
+                                            such device in
+                                            the ODC.
+                                        </div>
+                                        <hr />
+                                        <!--<div style="font-size: 15pt;">
                                         <label>Signature</label>
                                     </div>-->
-                                    <div style="width: 100%; height: 200px;">
-                                        <div style="width: 90%; margin: 0 auto;">
-                                            <div name="visitorSignature" class="sign"></div>
-                                            <button type="button" name="visitor_clear_signature" class="btn btn-error btn-clear-sign">Clear</button>
+                                        <div style="width: 100%;">
+                                            <div style = "width: 90%;  margin: 0 auto;">
+                                                <div style="width: 100%;">
+                                                    <div name="visitorSignature" class="sign"></div>
+                                                    <button type="button" name="visitor_clear_signature"
+                                                        class="btn btn-error btn-clear-sign">
+                                                        Clear</button>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <input type="hidden" id="visitor_signature_JSON" name="visitor_signature_JSON">
+                                        <input type="hidden" id="visitor_signature_JSOnFinal"
+                                            name="visitor_signature_JSOnFinal">
                                     </div>
-                                    <input type="hidden" id="visitor_signature_JSON" name="visitor_signature_JSON">
-                                    <input type="hidden" id="visitor_signature_JSOnFinal" name="visitor_signature_JSOnFinal">
                                 </div>
                             </div>
-                        </div>
-                        <hr />
-                        <div class="row mt-4 ml-2 mr-2 mb-3 repeatable_item">
-                            <div class="col-sm-12">
-                                <div class="form-group w-100">
-                                    <label class="addsomeoneMsg" style='padding-right: 5px; font-size: 14pt; margin-bottom: 0px !important; vertical-align: middle;'>
-                                        Someone accompanying you? Add details for another visitor</label>
-                                    <span>
-                                        <img src="/public/images/add_blue.png" style="height: 40px;width: 40px;"
-                                            onclick="cloneDiv(this);" class="img-add" />
-                                    </span>
-                                    <span>
+                            <hr />
+                            <div class="row mt-4 ml-2 mr-2 mb-3 repeatable_item" style = "margin-top: 1rem !important;">
+                                <div class="col-sm-12">
+                                    <div class="form-group w-100">
+                                        <label class="addsomeoneMsg"
+                                            style='padding-right: 5px; font-size: 14pt; margin-bottom: 0px !important; vertical-align: middle;'>
+                                            Someone accompanying you? Add details for another visitor</label>
+                                        <span>
+                                            <img src="/public/images/add_blue.png" style="height: 40px;width: 40px;"
+                                                onclick="cloneDiv(this);" class="img-add" />
+                                        </span>
+                                        <span>
                                             <!-- <img src="/public/images/subtract_blue.png" style="height: 35px;width: 35px; margin-left: 6px; display:none !important;"
                                             onclick="removeCloneDiv(this);" /> -->
-                                            <i class="fa fa-minus-circle removecloned" onclick="removeCloneDiv(this);" style="margin-left: 10px;font-size: 1.95em; color: #03a6ff;position: relative;top: 8px; display:none;"></i></span>
+                                            <i class="fa fa-minus-circle removecloned" onclick="removeCloneDiv(this);"
+                                                style="margin-left: 10px;font-size: 1.95em; color: #03a6ff;position: relative;top: 8px; display:none;"></i></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div id="multipleVisitors"></div>
                 </div>
-                <div id="multipleVisitors"></div>
-                    </div>
                 <footer>
                     <div class="row mt-3">
                         <div class="col-sm-12" style="position: static !important;">
@@ -1393,6 +1380,12 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                     </div>
                 </footer>
             </div>
+            <div id = "thank_visitor_show_escort">
+                <div id = "outer">
+                    <div id = "inner">Thank you.<br />
+                    Please have a seat while your escort fills in their details and the request is sent for approvals.</div>
+                </div>
+            </div>
             <!-- Sign up form -->
             <section class="signup" id="escort_div">
                 <div id="escort_slider">
@@ -1404,7 +1397,7 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                                 </span>
                             </div>
                             <div class="col-sm-6">
-                                <img src="/public/images/home.png" class="home">
+                                <img src="/public/images/home.png" class="home home_icon">
                             </div>
                         </div>
                     </header>
@@ -1420,42 +1413,45 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                                 </div>-->
                                     <div class="row">
                                         <div class="col-4">
-                                            <img id="escortPhoto" onerror="this.src='public/images/no-image-available.png'"
+                                            <img id="escortPhoto"
+                                                onerror="this.src='public/images/no-image-available.png'"
                                                 src="/public/images/no-image-available.png" class="no-image-available">
                                         </div>
                                         <div class="col-8">
                                             <div style="width: 100%; height: 100%; display: table;">
-                                                <div style="width: 100%; height: 100%; display: table-cell; vertical-align: middle;">
+                                                <div
+                                                    style="width: 100%; height: 100%; display: table-cell; vertical-align: middle;">
                                                     <div class="form-group w-100 right-align">
-                                                        <!-- <span><i class="fas  fa-id-badge form-icons"></i></span>
-                                                         -->
-                                                         
- <span><img src="/public/images/employee.png" style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
-                                                         <input type="text" id="escort_id" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                                        <span><img src="/public/images/employee.png"
+                                                                style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
+                                                        <input type="text" id="escort_id"
+                                                            oninput="this.value=this.value.replace(/[^0-9]/g,'');"
                                                             name="escort_empid" class="input-boxes focus escortDetails"
-                                                            maxlength="7" placeholder="Employee Id">
+                                                            maxlength="7" placeholder="Employee ID">
                                                     </div>
                                                     <div class="form-group w-100 right-align">
-                                                        <span><i class="fa fa-user form-icons"style="color:#0654a7;font-size:25pt !important"></i></span>
+                                                        <span><img src="/public/images/employee.png"
+                                                                style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
                                                         <input type="text" class="input-boxes focus escortDetails"
                                                             readonly maxlength="100" id="escort_name" name="escort_name"
                                                             placeholder="Name">
                                                     </div>
                                                     <div class="form-group w-100 right-align">
-                                                       <!--  <span><i class="fa fa-address-card form-icons"></i></span>
-                                                        -->
-                                                        <span><img src="/public/images/smartcard.png" style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
-                                                        <input type="text" name="escort_smartcard" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
-                                                            id="escort_smartcard" class="input-boxes focus escortDetails"
-                                                            maxlength="8" placeholder="Smart Card Number">
-                                                    </div>
-                                                    <div class="form-group w-100 right-align">
-                                                       <!--  <span><i class="fa fa-user form-icons"></i></span> -->
-                                                       <span><img src="/public/images/department.png" style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
+                                                        <span><img src="/public/images/department.png"
+                                                                style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
                                                         <input type="text" class="input-boxes focus escortDetails"
                                                             oninput="this.value=this.value.replace(/[^a-zA-Z .,]/g,'');"
                                                             maxlength="100" id="escort_unit" name="escort_unit"
-                                                            placeholder="Department/Area">
+                                                            placeholder="Department/ Area">
+                                                    </div>
+                                                    <div class="form-group w-100 right-align">
+                                                        <span><img src="/public/images/smartcard.png"
+                                                                style="width: 32.5px; height: 32.5px; margin-left: 1%;"></span>
+                                                        <input type="text" name="escort_smartcard"
+                                                            oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                                            id="escort_smartcard"
+                                                            class="input-boxes focus escortDetails" maxlength="8"
+                                                            placeholder="Smart Card number">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1471,52 +1467,15 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                                                     is correct.</span>
                                             </div>
                                             <hr />
-                                            <div name="escortSignature" class="sign">
-                                            </div>
-                                            <br>
-                                            <button type="button" id="escort_clear_signature" class="btn btn-error">
-                                                Clear
-                                            </button>
-                                        </div>
-                                        <input type="hidden" id="escort_signature_JSON" name="escort_signature_JSON">
-                                        <!--
-                                    <div class="col-7">
-                                        <div class="row">
-                                            
-                                            <div class="row mt-4 ml-2 mr-2 mb-3 ">
-                                                <div class="col-sm-12 text-right">
-                                                    <div class="form-group w-100">
-                                                        <div>
-                                                            <span style="font-size: 18px;"> I hereby declare that I have
-                                                                check the mentioned ID(s)
-                                                                for the visitor and information provided
-                                                                is correct in nature.</span>
-                                                        </div>
-                                                        <div name="escortSignature" class="sign">
-                                                        </div>
-
-                                                    </div>
-
-                                                    <input type="hidden" id="escort_signature_JSON"
-                                                        name="escort_signature_JSON">
+                                            <div style = "width: 100%;">
+                                                <div style = "width: 90%; margin: 0 auto; text-align: left; font-family: Arial, sans-serif !important; font-size: 14pt !important;">
+                                                    <div name="escortSignature" class="sign"></div>
+                                                    <button type="button" id="escort_clear_signature" class="btn btn-error btn-clear-sign">Clear</button>
                                                 </div>
                                             </div>
                                         </div>
-                                         <div class="row w-100 mt-2">
-                                            <div class="col-sm-6">
-                                                <button type="button"
-                                                    class="btn btn-primary btn-lg proceed-button float-right"
-                                                    id="escort_before_btn">Back</button>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <button type="button" class="btn btn-primary btn-lg proceed-button"
-                                                    id="sbmt_escort_details">Proceed</button>
-                                            </div>
-                                        </div> 
+                                        <input type="hidden" id="escort_signature_JSON" name="escort_signature_JSON">
                                     </div>
--->
-                                    </div>
-                                    <!-- <button type="button" class="btn btn-primary btn-lg form-buttons mt-3" id="escort_next_btn">Next</button> -->
                                 </div>
                             </div>
 
@@ -1530,7 +1489,6 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                                         <img src="/public/images/arrow_white_385666.png" class="arrow-right" />
                                     </span>
                                 </div>
-
                             </div>
                         </div>
                     </footer>
@@ -1554,7 +1512,8 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                         correct in nature.
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-agree form-buttons proceed-button" data-dismiss="modal" id="escort_next_btn">
+                        <button type="button" class="btn btn-agree form-buttons proceed-button" data-dismiss="modal"
+                            id="escort_next_btn">
                             I
                             Agree</button>
                     </div>
@@ -1579,14 +1538,14 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                         the ODC
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-agree form-buttons proceed-button" data-dismiss="modal" id="visitor_next_btn">
+                        <button type="button" class="btn btn-agree form-buttons proceed-button" data-dismiss="modal"
+                            id="visitor_next_btn">
                             I
                             Agree</button>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="form-group initial-position" id="guard_div">
             <header>
                 <div class="row">
@@ -1596,23 +1555,23 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                         </span>
                     </div>
                     <div class="col-sm-6">
-                        <img src="/public/images/home.png" class="home">
+                        <img src="/public/images/home.png" class="home home_icon">
                     </div>
                 </div>
             </header>
-            <div class="item guard_verify">
+            <div class="item guard-verify">
                 <!-- Escort Form -->
-                <div class=" container form_content">
+                <div class="container form_content">
                     <div class="row">
-                        <div class="col-12">
-                            <h1 class="text-center">गार्ड द्वारा सत्यापन</h1>
+                        <div class="col-12 text-center" style = "font-size: 18pt; text-decoration: underline; ">
+                            गार्ड द्वारा वेरिफिकेशन
                         </div>
                     </div>
                     <div class="row mt-3 ">
                         <div class="col-6 text-center">
                             <div class="row mt-3 ">
-                                <div class="col-12 text-center">
-                                    <h3>आगंतुक का नाम:<span id="GuardVisitorName"></span></h3>
+                                <div class="col-12 text-center" style = "font-size: 14pt;">
+                                    विजिटर का नाम<span id="GuardVisitorName"></span>
                                 </div>
                             </div>
                             <div class="row mt-3 ">
@@ -1627,14 +1586,15 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                                         
                                         > -->
                                     <img style="height: 150px; border: 1px solid #6BC2E3" class="rounded-circle"
-                                        onerror="this.src='public/images/gray_person.png'" src="/public/images/gray_person.png" />
+                                        onerror="this.src='public/images/no-image-available.png'"
+                                        src="/public/images/no-image-available.png" />
                                 </div>
                             </div>
                             <div class="row mt-3 ">
                                 <div class="col-12 text-center">
                                     <!-- 
                                     <div id="redraw_visitor_signature" class="sign"> -->
-                                    <img id="redraw_visitor_signature" style='border: 1px solid black' class="sign " />
+                                    <img id="redraw_visitor_signature" style='border: 1px solid black; margin-top: 130px' class="sign " />
                                     <!--  </div> -->
                                 </div>
                             </div>
@@ -1650,8 +1610,8 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                         </div>
                         <div class="col-6 text-center">
                             <div class="row mt-3 ">
-                                <div class="col-12 text-center">
-                                    <h3>एस्कॉर्ट का नाम:<span></span></h3>
+                                <div class="col-12 text-center" style = "font-size: 14pt;">
+                                    एस्कॉर्ट का नाम<span></span>
                                 </div>
                             </div>
                             <div class="row mt-3 ">
@@ -1659,12 +1619,12 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                                     <h4 id="GuardEscortName"></h4>
                                 </div>
                             </div>
-
                             <div class="row mt-3 ">
                                 <div class="col-12 text-center">
                                     <!--   <h4>(<span id="GuardEscortId"></span>)</h4> -->
-                                    <img style="height: 150px; border: 1px solid #6BC2E3" id="escortPhotoGaurdVerification"
-                                        class="rounded-circle" onerror="this.src='data:image/png;base64,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'"
+                                    <img style="height: 150px; border: 1px solid #6BC2E3"
+                                        id="escortPhotoGaurdVerification" class="rounded-circle"
+                                        onerror="this.src='data:image/png;base64,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'"
                                         src="data:image/png;base64,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">
                                 </div>
                             </div>
@@ -1672,32 +1632,46 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                                 <div class="col-12 text-center">
                                     <!--  <div id="redraw_escort_signature" class="sign"></div>
                                -->
-                                    <img id="redraw_escort_signature" style='border: 1px solid black' class="sign " />
+                                    <img id="redraw_escort_signature" style='border: 1px solid black; margin-top: 130px;' class="sign " />
                                 </div>
                             </div>
-
                         </div>
-                        </div>
-                 <!--     <div class="mt-3">
-                        <input id="guardDeclaration" class="btn btn-primary w-100" type="button" data-toggle="modal"
-                            value="Proceed/आगे बढ़ें" data-target="#modalGuard">
-                    </div> 
-                         <div class="btn_sub goback">
-                        <input id="guard_before_btn" class="btn btn-primary w-100" type="button" value="Go Back">
-                    </div>  -->
-                       
+                        <!-- <div class="row" style="margin-top: 53%;">
+                            <input type="checkbox" id="guardConsent">
+                           <span>I hereby declare that the details entered by the Visitor and the Escort
+                                        are
+                                        correct.</span><br>
+                                    <span>मैं घोषणा करता हूं कि आगंतुक और एस्कॉर्ट द्वारा दर्ज किए गए विवरण सही हैं।</span>
+                                                                                                                                                            <div class="row w-100">
+                                            <div class="col-sm-10">
+                                                <input id="modalGuardName" class="input-boxes"
+                                                    name="guard_Signature" type="text" placeholder="Guard Name"
+                                                    readonly="" value="Ramesh Singh">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <input id="submit" class="btn btn-cyan proceed-button" type="submit"
+                                                    value="Submit"
+                                                    style="font-size: 22px; margin-right: 25px;">
+                                            </div>
+                                       </div>
+                        </div> -->
+                    </div>
                     <footer>
                         <div class="row mt-3">
-                            <div class="col-sm-12">
-                                <span id="guardDeclaration" data-toggle="modal" data-target="#modalGuard">
-                                    <i class="fa fa-angle-right float-right white-arrow right-arrow1 " aria-hidden="true"></i>
-                                </span>
+                            <div class="col-sm-12" style="position: static !important;">
+                                <div class="image_div">
+                                    <span id="guardDeclaration">
+                                        <!-- <input type="submit"><img src="/public/images/arrow_white_385666.png" class="arrow-right" /> -->
+                                        <input id="submit" class="btn btn-cyan proceed-button" type="submit"
+                                                        value="Submit"
+                                                        style="font-size: 22px; margin-right: 25px;">
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </footer>
-
                     <div class="modal fade" id="modalGuard" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
-                        aria-hidden="true" style="top: 25%;">
+                        aria-hidden="true" style="top: 25%; position: relative; z-index: 2000">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header" style="border-bottom: 2px solid lightgray;">
@@ -1721,23 +1695,25 @@ if($('[name="escortSignature"]').signature().signature('isEmpty'))
                                         <div class="col-sm-10 offset-sm-2">
                                             <div class="row w-100">
                                                 <div class="col-sm-10">
-                                                    <input id="modalGuardName" class="input-boxes" name="guard_Signature"
-                                                        type="text" placeholder="Guard Name" readonly="" value="Ramesh Singh">
+                                                    <input id="modalGuardName" class="input-boxes"
+                                                        name="guard_Signature" type="text" placeholder="Guard Name"
+                                                        readonly="" value="Ramesh Singh">
                                                 </div>
                                                 <div class="col-sm-2">
-                                                    <input id="submit" class="btn btn-cyan proceed-button" type="submit"
-                                                        value="Submit" disabled="" style="font-size: 22px; margin-right: 25px;">
+                                                    <!-- <input id="submit" class="btn btn-cyan proceed-button" type="submit"
+                                                        value="Submit"
+                                                        style="font-size: 22px; margin-right: 25px;"> -->
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
     </form>
 </body>
-
 </html>

@@ -354,6 +354,9 @@ html, body {
 and (min-device-width : 768px) 
 and (max-device-width : 1024px) 
 and (orientation : portrait) {
+    .type1{
+        margin-top: 34%;
+    }
     .image-text{
         top: 44%;
     }
@@ -384,8 +387,8 @@ and (orientation : portrait) {
     text-align: center;
     height: 365px;
     position: relative;
-    top: 100%;
-    /*margin-top: -182.5px;*/
+    top: 100%;  
+    cursor: pointer;  
 }
 
 /* DEMO-SPECIFIC STYLES */

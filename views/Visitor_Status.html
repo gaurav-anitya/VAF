@@ -2,7 +2,121 @@
 <html lang="en">
 
 <head>
+    <title>See Initiated Escort Requests</title> 
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
     <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            background-image: linear-gradient(to right, #3a90cb , #2ed9d0);
+            overflow: hidden; 
+        }
+
+        body {
+            font-size: 13px;
+            line-height: 1.8;
+            color: #222;
+            font-weight: 400;
+            font-family: Arial, sans-serif;
+        }
+        
+        .main-visitor {
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(to right, #3a90cb , #2ed9d0);
+            /*border: solid 5px red;*/
+        }
+
+        .signup {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            /*border: solid 5px yellow;*/
+
+        }
+
+            .signup > div.row {
+                /*position: fixed;*/
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                margin: 0px;
+                padding: 0px;
+                height: 55px;
+                /*border: solid 5px purple;*/
+            }
+
+        .search {
+            width: 60%;
+            margin: 0 auto;
+            padding: 0px !important;
+            margin-top: 10px;
+            height: 100%;
+            font-size: 22.5px;
+            vertical-align: middle; 
+            /*border: solid 5px blue;*/
+        }
+
+        .has-search .form-control {
+            width: 100%;
+            height: 100%;
+            padding-left: 32.5px;
+            background-color: transparent;
+            border-radius: 1.25rem;
+            border: 1px solid black;
+            font-family: Arial, sans-serif !important;  
+            font-size: 14pt;
+        }
+
+        .has-search .form-control-feedback {
+            font-size: 25px !important;
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.375rem;
+            height: 2.375rem;
+            line-height: 55px;
+            text-align: center;
+            pointer-events: none;
+            color: black;
+        }
+
+        .fa {
+            padding-top: 0px !important;
+        }
+
+        .has-search .form-control:focus {
+            background-color: #ffffff;
+            border-color: black;
+        }
+
+        .card-container {
+            width: 100%;
+            /*border: solid 5px green;*/
+            padding-right: 80px;
+            padding-left: 80px;
+            margin-top: 0px !important;
+            position: absolute;
+            top: 75px;
+            bottom: 0px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+        
+        /*css bookmark*/       
+        
         input,
         select,
         textarea {
@@ -13,12 +127,15 @@
             -o-appearance: unset !important;
             -ms-appearance: unset !important;
         }
-        .fa-info-circle:before{
-    cursor:pointer;
-}
-.fa-info-circle:after{
-    cursor:pointer;
-}
+
+        .fa-info-circle:before {
+            cursor: pointer;
+        }
+
+        .fa-info-circle:after {
+            cursor: pointer;
+        }
+
         input:focus,
         select:focus,
         textarea:focus {
@@ -29,7 +146,7 @@
             -o-box-shadow: none !important;
             -ms-box-shadow: none !important;
         }
-       
+
         img {
             max-width: 100%;
             height: auto;
@@ -72,9 +189,9 @@
             overflow: hidden;
         }
 
-        .form-group:last-child {
-            margin-bottom: 0px;
-        }
+            .form-group:last-child {
+                margin-bottom: 0px;
+            }
 
         /* Bootstrap 4 text input with search icon */
 
@@ -136,7 +253,7 @@
             position: absolute;
             margin: 99px -185px;
             font-size: 22px;
-            cursor:pointer;
+            cursor: pointer;
         }
 
         @media only screen and (min-width : 768px) and (max-width : 1024px) and (orientation : landscape) {
@@ -167,12 +284,12 @@
                 margin: 99px -185px;
                 font-size: 22px;
             }
-            
-             .modal-title {
-            margin-left: 165px;
+
+            .modal-title {
+                margin-left: 165px;
             }
 
-            
+
             .modal-dialog {
                 margin-top: 17vw!important;
             }
@@ -199,7 +316,7 @@
             .center-con {
                 display: flex;
                 position: absolute;
-                margin: -0.7% 89%
+                margin: -0.7% 89%;
             }
 
             .lock-icon {
@@ -208,17 +325,15 @@
                 margin: 88px -104px;
                 font-size: 20px;
             }
-            
-             .modal-title {
-            margin-left: 87px;
+
+            .modal-title {
+                margin-left: 87px;
             }
 
-            
+
             .modal-dialog {
                 margin-top: 42vw!important;
             }
-
-
         }
 
         @media screen and (max-width: 1200px) {
@@ -286,37 +401,13 @@
             color: #222;
             font-family: Arial, sans-serif;
             font-size: 36px;
-        }
-
-        .main-visitor {
-            /* background-image: url('./collaboration_LIFE_005.Resized.jpg'); */
-            /* -webkit-filter: grayscale(70%); */
-            /* filter: grayscale(100%); */
-            background: #ece6e6;
-            padding: 73px 0;
-        }
-
-
-
-        body {
-            font-size: 13px;
-            line-height: 1.8;
-            color: #222;
-            /* background-image: url('./collaboration_LIFE_005.Resized.jpg'); */
-            background: #ece6e6;
-            ;
-            /* -webkit-filter: grayscale(100%);  */
-            /* filter: grayscale(100%); */
-            font-weight: 400;
-            font-family: Arial, sans-serif;
-        }
+        }        
 
         /* .approved{
       
       background-color: #4ba94b;
     } */
         .approved {
-
             background-color: #4ba94b !important;
             /* background-color:green */
         }
@@ -345,24 +436,10 @@
             border-radius: 1.25rem;
         }
 
-        /* .card:hover {
-      background: #62b45b; } */
-
-        .card-container {
-            padding-right: 80px;
-            padding-left: 80px;
-        }
-
-
         .btn-agree {
             color: #fff;
             background-color: #2ed9d0;
         }
-
-        .signup {
-            margin-bottom: 150px;
-        }
-
 
         .term-service {
             font-size: 13px;
@@ -392,23 +469,8 @@
 
         /* Bootstrap 4 text input with search icon */
 
-        .has-search .form-control {
-            padding-left: 2.375rem;
-            height: calc(1.8125rem + 2px);
-            padding: 0.25rem 2rem;
-            background-color: transparent;
-            border-radius: 1.25rem;
-            border: 1px solid black;
-        }
-
         .form-control:focus {
-            background-color: none
-        }
-
-        .search {
-            padding-bottom: 10px;
-            float: right;
-            font-size: 22.5px;
+            background-color: none;
         }
 
         p {
@@ -430,23 +492,6 @@
   
   }
    */
-        .has-search .form-control-feedback {
-            position: absolute;
-            z-index: 2;
-            display: block;
-            width: 2.375rem;
-            height: 2.375rem;
-            line-height: 2.0rem;
-            text-align: center;
-            pointer-events: none;
-            color: black;
-        }
-
-        .has-search .form-control:focus {
-            background-color: #ece6e6;
-            border-color: black;
-        }
-
         .agree-term {
             display: inline-block;
             width: auto;
@@ -474,23 +519,11 @@
 
         .modal-dialog {
             max-width: 900px;
-            margin: 1.75rem auto; 
-        }
-        
-        .modal-body {
-            padding: 1rem 1.5rem;
+            margin: 1.75rem auto;
         }
 
-        .has-search .form-control {
-            padding-left: 2.375rem;
-            height: calc(2.5rem + 2px);
-            padding: 1.25rem 2.5rem;
-            background-color: transparent;
-            border-radius: 1.25rem;
-            border: 1px solid black;
-            font-size: 20px;
-            width: 260px;
-            margin-right: 3vw;
+        .modal-body {
+            padding: 1rem 1.5rem;
         }
 
         .fa {
@@ -503,23 +536,14 @@
             padding-top: 6px;
         }
     </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
-        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="/public/javascripts/checkFloor.js"></script>
     <script src="/public/javascripts/guardLogin.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+    
     <script>
         // code to create a new selector same as jquery`s contains but also case insensitive
         $.expr[":"].Contains = $.expr.createPseudo(function (arg) {
@@ -539,10 +563,10 @@
 
         $(document).ready(function () {
 
-//            var loggedInUser = localStorage.getItem('userLoggedIn');
-//            if (loggedInUser == undefined || loggedInUser == null) {
-//                window.location.href = '/';
-//            }
+                        var loggedInUser = localStorage.getItem('userLoggedIn');
+                        if (loggedInUser == undefined || loggedInUser == null) {
+                            window.location.href = '/';
+                        }
 
 
             //get approval token //
@@ -595,7 +619,7 @@
                                     // alertMessage(result);
                                     if (result) {
                                         alertMessage("Visitor approved !!", "visitorApproved");
-                                      //  document.location.href = "/";
+                                        //  document.location.href = "/";
                                     }
                                     else {
 
@@ -667,22 +691,22 @@
             $('input.focus').blur(function () {
                 $(this).prev().css('fontSize', '1.0em');
             });
-/*
-                var objArray = [
-                 { visitor_empid : 1608286, visitor_name: 'Sakshi Gadia', escort_time_from: '3:00 PM', approvalStatus:
- "Approved",visitor_smartcard: '1234',visitor_company:'Tata Consultancy services(TCS)',visitor_purpose:'new joinee',
-visitor_unit:'elli lilly',groupId:'group 5',visitor_access:'permanent',escort_empid:'123333454'
- },
-                 { visitor_empid : 1608286, visitor_name: 'Manisha', escort_time_from: '3:00 PM', approvalStatus: "Approved"
-,visitor_smartcard: '1234',visitor_company:'Tata Consultancy services(TCS)',visitor_purpose:'new joinee',
-visitor_unit:'elli lilly',groupId:'group 5',visitor_access:'permanent',escort_empid:'123333454' },
-                 { visitor_empid : 1608286, visitor_name: 'Juhi', escort_time_from: '3:00 PM', approvalStatus: "Approved"
-,visitor_smartcard: '1234',visitor_company:'Tata Consultancy services(TCS)',visitor_purpose:'new joinee',
-visitor_unit:'elli lilly',groupId:'group 5',visitor_access:'permanent',escort_empid:'123333454' },
-                 { visitor_empid : 1608286, visitor_name: 'Priya', escort_time_from: '3:00 PM', approvalStatus: "Pending"
-,visitor_smartcard: '1234',visitor_company:'Tata Consultancy services(TCS)',visitor_purpose:'new joinee',
-visitor_unit:'elli lilly',groupId:'group 5',visitor_access:'permanent',escort_empid:'123333454' },
-             ]; */
+            /*
+                            var objArray = [
+                             { visitor_empid : 1608286, visitor_name: 'Sakshi Gadia', escort_time_from: '3:00 PM', approvalStatus:
+             "Approved",visitor_smartcard: '1234',visitor_company:'Tata Consultancy services(TCS)',visitor_purpose:'new joinee',
+            visitor_unit:'elli lilly',groupId:'group 5',visitor_access:'permanent',escort_empid:'123333454'
+             },
+                             { visitor_empid : 1608286, visitor_name: 'Manisha', escort_time_from: '3:00 PM', approvalStatus: "Approved"
+            ,visitor_smartcard: '1234',visitor_company:'Tata Consultancy services(TCS)',visitor_purpose:'new joinee',
+            visitor_unit:'elli lilly',groupId:'group 5',visitor_access:'permanent',escort_empid:'123333454' },
+                             { visitor_empid : 1608286, visitor_name: 'Juhi', escort_time_from: '3:00 PM', approvalStatus: "Approved"
+            ,visitor_smartcard: '1234',visitor_company:'Tata Consultancy services(TCS)',visitor_purpose:'new joinee',
+            visitor_unit:'elli lilly',groupId:'group 5',visitor_access:'permanent',escort_empid:'123333454' },
+                             { visitor_empid : 1608286, visitor_name: 'Priya', escort_time_from: '3:00 PM', approvalStatus: "Pending"
+            ,visitor_smartcard: '1234',visitor_company:'Tata Consultancy services(TCS)',visitor_purpose:'new joinee',
+            visitor_unit:'elli lilly',groupId:'group 5',visitor_access:'permanent',escort_empid:'123333454' },
+                         ]; */
             /*  generateCards(objArray);
                         $("#card-list").fadeIn('slow');
                         $('.fa-info-circle').on('click', function () {
@@ -705,7 +729,7 @@ visitor_unit:'elli lilly',groupId:'group 5',visitor_access:'permanent',escort_em
                         });
                      */
 
-           bindGrid();
+            bindGrid();
 
         });
         var objArray = [];
@@ -860,71 +884,58 @@ visitor_unit:'elli lilly',groupId:'group 5',visitor_access:'permanent',escort_em
         }
     </script>
 </head>
-
 <body>
-    
-    <div class="modal fade" id="FlashMessage" tabindex="-1" role="dialog" aria-labelledby="FlashMessageLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="FlashMessage" tabindex="-1" role="dialog" aria-labelledby="FlashMessageLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background: linear-gradient(to right, #3a90cb , #2ed9d0);">
                 </div>
                 <div class="modal-body text-center font-weight-bold">
-
                 </div>
                 <div class="pb-3 text-center">
                     <button type="button" class="btn btn-primary btn-lg" onclick="return alertOkBtnClicked();"
-                        data-dismiss="modal">OK</button>
+                        data-dismiss="modal">
+                        OK</button>
 
                 </div>
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="approvalTokenPrompt" tabindex="-1" role="dialog"
         aria-labelledby="ApprovalTokenPromptLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header"
-                    style="color: white;background: linear-gradient(to right, #3a90cb , #2ed9d0);">
+                    style="color: white; background: linear-gradient(to right, #3a90cb , #2ed9d0);">
                     Approval Token
                 </div>
                 <div class="modal-body text-center font-weight-bold">
                     <div id="approvalTokenTextDiv"></div>
-                    <div class="pt-3"><input type="text" id="txtApprovalToken" /></div>
-
-
+                    <div class="pt-3">
+                        <input type="text" id="txtApprovalToken" /></div>
                 </div>
                 <div class="pb-3 text-center">
-                    <button type="button" id="approvalTokenOkBtn" style="width:85px" class="btn btn-primary btn-lg">OK</button>
-                    <button type="button" id="approvalTokekCancelBtn" style="width:85px;margin-left:10px" data-dismiss="modal" class="btn btn-primary btn-lg">Cancel</button>
+                    <button type="button" id="approvalTokenOkBtn" style="width: 85px" class="btn btn-primary btn-lg">OK</button>
+                    <button type="button" id="approvalTokekCancelBtn" style="width: 85px; margin-left: 10px" data-dismiss="modal" class="btn btn-primary btn-lg">Cancel</button>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="main-visitor">
         <section class="signup">
             <div class="row row-header">
-                <div class="col-6 text-right">
-                    <h2>Escorting List </h2>
-                </div>
-                <div class="col-6" style="float:right">
-                    <div class="has-search search pr-5">
-                        <span class="fa fa-search form-control-feedback"></span>
-                        <input type="text" id="txtSearch" class="form-control focus" oninput="searchCard(this);"
-                            placeholder="Search" />
-                    </div>
+                <div class="has-search search pr-5">
+                    <span class="fa fa-search form-control-feedback"></span>
+                    <input type="text" id="txtSearch" class="form-control focus" oninput="searchCard(this);" placeholder="Search" />
                 </div>
             </div>
             <div class="card-container mt-4" id="card-list">
-
-
-                <div class=" card cardNoRecord"
-                    style="font-size: 35px;text-align: center;padding-top: 52px; color:gray; border-radius: 1.25rem;">
+                <div class="card cardNoRecord"
+                    style="font-size: 35px; text-align: center; padding-top: 52px; color: gray; border-radius: 1.25rem;">
                     Data not
-                    found!</div>
-                <!-- <div class="card">
+                    found!
+                </div>
+                 <!--<div class="card">
                     <p>Visitor ID : 1608286</p>
                     <p>Visitor Name : 1608286</p>
                     <p>Requested Time : 1608286</p>
@@ -939,7 +950,6 @@ visitor_unit:'elli lilly',groupId:'group 5',visitor_access:'permanent',escort_em
             </div>
         </section>
     </div>
-
     <div class="modal fade" id="visitorInfoModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document" style="max-width: 68%;">
@@ -948,7 +958,7 @@ visitor_unit:'elli lilly',groupId:'group 5',visitor_access:'permanent',escort_em
                     <h4 class="modal-title" id="" style="color: #2ed9d0;">Visitor Details / व़िज़िटअ
                         विवरण
                     </h4>
-                    <button type="button" style="font-size:31pt;" class="close point" data-dismiss="modal" aria-label="Close">
+                    <button type="button" style="font-size: 31pt;" class="close point" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -1034,7 +1044,5 @@ visitor_unit:'elli lilly',groupId:'group 5',visitor_access:'permanent',escort_em
             </div>
         </div>
     </div>
-
 </body>
-
 </html>
