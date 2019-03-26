@@ -2,8 +2,12 @@ var express = require('express');
 var bodyParser = require('body-parser');
 const app = express.Router();
 var cron = require('node-cron');
+<<<<<<< HEAD
 var fs = require('fs');
 //var pdf = require('html-pdf');
+=======
+ 
+>>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
 
 
 
@@ -46,6 +50,7 @@ function timeNow() {
       m = (d.getMinutes()<10?'0':'') + d.getMinutes();
    return h + ':' + m;
   }
+<<<<<<< HEAD
 /* function htmlToPDF(request)
 {
   //you can collect fields to be displayed in html from request.body object and create a dynamic html string which can be passed directly to 
@@ -61,6 +66,8 @@ function timeNow() {
   });
 
 } */
+=======
+>>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
 
   app.get('/getFloors', function(req,res){
    // var userIdLocalstorage = req.body.loggedInUser;
@@ -74,6 +81,7 @@ function timeNow() {
         arr.push({floorcode:result[index].floorcode,floorname:result[index].floorname});
       }
       res.json(arr);
+<<<<<<< HEAD
     });
   });
   app.post('/localStorageUserId', function(req,res){
@@ -89,6 +97,23 @@ function timeNow() {
       }
     });
   });
+=======
+    });
+  });
+  app.post('/localStorageUserId', function(req,res){
+    var userIdLocalstorage = req.body.loggedInUser;
+    var chckUserinDb = `SELECT is_login FROM guard_details WHERE user_id = '${userIdLocalstorage}'`;
+    con.query(chckUserinDb, function(err,result){
+      if(result[0].is_login == 0){
+        res.send({loggedOutInDB: true});
+      }
+      else
+      {
+        res.send({loggedOutInDB: false});
+      }
+    });
+  });
+>>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
 
 app.post('/addVisitor', function(req, res) {
    console.log(req.body);
@@ -99,6 +124,7 @@ app.post('/addVisitor', function(req, res) {
 //}
    
    console.log("NewSignature:"+req.body.escort_signature);
+<<<<<<< HEAD
 //    if(req.body.escort_signature != "")
 //    {
        req.body.escort_signature="Y";
@@ -121,6 +147,23 @@ app.post('/addVisitor', function(req, res) {
                 req.body.txt_project="";
    }
                 /* 
+=======
+   if(req.body.escort_signature != "")
+   {
+       req.body.escort_signature="Y";
+       console.log("sign:"+req.body.escort_signature)
+   }
+   req.body.escort_time_from='TIME(now())';
+   req.body.escort_date=new Date();
+   req.body.visitor_access = "Permanent";
+   //if ( typeof(req.body.txt_whom_to_meet)=="undefined")
+   //{
+    req.body.txt_whom_to_meet="";
+   //}
+   req.body.txt_purpose_escort_unit="";
+                req.body.txt_project="";
+/* 
+>>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
    var escort = "select * from escort_table where escort_Id="+req.body.escort_empid;
    con.query(escort,function(err, result)     
              {                                                      
@@ -280,7 +323,11 @@ console.log(req.body.visitor_empid);
                    var approvalStatus="pending";
                    var dayCount=1;
 
+<<<<<<< HEAD
                    var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area,visitor_signature,escort_signature,persontomeet,areaofvisit,projectofvisit) VALUES ('"+req.body.visitor_empid+"','"+req.body.visitor_name_new+"','"+req.body.visitor_company+"','"+req.body.escort_unit+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"',now(),"+req.body.escort_time_from+",'"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+req.body.area+"','"+req.body.visitor_signature_JSON +"','"+req.body.escort_signature_JSON+"','"+req.body.txt_whom_to_meet +"','"+req.body.txt_purpose_escort_unit+"','"+req.body.txt_project+"') ";
+=======
+                   var sql = "Insert into VisiterRecord (visitor_empid,visitor_name,visitor_company,visitor_unit,visitor_smartcard,visitor_access,visitor_assetId,visitor_purpose,escort_empid,escort_name,escort_unit,escort_smartcard,escort_date,escort_time_from,escort_time_to,approvalStatus,dayCount,Identification,Hall,groupId,area,visitor_signature,escort_signature,persontomeet,areaofvisit,projectofvisit) VALUES ('"+req.body.visitor_empid+"','"+req.body.visitor_name_new+"','"+req.body.visitor_company+"','"+req.body.escort_unit+"','"+req.body.visitor_smartcard+"','"+req.body.visitor_access+"','"+req.body.visitor_asset+"','"+req.body.visitor_purpose+"','"+req.body.escort_empid+"','"+req.body.escort_name+"','"+req.body.escort_unit+"','"+req.body.escort_smartcard+"',now(),"+req.body.escort_time_from+",'"+req.body.escort_time_to+"','"+approvalStatus+"','"+dayCount+"','"+identification+"','"+Hall+"','"+groupId+"','"+req.body.area+"','"+req.body.visitor_signature_JSON +"','"+req.body.escort_signature_JSON+"','"+txt_whom_to_meet +"','"+txt_purpose_escort_unit+"','"+txt_project+"') ";
+>>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
                    console.log(sql);
                    con.query(sql,function(err, result)     
                              {                                                      

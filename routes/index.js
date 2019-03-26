@@ -62,7 +62,11 @@ router.get("/", function(req,res){
     res.render('GuardLogin', {layout:true});
 });
 router.get("/gaurdlogin", function(req,res){
+<<<<<<< HEAD
     res.render('Guard_Login', {layout:true});
+=======
+    res.render('GuardLogin', {layout:true});
+>>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
 });
 
 

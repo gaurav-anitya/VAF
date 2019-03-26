@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
 html, body {
     width: 100%;
     height: 100%;
@@ -11,14 +8,6 @@ html, body {
 }
 
  /*CSS added ash Aiswarya A*/
-<<<<<<< HEAD
-#scrolladd{
-    height: 100%;
-    width: 100%;
-    position: fixed;
-    overflow-x: hidden;
-    overflow-y: scroll;  
-=======
 
    .btn-clear-sign {
     margin-top: 1%;
@@ -30,7 +19,6 @@ html, body {
     height: 100%;
     width: 100%;
     position: fixed;
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
    }
 
 /* Added by Abhishek as part of review on 15-Mar-2019 */
@@ -47,21 +35,13 @@ html, body {
 }
 
 /* Appplied to "Home" icon on every div/ Page */
-<<<<<<< HEAD
-.home, home_icon {
-=======
 .home {
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
     position: fixed;
     top: 20px;
     right: 20px;
     width: 50px;
     height: 50px;
     cursor: pointer;
-<<<<<<< HEAD
-    z-index: 200;
-=======
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
     display: none;
 }
 
@@ -89,32 +69,8 @@ hr {
 #visitorInfoDiv {
     width: 100%;
     height: 100%;
-<<<<<<< HEAD
-    position: relative; 
-}
-
-#multipleVisitors {
-    width: 100%;
-    display: none;
-}
-
-.company-form-div-cloned {
-    width: 80%;
-    margin: 0 auto;
-    height: 90%;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    position: static !important;
-    top: 0px !important;
-    background-color: white;
-    border-radius: 6px;
-    line-height: normal !important;
-    font-family: Arial, sans-serif !important;
-    font-size: 14pt !important;
-=======
     margin-bottom: 4%; /*ash*/
     /*position: fixed; ash*/
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
 }
 
 .signup {
@@ -122,11 +78,7 @@ hr {
     height: 100%;
     position: fixed;
     top: 100%;
-<<<<<<< HEAD
-    /*border: solid 5px red;*/ 
-=======
     /* border: solid 5px red; */
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
 }
 
 #escort_slider {
@@ -136,79 +88,6 @@ hr {
    /*  border: 5px solid green; */
 }
 
-<<<<<<< HEAD
-.btn-clear-sign {
-    float: right;
-    margin-top: 5px;
-    font-family: Arial, sans-serif !important;
-    font-size: 11pt !important; 
-    background-color: rgb(3,166,255);
-    color: white;
-}
-
-.modal-content {
-    height: 200px;
-}
-
-.modal-header {
-    height: 60px;
-}
-
-.modal-body {
-    font-family: Arial, sans-serif !important;
-    font-size: 10pt !important;
-    height: 100px;
-    line-height: 50px;
-}
-
-.text-align-center {
-    text-align: center !important;
-}
-
-.guard-verify {
-    width: 80%;
-    margin: 0 auto;
-    height: 80%;
-    position: relative;
-    top: 50%;
-}
-
-#thank_visitor_show_escort {
-    background-image: linear-gradient(to right, #3a90cb , #2ed9d0);
-    position: fixed;
-    top: 100%;
-    width: 100%;
-    height: 100%;
-    font-family: 'tradegothiclt-bold', sans-serif;
-    font-size: 52.5px;
-    color: rgba(255,255,255,0.95);
-    /*border: solid 5px red;*/
-    display: none;
-}
-
-    #thank_visitor_show_escort #outer {
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        bottom: 0px;
-        /*display: flex;
-        justify-content: center;
-        align-items: center;*/
-        /*border: solid 5px green;*/ 
-    }
-
-    #thank_visitor_show_escort #inner {
-        width: 90%;
-        margin: 0 auto;
-        position: relative;
-        top: 50%;
-        /*border: solid 5px yellow;*/
-        text-align: center; 
-        line-height: 5;
-    }
-     
-=======
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
 /* CSS for bouncing right arrow */
 @-webkit-keyframes bounceRight {
   0%,
@@ -271,27 +150,12 @@ hr {
 /*iPad in portrait */
 @media only screen 
 and (min-device-width : 768px) 
-<<<<<<< HEAD
-and (max-device-width : 1024px)
-and (orientation : landscape)
-  { 
-    .sign{
-    height:150px;
-    width:335px;
-    margin-top: 9px; }
-
-    .asset_txt {
-        padding-left: 42.5px !important;
-    } 
-}
-=======
 and (max-device-width : 1024px)  { 
     .sign{
     height:150px;
     width:335px;
     margin-top: 9px;
 }}
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
 
 @media only screen 
 and (min-device-width : 768px) 
@@ -406,16 +270,9 @@ and (min-device-width : 1025px)
 
 .image_div {
     width: 10%;
-<<<<<<< HEAD
-    height: 100px;
-    position: absolute;
-    top: 50%;
-    margin-top: -50px;
-=======
     height: 100%;
     position: absolute;
     top: 0px;
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
     right: 0px;
     /* border: solid 5px yellow; */
 }
@@ -431,18 +288,6 @@ and (min-device-width : 1025px)
         /*display: none;*/
     }
 
-<<<<<<< HEAD
-#guard_div .image_div {
-    width: 10%;
-    height: 100px;
-    position: fixed;
-    top: 50%;
-    margin-top: -50px;
-    right: 0px;     
-}
-
-=======
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
 .disabled i
 {
     color:grey;
@@ -450,11 +295,7 @@ and (min-device-width : 1025px)
 .sign {
     display: block !important;
     height:150px;
-<<<<<<< HEAD
-    width:100%;
-=======
     width:90%;
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
     margin: 0 auto;
 }
 
@@ -477,11 +318,7 @@ and (min-device-width : 1025px)
 
 .question-div {
     color: white;
-<<<<<<< HEAD
-    /*font-size: 4.5vw;*/
-=======
     font-size: 4.5vw;
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
     width: 100%;
     height: 100%;
     text-align: center;
@@ -670,11 +507,7 @@ img {
 .container-div {
   width: 80% !important;
   margin: 0 auto;
-<<<<<<< HEAD
-  /*height: 575px !important;*/
-=======
   height: 575px !important;
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
   background: #fff;
   box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
@@ -687,13 +520,8 @@ img {
   -o-border-radius: 20px;
   -ms-border-radius: 20px;
   position: relative;
-<<<<<<< HEAD
-  /*top: 50%;*/
-  /*margin-top: -287.5px;*/
-=======
   top: 50%;
   margin-top: -287.5px;
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
 }
 .form-group {
   position: relative;
@@ -844,16 +672,10 @@ input:focus:-moz-placeholder {
 .company-form-div {
     width: 80%;
     margin: 0 auto; 
-<<<<<<< HEAD
-    height: 90%;
-    overflow-x: hidden;
-    overflow-y: scroll; 
-=======
     /*height: 80%;
     overflow: scroll; ash*/
     margin-bottom:2%; /*ash*/
     overflow-x: hidden;
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
     position: relative;
     top: 50%;
     background-color: white;
@@ -886,17 +708,6 @@ div.mt-3 {
 }
 
 .form_content {
-<<<<<<< HEAD
-    height: 100%;
-    padding: 10px;
-    background-color: white;
-    font-family: Arial, sans-serif;
-    font-size: 11pt;
-    /*letter-spacing: -0.01px;*/
-    /*line-height: 22px;*/
-    border-radius: 15px;
-    
-=======
     padding: 2% 5%;
     
     background-color: white;
@@ -905,7 +716,6 @@ div.mt-3 {
     letter-spacing: -0.01px;
     line-height: 22px;
     border-radius: 15px;
->>>>>>> 7f2a40380ad0e455c5c548c571fa1b6cf7de7fab
 }
 
 .btn_on_click{
